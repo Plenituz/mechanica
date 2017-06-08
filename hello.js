@@ -18,6 +18,7 @@ app.set('view engine', 'dust');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', true);
 
+displayIP();
 console.log("server started on port " + PORT);
 
 app.get('/', function(req, res) {
@@ -43,3 +44,23 @@ app.get('/', function(req, res) {
 });
 
 app.listen(PORT);
+
+
+function displayIP() {
+    var os = require('os');
+    var ifaces = os.networkInterfaces();
+
+    Object.keys(ifaces).forEach(function (ifname) {
+        var alias = 0;
+        ifaces[ifname].forEach(function (iface) {
+            if ('IPv4' !== iface.family || iface.internal !== false) {
+                return;
+            }
+            if (alias >= 1)
+                console.log(ifname + ":" + alias, iface.address);
+            else
+                console.log(ifname, iface.address);
+            alias++;
+        });
+    });
+}
