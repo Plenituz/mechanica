@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 var hoffman = require('hoffman');
 var defaultImgPath = path.join(__dirname, 'public', 'imgs', 'default.png');
+var doCache = false;//TODO quand on passe en prod faut changer ca
 
 var app = express();
 //tell express to use EJS render even for html files
@@ -14,7 +15,7 @@ app.engine('dust', hoffman.__express());
 app.set('view engine', 'dust');
 //indicate to express where the views directory is
 app.set('views', path.join(__dirname, 'views'));
-app.set('view cache', true);
+app.set('view cache', doCache);
 
 displayIP();
 console.log("server started on port 3000");
