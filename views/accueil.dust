@@ -2,7 +2,7 @@
 
   <div id="accueil">
 
-    <a>Bienvenue sur le site de OpenSourceHardware !</a>
+    <a>Bienvenue sur le site de {#names}{caca}{/names} !</a>
 
   </div>
 
