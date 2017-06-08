@@ -24,33 +24,7 @@ app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
 	res.render('accueil.dust')
 })
-
-//css files
-/*.get('/css/:file', function(req, res){
-	//create a path to /public/imgs/:file
-	var fPath = path.join(__dirname, 'public', 'css',
-		path.basename(req.params.file) );
-	//check if the file exist, if it does serve it otherwise yell
-	if(fs.existsSync(fPath)){
-		res.sendFile(fPath);
-	}else{
-		res.writeHead(200, {"Content-Type": "text/css"});
-		res.end('file ' + req.params.file + " doesn't exist");
-	}
-})*/
-
-//image files
-.get('/imgs/:file', function(req, res){
-	//create a path to /public/imgs/:file
-	var fPath = path.join(__dirname, 'public', 'imgs',
-		path.basename(req.params.file) );
-	//check if the file exist, if it does serve it otherwise yell
-	if(fs.existsSync(fPath)){
-		res.sendFile(fPath);
-    } else {
-        res.sendFile(defaultImgPath);
-	}
-})
+    //public files
 .use(express.static(path.join(__dirname, 'public')))
 .use(function(req, res, next){
 	//in case the user asked for an unset page
