@@ -4,7 +4,6 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var hoffman = require('hoffman');
-var defaultImgPath = path.join(__dirname, 'public', 'imgs', 'default.png');
 var doCache = false;//TODO quand on passe en prod faut changer ca
 
 var app = express();
@@ -22,6 +21,7 @@ console.log("server started on port 3000");
 	    //render "accueil.dust"(html) using the set render engine (dust)
 	    res.render('accueil.dust')
     })
+        //exemple dustjs
     .get('/exemple', function (req, res) {
         res.render('exemple.dust', {
             listTest: [
