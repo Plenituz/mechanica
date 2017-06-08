@@ -6,6 +6,7 @@ var fs = require('fs');
 var hoffman = require('hoffman');
 //listen on port 80 (http)
 var PORT = 80;
+var defaultImgPath = path.join(__dirname, 'public', 'imgs', 'default.png');
 
 var app = express();
 //tell express to use EJS render even for html files
@@ -31,9 +32,8 @@ app.get('/', function(req, res) {
 	//check if the file exist, if it does serve it otherwise yell
 	if(fs.existsSync(fPath)){
 		res.sendFile(fPath);
-	}else{
-		res.writeHead(200, {"Content-Type": "text/plain"});
-		res.end('file ' + req.params.file + " doesn't exist");
+    } else {
+        res.sendFile(defaultImgPath);
 	}
 })
 .use(function(req, res, next){
