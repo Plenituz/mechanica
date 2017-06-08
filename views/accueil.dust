@@ -1,9 +1,11 @@
 {> "views/header.dust"/}
 
-  <div id="accueil">
+  <div id="content">
 
-    <a>Bienvenue sur le site de {#names}{caca}{/names} !</a>
+    <h1>*** Bienvenue sur le site de Mechanica ! ***</h1>
 
   </div>
 
 {> "views/footer.dust"/}
+
+</html>
