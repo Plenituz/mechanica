@@ -14,8 +14,6 @@ app.set('view engine', 'dust');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
 
-displayIP();
-console.log("server started on port 3000");
 
     app.get('/', function(req, res) {
 	    //render "accueil.dust"(html) using the set render engine (dust)
@@ -40,24 +38,7 @@ console.log("server started on port 3000");
         res.end('<p>404 not found, bitch</p>');
     });
 
-app.listen(3000, "127.0.0.1");
-
-
-function displayIP() {
-    var os = require('os');
-    var ifaces = os.networkInterfaces();
-
-    Object.keys(ifaces).forEach(function (ifname) {
-        var alias = 0;
-        ifaces[ifname].forEach(function (iface) {
-            if ('IPv4' !== iface.family || iface.internal !== false) {
-                return;
-            }
-            if (alias >= 1)
-                console.log(ifname + ":" + alias, iface.address);
-            else
-                console.log(ifname, iface.address);
-            alias++;
+    var server = app.listen(3000, "127.0.0.1",
+        function () {
+            console.log("server running at " + server.address().address + " on port " + server.address().port);
         });
-    });
-}
