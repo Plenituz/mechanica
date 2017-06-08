@@ -21,7 +21,7 @@ console.log("server started on port " + PORT);
 
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
-	res.render('accueil.dust')
+	res.render('accueil.dust', { names : [{caca : "bob"}, {caca:"billy"}] })
 })
 //image files
 .get('/imgs/:file', function(req, res){
