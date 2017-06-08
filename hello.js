@@ -4,8 +4,6 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 var hoffman = require('hoffman');
-//listen on port 80 (http)
-var PORT = 80;
 var defaultImgPath = path.join(__dirname, 'public', 'imgs', 'default.png');
 
 var app = express();
@@ -19,7 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', true);
 
 displayIP();
-console.log("server started on port " + PORT);
+console.log("server started on port 3000");
 
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
@@ -37,13 +35,14 @@ app.get('/', function(req, res) {
         res.sendFile(defaultImgPath);
 	}
 })
+.use(express.static(path.join(__dirname, 'public')))
 .use(function(req, res, next){
 	//in case the user asked for an unset page 
 	res.writeHead(200, {"Content-Type": "text/html"});
     res.end('<p>404 not found, bitch</p>');
 });
 
-app.listen(PORT);
+app.listen(3000, "127.0.0.1");
 
 
 function displayIP() {
