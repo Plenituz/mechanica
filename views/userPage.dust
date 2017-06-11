@@ -1,0 +1,12 @@
+{> "views/header.dust"/}
+
+<p>bienvenue sur la page de {username}</p>
+<p>voici la liste de ses repos :</p>
+{#repos}
+<a href="/{username}/{name}">{name}</a>
+<br/>
+{/repos}
+
+
+{> "views/footer.dust"/}
+

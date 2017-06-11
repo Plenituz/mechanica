@@ -1,0 +1,6 @@
+{> "views/header.dust"/}
+
+<p>voici a quoi ressemble le fichier {filename} du repo "{reponame}" appartenant a {username}</p>
+<p>en fait yaura un truc different en fonction du type de fichier</p>
+
+{> "views/footer.dust"/}

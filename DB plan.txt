@@ -1,0 +1,41 @@
+DATABASE mechanica{
+	users{
+		id(INT PRIMARY), username(VARCHAR(20) UNIQUE), password, email(UNIQUE), creation_date (DATE), description
+	}
+	repos{
+		id(INT PRIMARY), admin(INT FOREIGN KEY ref(users.id)), 
+		directory_location (TINYTEXT UNIQUE)
+		( // don't store everything in the same directory, and keep relative path in db)
+		https://stackoverflow.com/questions/154707/what-is-the-best-way-to-store-media-files-on-a-database
+		issue/discussion list? (list of id leading into an issue table)
+	}
+	issue/discussion ?{}
+	messages{}
+}
+
+fork : copy the content of the forked directory to a new directory 
+Clone : do nothing, just send the content of the directory to the client
+push : detect what files change compared to the old version, replace thoses file in a new folder, for the unchanged files create a simlink
+merge A into B : detect which file changed in A compared to B and only change thoses
+change detection : hash the file and compare 
+
+repo folder structure;
+reponame
+	v0
+		filev0_1
+		filev0_2
+		...
+	v1
+		...
+	v2
+	...
+	v145
+	current
+		[repo content]
+		file1
+		file2
+		file3
+		...
+		
+the current folder ALWAYS contains the current version of the project, but
+the current version may contain files that are actually simlinks to older versions

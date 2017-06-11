@@ -108,5 +108,69 @@ on evite de l'utiliser car c'est pas général et donc si un jour on change de d
 INSERT INTO Animal 
 	SET nom='Bobo', espece='chien', sexe='M', date_naissance='2010-07-21 15:41:00';
 
+Index : 
+tri des colonnes du tableau pour acces plus rapide, mais ralenti les requetes d'insertion suppression modification, il y a differents types :
+UNIQUE : ajoute la contrainte sur les colonnes choisis : 
+deux lignes ne pourrons pas avoir la meme combinaisons de valeur pour les colonnes choisis
+FULLTEXT: recherche hyper rapide sur les colonnes de type text, mais perd l'habilit de faire une recherche sur plusieurs 
+colonnes, (pour la recuperer faudrait créer plusieurs index FULLTEXT)
 
+    CONSTRAINT fk_client_numero          -- On donne un nom à notre clé
+        FOREIGN KEY (client)             -- Colonne sur laquelle on crée la clé
+        REFERENCES Client(numero) 
+		
+SELECT Espece.description 
+FROM Espece 
+INNER JOIN Animal 
+    ON Espece.id = Animal.espece_id 
+WHERE Animal.nom = 'Cartouche';
+
+SELECT Animal.nom AS nom_animal, Race.nom AS race
+FROM Animal
+INNER JOIN Race
+    ON Animal.race_id = Race.id
+WHERE Animal.espece_id = 2             -- ceci correspond aux chats
+ORDER BY Race.nom, Animal.nom;
+
+SELECT Animal.nom AS nom_animal, Race.nom AS race
+FROM Animal                         -- Table de gauche
+LEFT OUTER JOIN Race                -- Table de droite
+    ON Animal.race_id = Race.id
+WHERE Animal.espece_id = 2
+    AND Animal.nom LIKE 'C%'
+ORDER BY Race.nom, Animal.nom;
+
+SELECT Animal.nom AS nom_animal, Race.nom AS race
+
+FROM Animal                                              -- Table de gauche
+RIGHT OUTER JOIN Race                                    -- Table de droite
+    ON Animal.race_id = Race.id
+WHERE Race.espece_id = 2
+ORDER BY Race.nom, Animal.nom;
+
+SELECT *
+FROM table1
+[INNER | LEFT | RIGHT] JOIN table2 USING (colonneJ);  -- colonneJ est présente dans les deux tables
+-- équivalent à 
+SELECT *
+FROM table1
+[INNER | LEFT | RIGHT] JOIN table2 ON Table1.colonneJ = table2.colonneJ;
+
+SELECT MIN(date_naissance)
+FROM (
+    SELECT Animal.id, Animal.sexe, Animal.date_naissance, Animal.nom, Animal.espece_id, 
+            Espece.id AS espece_espece_id         -- On renomme la colonne id de Espece, donc il n'y a plus de doublons.
+    FROM Animal                                   -- Attention de ne pas la renommer espece_id, puisqu'on sélectionne aussi la colonne espece_id dans Animal !
+    INNER JOIN Espece
+        ON Espece.id = Animal.espece_id
+    WHERE sexe = 'F'
+    AND Espece.nom_courant IN ('Tortue d''Hermann', 'Perroquet amazone')
+) AS tortues_perroquets_F;
+
+SELECT id, sexe, nom, espece_id, race_id 
+FROM Animal
+WHERE (id, race_id) = (
+    SELECT id, espece_id
+    FROM Race
+    WHERE id = 7);
 */

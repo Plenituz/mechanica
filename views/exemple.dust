@@ -2,6 +2,5 @@
 <p>Ceci est une list de <strong>{listOfWhat}</strong></p>
 {#listTest}
 <p>Hello je suis {name} et j'ai {age} ans</p>
-<br/>
 {/listTest}
 </html>
