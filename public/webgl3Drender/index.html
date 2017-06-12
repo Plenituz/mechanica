@@ -51,6 +51,9 @@
 	
 	var basePos = [0, 0, 0];
 	var tmpPos = [0, 0, 0];
+	
+	var zoom = 0;
+	var maxZoom = 3;
 	//true means the first mouse button is being pressed
 	//meaning we are rotating the object
 	var mouseDownRot = false;
@@ -111,6 +114,16 @@
 		canvas.addEventListener("mousemove", onMouseMove, false);
 		canvas.addEventListener("mouseup", onMouseUp, false);
 		canvas.addEventListener("mouseout", onMouseOut, false);
+		canvas.addEventListener("wheel", onMouseWheel, false);
+		
+		
+	}
+	
+	function onMouseWheel(event){
+		
+		zoom -= event.deltaY;
+		if(zoom > maxZoom)
+			zoom = maxZoom;
 	}
 	
 	function onMouseDown(event){
@@ -145,7 +158,7 @@
 	}
 	
 	function onMouseUp(event){
-		if(event.button === 0 && mouseDownRot){
+		if(mouseDownRot){
 			mouseDownRot = false;
 			
 			tmpRot = updateRot(mouseDownRotMovePos, event);
@@ -153,7 +166,7 @@
 			tmpRot = [0, 0, 0];
 		}
 		
-		if(event.button === 1 && mouseDownMove){	
+		if(mouseDownMove){
 			mouseDownMove = false;
 			tmpPos = updatePos(mouseDownMovePos, event);
 			basePos = getFullPos();
@@ -162,8 +175,9 @@
 	}
 	
 	function onMouseOut(event){
-		if(mouseDownRot || mouseDownMove)
+		if(mouseDownRot || mouseDownMove){
 			onMouseUp(event);
+		}
 	}
 	
 	function webGLStart() {
@@ -303,14 +317,15 @@
 
 		
 		mvPushMatrix();
-		mat4.translate(mvMatrix, getFullPos());
-        mat4.translate(mvMatrix, [0.5, 0.0, -7.0]);
 		var rot = getFullRot();
-		
+		var pos = getFullPos();
+		pos[2] = zoom;
+		mat4.translate(mvMatrix, pos);
+        mat4.translate(mvMatrix, [0, 0, -7.0]);
+
 		mat4.rotate(mvMatrix, rot[0], [1, 0, 0]);
 		mat4.rotate(mvMatrix, rot[1], [0, 1, 0]);
 		mat4.rotate(mvMatrix, rot[2], [0, 0, 1]);
-		
 		
         gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
         gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
