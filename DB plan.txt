@@ -39,3 +39,6 @@ reponame
 		
 the current folder ALWAYS contains the current version of the project, but
 the current version may contain files that are actually simlinks to older versions
+
+pour le rendu 3D : quand on recoit un fichier le convertir avec blender en .obj et extraire l'array de vertex et de triangle dans un fichier custom, 
+il sera envoyé au script webgl pour le rendu
