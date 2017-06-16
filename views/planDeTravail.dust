@@ -1,0 +1,14 @@
+{> "views/header.dust"/}
+
+  <div id="plandetravail">
+
+    <div id="slog">
+      <h1>Plan de Travail</h1>
+      <h2>Page personnel de l'utilisateur, avec tout ses projets, ses favoris, ses contacts etc</h2>
+    </div>
+
+    </div>
+
+  </div>
+
+{> "views/footer.dust"/}

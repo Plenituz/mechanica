@@ -14,18 +14,15 @@ app.set('view engine', 'dust');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
 
+//public files
+app.use(express.static(path.join(__dirname, 'public')))
 
 const userRouter = require('./userRouter.js');
 const repoRouter = require('./repoRouter.js');
 const repoFileRouter = require('./repoFileRouter.js');
 
-app.get('/', function(req, res) {
-	//render "accueil.dust"(html) using the set render engine (dust)
-	res.render('accueil.dust')
-})
-//public files
-.use(express.static(path.join(__dirname, 'public')))
 //exemple dustjs
+/*
 .get('/exemple', function (req, res) {
     res.render('exemple.dust', {
         listTest: [
@@ -38,8 +35,32 @@ app.get('/', function(req, res) {
 })
 .get('/three', function (req, res) {
     res.sendFile(path.join(__dirname, "views", "threeTest.html"));
+})*/
+
+// Rendu des différentes pages
+app.get('/', function(req, res) {
+	//render "accueil.dust"(html) using the set render engine (dust)
+	res.render('accueil.dust')
 })
-//l'ordre est important ici 
+
+.get('/decouvrir', function (req, res) {
+	res.render('decouvrir.dust')
+})
+
+.get('/plandetravail', function (req, res) {
+	res.render('planDeTravail.dust')
+})
+
+.get('/guide', function (req, res) {
+	res.render('guide.dust')
+})
+
+.get('/compte', function (req, res) {
+	res.render('compte.dust')
+})
+
+
+//l'ordre est important ici
 
 //this is for '/:user/:repo/:file'
 .use(repoFileRouter)
@@ -48,6 +69,7 @@ app.get('/', function(req, res) {
 //this has to be after the static, all non hard coded url end up here
 //this is for '/:user'
 .use(userRouter)
+
 .use(function(req, res, next){
 	//in case the user asked for an unset page
 	res.writeHead(200, {"Content-Type": "text/html"});

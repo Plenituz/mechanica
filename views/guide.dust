@@ -1,0 +1,14 @@
+{> "views/header.dust"/}
+
+  <div id="guide">
+
+    <div id="slog">
+      <h1>Guides</h1>
+      <h2>Une documentation générique sur des connaisances fondamentales</h2>
+    </div>
+
+    </div>
+
+  </div>
+
+{> "views/footer.dust"/}

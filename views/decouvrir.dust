@@ -1,0 +1,15 @@
+{> "views/header.dust"/}
+
+  <div id="decouvrir">
+
+    <div id="slog">
+      <h1>Découvrir</h1>
+      <h2>Ici on trouvera un patchwork des différents nouveaux projets,
+          mais aussi les plus populaires, etc</h2>
+    </div>
+
+    </div>
+
+  </div>
+
+{> "views/footer.dust"/}

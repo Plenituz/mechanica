@@ -1,0 +1,14 @@
+{> "views/header.dust"/}
+
+  <div id="compte">
+
+    <div id="slog">
+      <h1>Compte</h1>
+      <h2>Paramétres du compte, options d'affichages, sécurité, etc</h2>
+    </div>
+
+    </div>
+
+  </div>
+
+{> "views/footer.dust"/}

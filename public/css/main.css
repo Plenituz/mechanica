@@ -1,48 +1,114 @@
 @font-face {
-    font: normal 100% Cambria,Georgia,"Times New Roman",Times,serif
+    src: url('./font/raleway/Raleway-Light.ttf') format('truetype');
+    font-family: 'Raleway';
     font-weight: normal;
     font-style: normal;
 }
 
 body{
   position: relative;
-  background-color: #EEEEEE;
+  margin-top: 0px;
+  background-color: #EFEFEF;
+  font-family: "Raleway", Arial;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 header {
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  border: solid black 2px;
-  height: 100px;
-  width: 1000px;
+  border-bottom: solid #000000 1px;
+  height: 70px;
+  width: 100%;
   text-align: center;
+}
 
+li {
+  position: relative;
+  margin-left: 50px;
+  left: 0px;
+  font-size: 16px;
+  list-style: none;
+  display: inline-block;
 }
 
 #menu{
+  display: inline-block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  top: 10px;
+  width: 1000px;
+  height: 70px;
+}
+
+#logo {
+  position: absolute;
+  z-index: 1;
+  left: 175px;
 }
 
 
 #content{
   position: relative;
-  margin-top: 10px;
+  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
-  border: solid black 2px;
-  height: 1000px;
+  padding-left: 10px;
+  padding-top: 10px;
   width: 1000px;
+  text-align: left;
+  color: #333333;
+}
+
+#slog {
+  position: relative;
+  left: 0px;
+  top: -10px;
+  line-height: 230%;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 50px;
   text-align: center;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 30px;
+  text-align: center;
+}
+
+#video_prez {
+  margin: auto;
+  width: 490px;
+  height: 270px;
+  margin-bottom: 100px;
+  border: solid black 1px;
 }
 
 
 #footer{
   position: relative;
-  margin-top: 10px;
+  display: inline-block;
   margin-left: auto;
   margin-right: auto;
-  border: solid black 2px;
-  height: 70px;
-  width: 1000px;
-  text-align: center;
+  top: 800px;
+  border-top: solid #000000 1px;
+  width: 100%;
 }
+
+#legal {  position:relative; left: 60px;}
+
+#misc { position: relative; left: 60px;}
+
+#centered_footer {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+ }

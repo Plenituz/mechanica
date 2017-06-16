@@ -1,8 +1,57 @@
   <div id="footer">
 
-    </br><a>This is the footer</a>
+    <div id="centered_footer">
+
+    <div id="legal">
+			<ul>
+
+				<li>
+					<div id="terms"><a>Conditions générales d'utilisation</a></div>
+				</li>
+
+				<li>
+					<div id="Confidential"><a>Politique de confidentialité</a></div>
+				</li>
+
+				<li>
+					<div id="copyright"><a>Politique de copyright</a></div>
+				</li>
+
+			</ul>
+		</div>
+
+
+    <div id="misc">
+			<ul>
+        <li>
+					<div id="sign in"><a>Inscription</a></div>
+				</li>
+
+				<li>
+					<div id="aboutus"><a>À propos</a></div>
+				</li>
+
+				<li>
+					<div id="job"><a>Carrières</a></div>
+				</li>
+
+				<li>
+					<div id="blog"><a>Blog</a></div>
+				</li>
+
+				<li>
+					<div id="language"><a>Langue</a></div>
+				</li>
+
+				<li>
+					<div id="compte"><a>Mon Compte</a></div>
+				</li>
+			</ul>
+		</div>
 
   </div>
+
+</div>
 
 </body>
 

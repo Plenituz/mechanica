@@ -11,30 +11,40 @@
 
 	<header>
 
+		<div id="logo">
+			<a href="/"><img src="imgs/logo_70.png" /></a>
+		</div>
+
 		<div id="menu">
 
-			<div id="logo">
-		    </br><a>Ici c'est le logo</a>
-			</div>
+			<ul>
 
-			<div id="titre">
-		    <a>Ici c'est le titre</a>
-			</div>
+				<li>
+					<div id="accueil">
+						<a href="../decouvrir">Découvrir</a></div>
+				</li>
 
-	    <div id="accueil">
-	    </div>
-	    <div id="decouvrir">
-	    </div>
-	    <div id="mesprojets">
-	    </div>
-	    <div id="guide">
-	    </div>
-	    <div id="compte">
-	    </div>
+				<li>
+					<div id="plandetravail">
+						<a href="../plandetravail">Plan de Travail</a></div>
+				</li>
 
-			<div id="logoff">
-		    <a>Ici c'est pour se déconnecter</a>
-			</div>
+				<li>
+					<div id="guide">
+						<a href="../guide">Guides</a></div>
+				</li>
+
+				<li>
+					<div id="compte">
+						<a href="../compte">Mon Compte</a></div>
+				</li>
+
+				<li>
+					<div id="logout">
+						<a href="../">Déconnection</a></div>
+				</li>
+
+			</ul>
 
 		</div>
 
