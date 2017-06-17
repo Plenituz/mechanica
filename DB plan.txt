@@ -2,7 +2,22 @@ https://mariadb.com/kb/en/mariadb/yum/
 
 DATABASE mechanica{
 	users{
-		id(INT PRIMARY), username(VARCHAR(20) UNIQUE), password, email(UNIQUE), creation_date (DATE), description
+		id(INT PRIMARY, AUTO_INCREMENT), username(VARCHAR(20) UNIQUE not null), password, email(UNIQUE), creation_date (DATE), description TEXT
+		
+		CREATE TABLE IF NOT EXISTS users(
+			user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			name VARCHAR(20) NOT NULL,
+			password TEXT NOT NULL,
+			email VARCHAR(254) NOT NULL,
+			creation_date DATE NOT NULL,
+			description TEXT DEFAULT NULL,
+			
+			PRIMARY KEY(user_id),
+			UNIQUE KEY ind_uni_name(name),
+			UNIQUE KEY ind_uni_email(email)
+		)
+		CHARSET=utf8 
+		ENGINE=INNODB;
 	}
 	repos{
 		id(INT PRIMARY), admin(INT FOREIGN KEY ref(users.id)), 
@@ -10,12 +25,46 @@ DATABASE mechanica{
 		( // don't store everything in the same directory, and keep relative path in db)
 		https://stackoverflow.com/questions/154707/what-is-the-best-way-to-store-media-files-on-a-database
 		discussion list TEXT (list of id leading into an discussion table)
+		
+		CREATE TABLE IF NOT EXISTS repos(
+			repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			location TINYTEXT NOT NULL,
+			discussion_list TEXT,
+			
+			PRIMARY KEY(repo_id)
+		) CHARSET=utf8 ENGINE=INNODB;
 	}
-	discussion {
+	discussions {
 		id (PRIMARY KEY), title TEXT, creator_id (INT FOREIGN KEY ref(users.id)), created_at DATETIME,message_list TEXT, hosting_repo(just in case) (INT FOREIGN KEY ref(repos.id))
+		
+		CREATE TABLE IF NOT EXISTS discussions(
+			discussion_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			title TEXT NOT NULL,
+			creator_id INT UNSIGNED,
+			created_at DATETIME NOT NULL,
+			hosting_repo INT UNSIGNED NOT NULL,
+			message_list TEXT,
+			
+			PRIMARY KEY(discussion_id)
+		) CHARSET=utf8 ENGINE=INNODB;
+		ALTER TABLE discussions ADD CONSTRAINT fk_discussion_creator_id FOREIGN KEY (creator_id) REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;
+		ALTER TABLE discussions ADD CONSTRAINT fk_discussion_hosting_repo FOREIGN KEY (hosting_repo) REFERENCES repos (repo_id) ON DELETE CASCADE ON UPDATE CASCADE;
+		
 	}
 	discussion_messages{
-		id (PRIMARY KEY), content TEXT, creator_id 5INT FOREIGN KEY ref(users.id), created_at DATETIME, discussion_id (INT FOREIGN KEY ref(discussion.id)) 
+		id (PRIMARY KEY), content TEXT, creator_id INT FOREIGN KEY ref(users.id), created_at DATETIME, discussion_id (INT FOREIGN KEY ref(discussions.id)) 
+		
+		CREATE TABLE IF NOT EXISTS discussion_messages(
+			discussion_message_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+			content TEXT NOT NULL,
+			creator_id INT UNSIGNED,
+			created_at DATETIME NOT NULL,
+			hosting_discussion INT UNSIGNED NOT NULL,
+			
+			PRIMARY KEY(discussion_message_id)
+		) ENGINE=INNODB CHARSET=utf8;
+		ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_creator_id FOREIGN KEY (creator_id) REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;
+		ALTER TABLE discussion_messages ADD CONSTRAINT fk_111 FOREIGN KEY (hosting_discussion) REFERENCES discussions (discussion_id) ON DELETE CASCADE ON UPDATE CASCADE;
 	}
 }
 

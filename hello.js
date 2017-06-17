@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const hoffman = require('hoffman');
 var doCache = false;//TODO quand on passe en prod faut changer ca
+//TODO faire un package.json pour les nodes modules
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -27,6 +28,9 @@ userRouter.staticPages = {
 	['compte'] : "",
 	['guide'] : ""
 };
+
+//===INIT DB IF NECESSARY===//
+//db.initDB();
 
 app.get('/testdb', function(req, res){
 	db.query("SELECT * FROM table1 WHERE id=? OR id=?", [1, 2], function(err){
