@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 const userRouter = require('./userRouter.js');
 const repoRouter = require('./repoRouter.js');
+const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 userRouter.staticPages = {
 	['decouvrir'] : "",
@@ -26,6 +27,15 @@ userRouter.staticPages = {
 	['compte'] : "",
 	['guide'] : ""
 };
+
+app.get('/testdb', function(req, res){
+	db.query("SELECT * FROM table1 WHERE id=? OR id=?", [1, 2], function(err){
+		console.log("error " + err);
+		res.status(100).send("error in db " + err);
+	}, function(results, fields){
+		res.json(results);
+	});
+});
 
 //l'ordre est important ici
 app.get('/', function(req, res) {

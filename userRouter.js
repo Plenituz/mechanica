@@ -1,10 +1,8 @@
 const express = require('express');
 const userRouter = new express.Router();
 
-
-
 userRouter.use("/:user", function (req, res) {
-	if(req.params.user in userRouter.staticPages){//if this is a statis page 
+	if(req.params.user in userRouter.staticPages){//if this is a static page 
 		//get the associated .dust file if any
 		let page = userRouter.staticPages[req.params.user];
 		

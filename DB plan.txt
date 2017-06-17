@@ -1,3 +1,5 @@
+https://mariadb.com/kb/en/mariadb/yum/
+
 DATABASE mechanica{
 	users{
 		id(INT PRIMARY), username(VARCHAR(20) UNIQUE), password, email(UNIQUE), creation_date (DATE), description
@@ -7,10 +9,14 @@ DATABASE mechanica{
 		directory_location (TINYTEXT UNIQUE)
 		( // don't store everything in the same directory, and keep relative path in db)
 		https://stackoverflow.com/questions/154707/what-is-the-best-way-to-store-media-files-on-a-database
-		issue/discussion list? (list of id leading into an issue table)
+		discussion list TEXT (list of id leading into an discussion table)
 	}
-	issue/discussion ?{}
-	messages{}
+	discussion {
+		id (PRIMARY KEY), title TEXT, creator_id (INT FOREIGN KEY ref(users.id)), created_at DATETIME,message_list TEXT, hosting_repo(just in case) (INT FOREIGN KEY ref(repos.id))
+	}
+	discussion_messages{
+		id (PRIMARY KEY), content TEXT, creator_id 5INT FOREIGN KEY ref(users.id), created_at DATETIME, discussion_id (INT FOREIGN KEY ref(discussion.id)) 
+	}
 }
 
 fork : copy the content of the forked directory to a new directory 
