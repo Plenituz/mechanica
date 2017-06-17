@@ -25,14 +25,19 @@ DATABASE mechanica{
 		( // don't store everything in the same directory, and keep relative path in db)
 		https://stackoverflow.com/questions/154707/what-is-the-best-way-to-store-media-files-on-a-database
 		discussion list TEXT (list of id leading into an discussion table)
+		name 
+		creator_id
 		
 		CREATE TABLE IF NOT EXISTS repos(
-			repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			location TINYTEXT NOT NULL,
-			discussion_list TEXT,
-			
-			PRIMARY KEY(repo_id)
-		) CHARSET=utf8 ENGINE=INNODB;
+				repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				admin_id INT UNSIGNED NOT NULL,
+				name VARCHAR(40) NOT NULL,
+				location TINYTEXT NOT NULL,
+				creation_date DATE NOT NULL,
+				discussion_list TEXT,
+				
+				PRIMARY KEY(repo_id)
+			) CHARSET=utf8 ENGINE=INNODB;
 	}
 	discussions {
 		id (PRIMARY KEY), title TEXT, creator_id (INT FOREIGN KEY ref(users.id)), created_at DATETIME,message_list TEXT, hosting_repo(just in case) (INT FOREIGN KEY ref(repos.id))

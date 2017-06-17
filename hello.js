@@ -30,7 +30,7 @@ userRouter.staticPages = {
 };
 
 //===INIT DB IF NECESSARY===//
-//db.initDB();
+db.initDB();
 
 app.get('/testdb', function(req, res){
 	db.query("SELECT * FROM table1 WHERE id=? OR id=?", [1, 2], function(err){

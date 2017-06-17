@@ -21,7 +21,10 @@ module.exports = {
 			
 			`CREATE TABLE IF NOT EXISTS repos(
 				repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+				admin_id INT UNSIGNED NOT NULL,
+				name VARCHAR(40) NOT NULL,
 				location TINYTEXT NOT NULL,
+				creation_date DATE NOT NULL,
 				discussion_list TEXT,
 				
 				PRIMARY KEY(repo_id)
@@ -48,8 +51,11 @@ module.exports = {
 				PRIMARY KEY(discussion_message_id)
 			) ENGINE=INNODB CHARSET=utf8;`,
 			
+			"ALTER TABLE repos ADD CONSTRAINT fk_repos_admin_id FOREIGN KEY (admin_id)"
+				+ " REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE;",
+			
 			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_creator_id FOREIGN KEY (creator_id)"
-				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE",
+				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;",
 				
 			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_hosting_repo FOREIGN KEY (hosting_repo)" 
 				+ " REFERENCES repos (repo_id) ON DELETE CASCADE ON UPDATE CASCADE;",
