@@ -15,53 +15,23 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
 
 //public files
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, 'public')));
 
 const userRouter = require('./userRouter.js');
 const repoRouter = require('./repoRouter.js');
 const repoFileRouter = require('./repoFileRouter.js');
+userRouter.staticPages = {
+	['decouvrir'] : "",
+	['plandetravail'] : "",
+	['compte'] : "",
+	['guide'] : ""
+};
 
-//exemple dustjs
-/*
-.get('/exemple', function (req, res) {
-    res.render('exemple.dust', {
-        listTest: [
-            { name: "Bob", age: 21 },
-            { name: "Harry", age: 34 },
-            { name: "John", age: 65 }
-        ],
-        listOfWhat : "type sympatique"
-    });
-})
-.get('/three', function (req, res) {
-    res.sendFile(path.join(__dirname, "views", "threeTest.html"));
-})*/
-
-// Rendu des différentes pages
+//l'ordre est important ici
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
 	res.render('accueil.dust')
 })
-
-.get('/decouvrir', function (req, res) {
-	res.render('decouvrir.dust')
-})
-
-.get('/plandetravail', function (req, res) {
-	res.render('planDeTravail.dust')
-})
-
-.get('/guide', function (req, res) {
-	res.render('guide.dust')
-})
-
-.get('/compte', function (req, res) {
-	res.render('compte.dust')
-})
-
-
-//l'ordre est important ici
-
 //this is for '/:user/:repo/:file'
 .use(repoFileRouter)
 //this is for '/:user/:repo'
