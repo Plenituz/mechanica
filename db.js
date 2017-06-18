@@ -1,5 +1,6 @@
 const mysql = require('mysql');
 const Q = require('q');
+const DEBUG_QUERIES = true;//TODO change that when you go in prod
 
 module.exports = {
 	initDB : function(){
@@ -80,10 +81,85 @@ module.exports = {
 	},
 	
 	createUser : function(name, password, email){
-		//let query = module.exports.query;
-		//let q = "INSERT INTO users VALUES(NULL, ?, ?, ?, NOW(), NULL)";
 		
+		//check if the user exists, if it doesn't create it
+		return doesUserExists(name)
+		.then(function(exists){
+			if(exists){
+				throw new Error("user " + name + " already exists");
+			}else{
+				//safe to insert the new user
+				let q = "INSERT INTO users VALUES(NULL, ?, ?, ?, NOW(), NULL)";
+				return query(q, [name, password, email]);
+			}
+		});
+	},
+	
+	createRepo : function(adminName, repoName){
+		return doesUserExists(adminName)
+		.then(function(exists){
+			if(!exists){
+				throw new Error("can't create repo " + repoName + ", user " + adminName + " doesn't exists");
+			}else{
+				console.log("checking repo existance");
+				return doesRepoExists(adminName, repoName);
+			}
+		})
+		.then(function(repoExists){
+			if(repoExists){
+				throw new Error("can't create repo " + repoName + ", user "+ adminName + " already has a repo with that name");
+			}else{
+				return getUserId(adminName);
+			}
+		})
+		.then(function(user_id){
+			let location = "/erer";
+			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW(), NULL)";
+			return query(sql, [user_id, repoName, location]);
+		});
+	},
+	
+	//no check for user existance here
+	getUserId : function(userName){
+		let sql = "SELECT user_id FROM users WHERE name=?";
 		
+		return query(sql, userName)
+		.then(function(results){
+			if(results.length === 0){
+				throw new Error("can't get user id, user " + userName + "doesn't exists");
+			}else{
+				return results[0].user_id;
+			}
+		});
+	},
+	
+	doesRepoExists : function(adminName, repoName){
+		let sql = 
+		`SELECT repos.repo_id FROM repos 
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+		WHERE users.name = ? AND repos.name = ?`;
+		
+		return query(sql, [adminName, repoName])
+		.then(function(results){
+			if(results.length > 1){
+				console.log("MEGA PROBLEME YA DEUX REPO AVEC LE MEME NOM ET LE MEME ADMIN");
+				throw new Error("MEGA PROBLEME YA DEUX REPO AVEC LE MEME NOM ET LE MEME ADMIN");
+			}
+			return results.length === 1;
+		});
+	},
+	
+	doesUserExists : function(name){
+		let sql = "SELECT user_id FROM users WHERE name=?";
+		return query(sql, name)
+		.then(function(results, fields){
+			if(results.length > 1){
+				console.log("MEGA PROBLEME DE OUF YA DEUX FOIS LE MEME USER DANS LA DB MEC");
+				throw new Error("MEGA PROBLEME DE OUF YA DEUX FOIS LE MEME USER DANS LA DB MEC");
+			}
+			return results.length === 1;
+		});
 	},
 	
 	pool : mysql.createPool({
@@ -104,17 +180,18 @@ module.exports = {
 				return;
 			}
 			
-			console.log("connected as id " + connection.threadId);
+			//console.log("connected as id " + connection.threadId);
 			let q = connection.query(queryStr, params, function(err, results, fields){
 				connection.release();
 				if(!err){
-					console.log("resolving " + connection.threadId);
+					//console.log("resolving " + connection.threadId);
 					deferred.resolve(results, fields);
 				}else{
 					deferred.reject(err);
 				}
 			});
-			//console.log(q.sql);
+			if(DEBUG_QUERIES)
+				console.log("query: " + q.sql);
 			
 			connection.on('error', function(err){
 				//res.status(100).send("error in connection to data base after");
@@ -134,7 +211,6 @@ module.exports = {
 			console.log("length is 0 in multiQueryUnsafe");
 			return null;
 		}
-		let query = module.exports.query;
 		var global = 1;
 		var promise = query(instructions[0]);
 		if(instructions.length == 1){
@@ -150,3 +226,8 @@ module.exports = {
 		return promise;
 	}
 }
+//proxy for the overly used functions
+const query = module.exports.query;
+const doesUserExists = module.exports.doesUserExists;
+const doesRepoExists = module.exports.doesRepoExists;
+const getUserId = module.exports.getUserId;
