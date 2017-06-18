@@ -24,9 +24,11 @@ const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 userRouter.staticPages = {
 	['decouvrir'] : "",
-	['plandetravail'] : "",
+	['planDeTravail'] : "",
 	['compte'] : "",
-	['guide'] : ""
+	['guide'] : "",
+	['login'] : "",
+	['signin'] : ""
 };
 
 //===INIT DB IF NECESSARY===//
@@ -52,7 +54,7 @@ app.get('/testdb', function(req, res){
 //l'ordre est important ici
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
-	res.render('accueil.dust')
+	res.render('accueil.dust', {isConnected:false})
 })
 //this is for '/:user/:repo/:file'
 .use(repoFileRouter)

@@ -39,10 +39,20 @@
 						<a href="../compte">Mon Compte</a></div>
 				</li>
 
-				<li>
-					<div id="logout">
-						<a href="../">Déconnection</a></div>
-				</li>
+
+					{?isConnected}
+						<li>
+							<div id="logout"><a href="../">Déconnection</a></div>	//to add disconnect action
+						</li>
+					{:else}
+						<li>
+							<div id="login"><a href="../login">Connection</a></div>
+						</li>
+						<li>
+							<div id="signin"><a href="../signin">Inscription</a></div>
+						</li>
+					{/isConnected}
+
 
 			</ul>
 
