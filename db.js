@@ -1,5 +1,4 @@
 var mysql = require('mysql');
-var express = require("express");
 
 module.exports = {
 	initDB : function(){
@@ -51,19 +50,20 @@ module.exports = {
 				PRIMARY KEY(discussion_message_id)
 			) ENGINE=INNODB CHARSET=utf8;`,
 			
-			"ALTER TABLE repos ADD CONSTRAINT fk_repos_admin_id FOREIGN KEY (admin_id)"
+			//WARNING the following "IF NOT EXISTS" part only works with mariadb 10.0.2 or later
+			"ALTER TABLE repos ADD CONSTRAINT fk_repos_admin_id FOREIGN KEY IF NOT EXISTS (admin_id)"
 				+ " REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE;",
 			
-			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_creator_id FOREIGN KEY (creator_id)"
+			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_creator_id FOREIGN KEY IF NOT EXISTS (creator_id)"
 				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;",
 				
-			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_hosting_repo FOREIGN KEY (hosting_repo)" 
+			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_hosting_repo FOREIGN KEY IF NOT EXISTS (hosting_repo)" 
 				+ " REFERENCES repos (repo_id) ON DELETE CASCADE ON UPDATE CASCADE;",
 				
-			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_creator_id FOREIGN KEY (creator_id)"
+			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_creator_id FOREIGN KEY IF NOT EXISTS (creator_id)"
 				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;",
 				
-			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_hosting_discussion FOREIGN KEY (hosting_discussion)" 
+			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_hosting_discussion FOREIGN KEY IF NOT EXISTS (hosting_discussion)" 
 				+ "REFERENCES discussions (discussion_id) ON DELETE CASCADE ON UPDATE CASCADE;"	
 		];	
 		
