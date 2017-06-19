@@ -19,14 +19,12 @@ a {
 
 b {
   font-size: 12px;
-  margin-left: 57px;
   color: #18469E;
 }
 
 header {
   position: relative;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 50px;
   border-bottom: solid #000000 1px;
   height: 70px;
   width: 100%;
@@ -61,13 +59,10 @@ li {
 
 #content{
   position: relative;
-  margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
-  padding-top: 10px;
-  width: 1000px;
-  color: #333333;
+  width: 910px;
 }
 
 #slog {
@@ -87,6 +82,7 @@ h2 {
   font-weight: normal;
   font-size: 30px;
   text-align: center;
+  color: #333333;
 }
 
 h3 {
@@ -106,7 +102,7 @@ h3 {
   position: relative;
   width: 500px;
   top: 120px;
-  left: 175px;
+  left: 150px;
   font-size: 25px;
   text-align: center;
 }
@@ -117,9 +113,10 @@ h3 {
   padding-bottom: 20px;
   width: 275px;
   left: 250px;
-  top: -80px;
+  top: -100px;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 80px;
   border: solid black 1px;
   border-radius: 5px;
   background-color: #DAE7FF;
@@ -158,11 +155,17 @@ h3 {
   margin-right: auto;
 }
 
-a.foot_note {
+.foot_note {
   position: relative;
   font-size: 10px;
+  width: 80px;
+  text-align: center;
   color: Black;
-  height: 20px;
+}
+
+.label_link {
+  margin-left: 55px;
+
 }
 
 #footer{
@@ -170,7 +173,7 @@ a.foot_note {
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
-  top: 800px;
+  margin-top: 60px;
   border-top: solid #000000 1px;
   width: 100%;
 }

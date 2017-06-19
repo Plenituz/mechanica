@@ -9,9 +9,9 @@
 
     <a>Nom d'utilisateur ou adresse mail</a>
     <div id="getin_sub_box"></div><br>
-    <a>Mot de passe</a><b><a href="../forgoten">Mot de passe oublié ?</a></b>
+    <a>Mot de passe</a><b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
     <div id="getin_sub_box"></div></br>
-    <a href="../planDeTravail"><div id="getin_sub_box" class="clickme"><p>Connection</p></div></a>
+    <a href="../userPage"><div id="getin_sub_box" class="clickme"><p>Connection</p></div></a>
 
 </div>
 

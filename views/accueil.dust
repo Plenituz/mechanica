@@ -8,10 +8,12 @@
     </div>
 
     <div id="video_prez">
+      <img src="/imgs/front_temp.jpg" height='270' width='490' />
     </div>
 
     <div id="iwannagetin">
       <a href="../signin"><div id="getin_sub_box" class="clickme"><p>Inscription</p></div></a>
+      <a class=foot_note>&nbsp;&nbsp;Ou <a href="../login"><b>connectez vous</b></a></a>
     </div>
 
   </div>

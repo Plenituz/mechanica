@@ -1,12 +1,71 @@
 {> "views/header.dust"/}
 
-<p>bienvenue sur la page de {username}</p>
-<p>voici la liste de ses repos :</p>
-{#repos}
-<a href="/{username}/{name}">{name}</a>
-<br/>
-{/repos}
+<div id="content">
+
+    <div id="profile">
+      <div id="profile_pic"><img src="/imgs/poutine.jpg" width='160' height='160' /></div>
+      <div id="profile_status">
+        <a>{username}</a>
+
+      </div>
+    </div>
+
+    <div id="repo_recent">
+      <!-- <p>Projets récents :</p> -->
+
+      <div id="repo_recent_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+
+      <div id="repo_recent_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+
+      <div id="repo_recent_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+
+      <div id="repo_recent_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+
+    </div>
+
+    <div id="repo_favoris">
+      <p>Favoris :</p>
+      <div id="repo_favoris_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+    </div>
+
+    <div id="msg">
+      <p>Messages :</p>
+      <div id="msg_bloc">
+        {#repos}
+          <a href="/{username}/{name}">{name}</a>
+          <br/>
+        {/repos}
+      </div>
+    </div>
+
+    <p>Bienvenue sur la page de {username}</p>
+
+</div>
 
 
 {> "views/footer.dust"/}
-
