@@ -8,7 +8,10 @@
     </div>
 
     <div id="video_prez">
+    </div>
 
+    <div id="iwannagetin">
+      <a href="../signin"><div id="getin_sub_box" class="clickme"><p>Inscription</p></div></a>
     </div>
 
   </div>

@@ -1,20 +1,26 @@
 @font-face {
     src: url('./font/raleway/Raleway-Light.ttf') format('truetype');
-    font-family: 'Raleway';
+    font-family: 'Raleway-Light';
     font-weight: normal;
     font-style: normal;
 }
 
-body{
+body {
   position: relative;
   margin-top: 0px;
   background-color: #EFEFEF;
-  font-family: "Raleway", Arial;
+  font-family: "Light", Arial;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+b {
+  font-size: 12px;
+  margin-left: 57px;
+  color: #18469E;
 }
 
 header {
@@ -61,7 +67,6 @@ li {
   padding-left: 10px;
   padding-top: 10px;
   width: 1000px;
-  text-align: left;
   color: #333333;
 }
 
@@ -69,7 +74,7 @@ li {
   position: relative;
   left: 0px;
   top: -10px;
-  line-height: 230%;
+  line-height: 100%;
 }
 
 h1 {
@@ -84,14 +89,81 @@ h2 {
   text-align: center;
 }
 
+h3 {
+  font-weight: normal;
+  font-size: 25px;
+}
+
 #video_prez {
   margin: auto;
   width: 490px;
   height: 270px;
-  margin-bottom: 100px;
+  margin-bottom: 30px;
   border: solid black 1px;
 }
 
+#gettin_slog {
+  position: relative;
+  width: 500px;
+  top: 120px;
+  left: 175px;
+  font-size: 25px;
+  text-align: center;
+}
+
+#getin_box {
+  position: relative;
+  padding: 25px;
+  padding-bottom: 20px;
+  width: 275px;
+  left: 250px;
+  top: -80px;
+  margin-left: auto;
+  margin-right: auto;
+  border: solid black 1px;
+  border-radius: 5px;
+  background-color: #DAE7FF;
+}
+
+#getin_sub_box > p {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  top: 8px;
+  color: #FFFFFF;
+  font-size: 25px;
+}
+
+#getin_sub_box{
+  position: relative;
+  width: 275px;
+  height: 40px;
+  border: solid #18469E 1px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px;
+}
+
+#getin_sub_box.clickme {
+  background-color: #18469E;
+  border: solid #FFFFFF 3px;
+  margin-bottom: 3px;
+}
+
+#iwannagetin {
+  position: relative;
+  width: 282px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+a.foot_note {
+  position: relative;
+  font-size: 10px;
+  color: Black;
+  height: 20px;
+}
 
 #footer{
   position: relative;

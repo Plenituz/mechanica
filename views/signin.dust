@@ -1,0 +1,22 @@
+{> "views/header.dust"/}
+
+<div id=gettin_slog>
+  <h1>Mechanica</h1>
+  <a>Rejoignez notre communauté et participez</br>au dévellopement du hardware libre !</a>
+</div>
+
+<div id="getin_box">
+
+    <a>Nom d'utilisateur</a>
+    <div id="getin_sub_box"></div></br>
+    <a>Email</a>
+    <div id="getin_sub_box"></div></br>
+    <a>Mot de passe</a>
+    <div id="getin_sub_box"></div>
+    <a class=foot_note>Utilisez au moins une lettre, un nombre, et 8 caractères.</br></br></a>
+    <a href="../planDeTravail"><div id="getin_sub_box" class="clickme"><p>Inscription</p></div></a>
+    <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre politique de confidentialité.</a>
+
+</div>
+
+{> "views/footer.dust"/}

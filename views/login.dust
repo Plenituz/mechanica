@@ -1,0 +1,18 @@
+{> "views/header.dust"/}
+
+<div id=gettin_slog>
+  <h1>Mechanica</h1>
+  <a>Créer, innovez, partagez et reprenez le contrôle sur le monde matériel !</a>
+</div>
+
+<div id="getin_box">
+
+    <a>Nom d'utilisateur ou adresse mail</a>
+    <div id="getin_sub_box"></div><br>
+    <a>Mot de passe</a><b><a href="../forgoten">Mot de passe oublié ?</a></b>
+    <div id="getin_sub_box"></div></br>
+    <a href="../planDeTravail"><div id="getin_sub_box" class="clickme"><p>Connection</p></div></a>
+
+</div>
+
+{> "views/footer.dust"/}
