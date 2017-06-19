@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const hoffman = require('hoffman');
+const duster = require('duster');	// ???????????????????????????
 var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO faire un package.json pour les nodes modules
 
@@ -22,9 +23,17 @@ const userRouter = require('./userRouter.js');
 const repoRouter = require('./repoRouter.js');
 const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
+
+// CSS files rendering
+// We get one big one out of many small
+/*duster.watch(["views", "../views"], "js/templates.js", {}, function (err, results) {
+	    console.log("Templates updated at", new Date().toLocaleTimeString());
+});*/
+//var compiled_css = res.render('compiled.css','main.dust');
+
+// Static page rooter
 userRouter.staticPages = {
 	['decouvrir'] : "",
-	['planDeTravail'] : "",
 	['compte'] : "",
 	['guide'] : "",
 	['login'] : "",
@@ -51,16 +60,17 @@ app.get('/testdb', function(req, res){
 	});
 });
 
-//l'ordre est important ici
+//	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
 	res.render('accueil.dust', {isConnected:false})
 })
+
+//this has to be after the static, all non hard coded url end up here
 //this is for '/:user/:repo/:file'
 .use(repoFileRouter)
 //this is for '/:user/:repo'
 .use(repoRouter)
-//this has to be after the static, all non hard coded url end up here
 //this is for '/:user'
 .use(userRouter)
 
@@ -70,7 +80,7 @@ app.get('/', function(req, res) {
     res.end('<p>404 not found, bitch</p>');
 });
 
-    var server = app.listen(3000, "127.0.0.1",
-        function () {
-            console.log("server running at " + server.address().address + " on port " + server.address().port);
-        });
+var server = app.listen(3000, "127.0.0.1",
+    function () {
+        console.log("server running at " + server.address().address + " on port " + server.address().port);
+});

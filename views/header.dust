@@ -4,6 +4,7 @@
 <head>
 	<meta name="description" content="OpenSourceHardware"/>
 	<link rel="stylesheet" type="text/css" href="/css/main.css" />
+	<link rel="stylesheet" type="text/css" href="/css/userPage.css" />
 	<title>OpenSourceHardware</title>
 </head>
 
@@ -12,7 +13,7 @@
 	<header>
 
 		<div id="logo">
-			<a href="/"><img src="imgs/logo_70.png" /></a>
+			<a href="/"><img src="/imgs/logo_70.png" /></a>
 		</div>
 
 		<div id="menu">
@@ -26,7 +27,7 @@
 
 				<li>
 					<div id="plandetravail">
-						<a href="../planDeTravail">Plan de Travail</a></div>
+						<a href="../userPage">Plan de Travail</a></div>
 				</li>
 
 				<li>

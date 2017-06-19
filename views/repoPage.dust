@@ -3,8 +3,8 @@
 <p>bienvenue sur le repo "{reponame}" de {username}</p>
 <p>voici le contenu du repo:</p>
 {#files}
-<a href="/{username}/{reponame}/{name}">{name}</a>
-<br/>
+  <a href="/{username}/{reponame}/{name}">{name}</a>
+  <br/>
 {/files}
 
 

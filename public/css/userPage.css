@@ -1,0 +1,46 @@
+#profile {
+  display: inline-block;
+  float: left;
+  width: 200px;
+  border: solid Black 1px;
+  margin-right: 20px;
+  background-color: #EAEAEA;
+}
+
+#profile_pic {
+  width: 160px;
+  height: 160px;
+  border: solid Black 1px;
+  margin: 20px;
+}
+
+#profile_status {
+  width: 160px;
+  height: 320px;
+  margin: 20px;
+}
+
+#repo_recent {
+  display: inline-block;
+  width: 680px;
+  margin-bottom: 20px;
+  padding-top: 20px;
+}
+
+#repo_recent_bloc {
+  display: inline-block;
+  width: 308px;
+  height: 200px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  border: solid Black 1px;
+  background-color: #EAEAEA;
+}
+
+#repo_favoris {
+  display: inline-block;
+  width: 680px;
+  height: 320px;
+}
+
+#msg {}
