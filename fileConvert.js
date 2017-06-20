@@ -84,7 +84,7 @@ module.exports.convertToJs = function(filein){
 	});
 }
 
-/*convertToJs("/media/sf_mechanica/public/fileconvert/testobj.obj")
+module.exports.convertToJs("/media/sf_mechanica/eagle_offset.OBJ")
  .then(function(jspath){
 	console.log("conversion successful :" + jspath);
  })
@@ -92,7 +92,7 @@ module.exports.convertToJs = function(filein){
 	console.log("error converting (" + code + "):");
 	console.log("stderr:" + stderr);
 	console.log("stdout:" + stdout);
- });*/
+ });
 
 	 
 	 

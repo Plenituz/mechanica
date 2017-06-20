@@ -10,6 +10,8 @@ var gl;
 	var trianglesBuffer;
 	var vertices;
 	var triangles;
+	var uniformScale = 1;
+	var offset = [0, 0, 0];
 	
 	//click logic vars------------------------------
 	//tmp vars are for while the user is clicking
@@ -84,10 +86,6 @@ var gl;
 		canvas.addEventListener("mouseup", onMouseUp, false);
 		canvas.addEventListener("mouseout", onMouseOut, false);
 		canvas.addEventListener("wheel", onMouseWheel, false);
-		
-		//eval("var vertices = [3, 4, 5];");
-		//console.log(vertices);
-		
 	}
 	
 	function onMouseWheel(event){
@@ -151,24 +149,57 @@ var gl;
 		}
 	}
 	
-	function getFileFromServer(url, doneCallback) {
-		var xhr;
-
-		xhr = new XMLHttpRequest();
-		xhr.onreadystatechange = handleStateChange;
-		xhr.open("GET", url, true);
-		xhr.send();
-
-		function handleStateChange() {
-			if (xhr.readyState === 4) {
-				doneCallback(xhr.status == 200 ? xhr.responseText : null);
-			}
+	function calculateScale(){
+		//find the 8 extremes of the model, then find a multiplier to make it fit a predefined box
+		let minX = vertices[0], minY = vertices[1], minZ = vertices[2],
+			maxX = vertices[0], maxY = vertices[1], maxZ = vertices[2];
+		
+		//find the extremities of the model
+		//note : doing a simple average to find the mid point wouldn't work
+		//because areas with more vertices would unbalance the middle
+		for(let i = 0; i < vertices.length; i += 3){
+			if(vertices[i] > maxX)
+				maxX = vertices[i];
+			if(vertices[i] < minX)
+				minX = vertices[i];
+			
+			if(vertices[i+1] > maxY)
+				maxY = vertices[i+1];
+			if(vertices[i+1] < minY)
+				minY = vertices[i+1];
+			
+			if(vertices[i+2] > maxZ)
+				maxZ = vertices[i+2];
+			if(vertices[i+2] < minZ)
+				minZ = vertices[i+2];
 		}
+		
+		//find the middle of the shape, then get the vector to the middle
+		let middle = [(maxX + minX) / 2, 
+					  (maxY + minY) / 2,
+					  (maxZ + minZ) / 2];
+		//-middle = vector from 0 to middle
+		offset = middle.map(v => -v);
+		
+		//bake the offset directly in the model
+		for(let i = 0; i < vertices.length; i += 3){
+			vertices[i] += offset[0];
+			vertices[i+1] += offset[1];
+			vertices[i+2] += offset[2];
+		}
+
+		//find what we have to multiply each component by for it to scale inside 
+		//a 2*2*2 box (taking in account the fact that we offset the model)
+		let sx = 2/(maxX + offset[0]);
+		let sy = 2/(maxY + offset[1]);
+		let sz = 2/(maxZ + offset[2]);
+		uniformScale = Math.min(sx, sy, sz);
 	}
-	
+
 	//before calling this you have to set the "vertices" and "triangles" variables
 	function webGLStart() {
         var canvas = document.getElementById("glcanvas");
+		calculateScale();
 		initMouseControl(canvas);
         initGL(canvas);
         initShaders();
@@ -181,7 +212,7 @@ var gl;
 	
     function initGL(canvas) {
         try {
-            gl = canvas.getContext("experimental-webgl");
+            gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
             gl.viewportWidth = canvas.width;
             gl.viewportHeight = canvas.height;
         } catch (e) {
@@ -312,8 +343,21 @@ var gl;
 		var rot = getFullRot();
 		var pos = getFullPos();
 		pos[2] = zoom;
-		mat4.translate(mvMatrix, pos);
-        mat4.translate(mvMatrix, [0, 0, -7.0]);
+		
+		var all = [pos, [0, 0, -7]];
+		var trans = [0, 0, 0];
+		for(var i = 0; i < all.length; i++){
+			trans[0] += all[i][0];
+			trans[1] += all[i][1];
+			trans[2] += all[i][2];
+		}
+		
+		mat4.translate(mvMatrix, trans);
+		//mat4.translate(mvMatrix, offset);
+		//mat4.translate(mvMatrix, pos);
+        //mat4.translate(mvMatrix, [0, 0, -7.0]);
+		
+		mat4.scale(mvMatrix, [uniformScale, uniformScale, uniformScale]);
 
 		mat4.rotate(mvMatrix, rot[0], [1, 0, 0]);
 		mat4.rotate(mvMatrix, rot[1], [0, 1, 0]);
