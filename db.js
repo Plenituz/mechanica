@@ -1,6 +1,12 @@
 const mysql = require('mysql');
 const Q = require('q');
+const convert = require('./fileConvert.js');
+const path = require('path');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+
 const DEBUG_QUERIES = true;//TODO change that when you go in prod
+const userReposPath = path.join(__dirname, "data", "userRepos");
 
 module.exports = {
 	initDB : function(){
@@ -96,6 +102,8 @@ module.exports = {
 	},
 	
 	createRepo : function(adminName, repoName){
+		var userId, location;
+		
 		return doesUserExists(adminName)
 		.then(function(exists){
 			if(!exists){
@@ -113,9 +121,12 @@ module.exports = {
 			}
 		})
 		.then(function(user_id){
-			let location = "/erer";
+			userId = user_id;
+			location = path.join(userReposPath, adminName, repoName);
+			return Q.nfcall(mkdirp, location);
+		}).then(function(){
 			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW(), NULL)";
-			return query(sql, [user_id, repoName, location]);
+			return query(sql, [userId, repoName, location]);
 		});
 	},
 	

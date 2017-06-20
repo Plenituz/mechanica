@@ -35,10 +35,10 @@ userRouter.staticPages = {
 .fail(function(err){
 	console.log("error creating user : "+ err);
 });*/
-/*db.createRepo("testuser", "mRepo")
+db.createRepo("testuser", "repo1")
 .fail(function(err){
 	console.log("error creating repo: " + err);
-});*/
+});
 
 app.get('/testdb', function(req, res){
 	db.query("SELECT * FROM table1 WHERE id=? OR id=?", [1, 2], function(err){
