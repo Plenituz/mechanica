@@ -1,40 +1,71 @@
+#dashboard {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  width: 910px;
+}
+
+#dashboard a {
+  font-size: 15px;
+}
+
 #profile {
   display: inline-block;
   float: left;
   width: 200px;
-  border: solid Black 1px;
   margin-right: 20px;
-  background-color: #EAEAEA;
+  background-color: #E0E0E0;
 }
 
 #profile_pic {
   width: 160px;
   height: 160px;
-  border: solid Black 1px;
   margin: 20px;
+  margin-bottom: 40px;
 }
 
 #profile_status {
   width: 160px;
-  height: 320px;
+  height: 212px;
   margin: 20px;
+}
+
+.cat_header {
+  margin: 0px;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  font-size: 20px;
 }
 
 #repo_recent {
   display: inline-block;
   width: 680px;
-  margin-bottom: 20px;
-  padding-top: 20px;
 }
 
 #repo_recent_bloc {
   display: inline-block;
-  width: 308px;
-  height: 200px;
+  width: 288px;
+  height: 180px;
   margin-left: 20px;
   margin-bottom: 20px;
-  border: solid Black 1px;
-  background-color: #EAEAEA;
+  background-color: #E0E0E0;
+  padding: 10px;
+}
+
+
+
+#msg {
+  display: inline-block;
+  float: left;
+  width: 200px;
+  margin-right: 20px;
+  padding-top: 10px;
+  background-color: #E0E0E0;
+}
+
+#msg_bloc {
+  margin:20px;
 }
 
 #repo_favoris {
@@ -43,4 +74,12 @@
   height: 320px;
 }
 
-#msg {}
+#repo_favoris_bloc {
+  display: inline-block;
+  width: 288px;
+  height: 180px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  background-color: #E0E0E0;
+  padding: 10px;
+}

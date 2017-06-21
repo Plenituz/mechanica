@@ -35,6 +35,7 @@ const repoFileRouter = require('./repoFileRouter.js');
 userRouter.staticPages = {
 	['decouvrir'] : "",
 	['compte'] : "",
+	['dashboard'] : "userPage",
 	['guide'] : "",
 	['login'] : "",
 	['signin'] : ""
