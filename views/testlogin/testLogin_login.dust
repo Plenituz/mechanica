@@ -1,0 +1,9 @@
+{#error}
+<p>Error: {.msg}</p>
+{/error}
+
+<form method="POST" action="login">
+	<input type="text" placeholder="Username or email" name="username"/>
+	<input type="password" placeholder="Password" name="password"/>
+	<button type="submit">Submit<button/>
+</form>

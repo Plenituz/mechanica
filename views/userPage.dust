@@ -1,4 +1,15 @@
 {> "views/header.dust"/}
+<p>name of the logged in user :{req.user.name}</p>
+<p>email of the logged in user :{req.user.email}</p>
+<p>db id of the logged in user :{req.user.user_id}</p>
+<p>name of the asked user :{req.params.user}</p>
+{@eq key=req.params.user value=req.user.name}
+	<p>if you see this, the user is on it's own page</p>
+	<p>this means you can put editing stuff here, like allow to change the favorites, change description etc</p>
+{:else}
+	<p>if you see this, this page is not the user's page</p>
+{/eq}
+
 
 <div id="dashboard">
 

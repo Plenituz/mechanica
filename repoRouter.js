@@ -1,7 +1,7 @@
 ﻿const express = require('express');
 const repoRouter = new express.Router();
 
-repoRouter.use('/:user/:repo', function (req, res) {
+repoRouter.get('/:user/:repo', function (req, res) {
     res.render('repoPage.dust', {
         reponame: req.params.repo,
         username: req.params.user,

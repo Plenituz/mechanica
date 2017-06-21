@@ -27,7 +27,7 @@
 
 				<li>
 					<div id="plandetravail">
-						<a href="../userPage">Plan de Travail</a></div>
+						<a href="../dashboard">Plan de Travail</a></div>
 				</li>
 
 				<li>
@@ -41,18 +41,18 @@
 				</li>
 
 
-					{?isConnected}
+					{#req.user}
 						<li>
-							<div id="logout"><a href="../">Déconnection</a></div>	//to add disconnect action
+							<div id="logout"><a href="../logout">Déconnection</a></div>	//to add disconnect action
 						</li>
 					{:else}
 						<li>
 							<div id="login"><a href="../login">Connection</a></div>
 						</li>
 						<li>
-							<div id="signin"><a href="../signin">Inscription</a></div>
+							<div id="signin"><a href="../register">Inscription</a></div>
 						</li>
-					{/isConnected}
+					{/req.user}
 
 
 			</ul>

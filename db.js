@@ -4,6 +4,8 @@ const convert = require('./fileConvert.js');
 const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const DEBUG_QUERIES = true;//TODO change that when you go in prod
 const userReposPath = path.join(__dirname, "data", "userRepos");
@@ -14,7 +16,7 @@ module.exports = {
 			`CREATE TABLE IF NOT EXISTS users(
 				user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 				name VARCHAR(20) NOT NULL,
-				password TEXT NOT NULL,
+				password BINARY(60) NOT NULL,
 				email VARCHAR(254) NOT NULL,
 				creation_date DATE NOT NULL,
 				description TEXT DEFAULT NULL,
@@ -32,9 +34,9 @@ module.exports = {
 				name VARCHAR(40) NOT NULL,
 				location TINYTEXT NOT NULL,
 				creation_date DATE NOT NULL,
-				discussion_list TEXT,
 				
-				PRIMARY KEY(repo_id)
+				PRIMARY KEY(repo_id),
+				INDEX ind_admin_id (admin_id)
 			) CHARSET=utf8 ENGINE=INNODB;`, 
 			
 			`CREATE TABLE IF NOT EXISTS discussions(
@@ -43,9 +45,9 @@ module.exports = {
 				creator_id INT UNSIGNED,
 				created_at DATETIME NOT NULL,
 				hosting_repo INT UNSIGNED NOT NULL,
-				message_list TEXT,
 				
-				PRIMARY KEY(discussion_id)
+				PRIMARY KEY(discussion_id),
+				INDEX ind_hosting_repo (hosting_repo)
 			) CHARSET=utf8 ENGINE=INNODB;`,
 			
 			`CREATE TABLE IF NOT EXISTS discussion_messages(
@@ -55,7 +57,8 @@ module.exports = {
 				created_at DATETIME NOT NULL,
 				hosting_discussion INT UNSIGNED NOT NULL,
 				
-				PRIMARY KEY(discussion_message_id)
+				PRIMARY KEY(discussion_message_id),
+				INDEX ind_hosting_discussion (hosting_discussion)
 			) ENGINE=INNODB CHARSET=utf8;`,
 			
 			//WARNING the following "IF NOT EXISTS" part in foreign keys only works with mariadb 10.0.2 or later
@@ -87,17 +90,31 @@ module.exports = {
 	},
 	
 	createUser : function(name, password, email){
+		//password needs to be plain text
 		
 		//check if the user exists, if it doesn't create it
-		return doesUserExists(name)
+		return doesEmailExists(email)
 		.then(function(exists){
 			if(exists){
-				throw new Error("user " + name + " already exists");
+				throw new SyntaxError("Email address already exists");
+			}else{
+				return doesUserExists(name);
+			}
+		})
+		.then(function(exists){
+			if(exists){
+				throw new SyntaxError("user " + name + " already exists");
 			}else{
 				//safe to insert the new user
-				let q = "INSERT INTO users VALUES(NULL, ?, ?, ?, NOW(), NULL)";
-				return query(q, [name, password, email]);
+				return bcrypt.hash(password, saltRounds);
 			}
+		})
+		.then(function(hash){
+			let q = "INSERT INTO users VALUES(NULL, ?, ?, ?, NOW(), NULL)";
+			return query(q, [name, hash, email]);
+		})
+		.then(function(){
+			return getUserId(name);
 		});
 	},
 	
@@ -130,6 +147,31 @@ module.exports = {
 		});
 	},
 	
+	canAuthenticateUser : function(usernameOrEmail, password){
+		let q = "SELECT user_id, password FROM users WHERE name=? OR email=?";
+		var user_id;
+
+		return query(q, [usernameOrEmail, usernameOrEmail])
+		.then(function(results){
+			if(results.length === 0){
+				throw new SyntaxError("Username or email not found");
+			}else if(results.length === 1){
+				let passwordHash = results[0].password;
+				user_id = results[0].user_id;
+				return bcrypt.compare(password, passwordHash.toString());
+			}else{
+				console.log("BIG PROBLEME USERNAME/EMAIL FOUND PLUSIERUS FOIS");
+				throw new SyntaxError("Something went wrong ! Contact us if it persists");
+			}
+		})
+		.then(function(passMatch){
+			if(passMatch)
+				return user_id;
+			else
+				throw new SyntaxError("Password doesn't match !");
+		});
+	},
+	
 	//no check for user existance here
 	getUserId : function(userName){
 		let sql = "SELECT user_id FROM users WHERE name=?";
@@ -144,6 +186,22 @@ module.exports = {
 		});
 	},
 	
+	getUserInfo : function(user_id){
+		let q = "SELECT name, email FROM users WHERE user_id=?";
+		return query(q, user_id)
+		.then(function(results){
+			if(results.length === 0){
+				throw new Error("user not found");
+			}else{
+				return [results[0].name.toString(), results[0].email.toString()];
+			}
+		});
+	},
+	
+	getRecentRepos : function(username){
+		
+	},
+	
 	doesRepoExists : function(adminName, repoName){
 		let sql = 
 		`SELECT repos.repo_id FROM repos 
@@ -156,6 +214,18 @@ module.exports = {
 			if(results.length > 1){
 				console.log("MEGA PROBLEME YA DEUX REPO AVEC LE MEME NOM ET LE MEME ADMIN");
 				throw new Error("MEGA PROBLEME YA DEUX REPO AVEC LE MEME NOM ET LE MEME ADMIN");
+			}
+			return results.length === 1;
+		});
+	},
+	
+	doesEmailExists : function(email){
+		let q = "SELECT user_id FROM users WHERE email=?";
+		return query(q, email)
+		.then(function(results){
+			if(results.length > 1){
+				console.log("MEGA PROBLEME DE OUF YA DEUX FOIS LE MEME EMAIL DANS LA DB MEC");
+				throw new Error("MEGA PROBLEME DE OUF YA DEUX FOIS LE MEME EMAIL DANS LA DB MEC");
 			}
 			return results.length === 1;
 		});
@@ -242,3 +312,4 @@ const query = module.exports.query;
 const doesUserExists = module.exports.doesUserExists;
 const doesRepoExists = module.exports.doesRepoExists;
 const getUserId = module.exports.getUserId;
+const doesEmailExists = module.exports.doesEmailExists;
