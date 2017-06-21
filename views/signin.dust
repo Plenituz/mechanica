@@ -13,10 +13,10 @@
     <div id="getin_sub_box"></div></br>
     <a>Mot de passe</a>
     <div id="getin_sub_box"></div>
-    <a class=foot_note>Utilisez au moins une lettre, un nombre, et 8 caractères.</br></br></a>
+    <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
     <a href="../userPage"><div id="getin_sub_box" class="clickme"><p>Inscription</p></div></a>
     <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
-      politique de confidentialité.</a>
+      politique</br>de confidentialité.</a>
 
 </div>
 
