@@ -279,6 +279,7 @@ module.exports = {
 	},
 	
 	pool : mysql.createPool({
+		connectionLimit : 100,
 		host : 'localhost',
 		user : 'root',
 		password : '',
@@ -290,6 +291,15 @@ module.exports = {
 		var deferred = Q.defer();
 		
 		module.exports.pool.getConnection(function(err, connection){
+			
+			function onError(err){
+				//res.status(100).send("error in connection to data base after");
+				connection.removeListener('error', onError);
+				connection.release();
+				deferred.reject(err);
+				return;
+			}
+			
 			if(err){
 				deferred.reject(err);
 				//res.status(100).send("error in connection to database");
@@ -299,6 +309,7 @@ module.exports = {
 			//console.log("connected as id " + connection.threadId);
 			let q = connection.query(queryStr, params, function(err, results, fields){
 				connection.release();
+				connection.removeListener('error', onError);
 				if(!err){
 					//console.log("resolving " + connection.threadId);
 					deferred.resolve(results, fields);
@@ -308,13 +319,7 @@ module.exports = {
 			});
 			if(DEBUG_QUERIES)
 				console.log("query: " + q.sql);
-			
-			function onError(err){
-				//res.status(100).send("error in connection to data base after");
-				deferred.reject(err);
-				connection.removeListener('error', onError);
-			}
-			
+
 			connection.on('error', onError);
 		});
 		

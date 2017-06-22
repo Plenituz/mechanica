@@ -18,30 +18,27 @@ userRouter.get("/:user", function (req, res, next) {
 		}
 		
 	} else {
-		if (req.params.user === "waspco") {
-			res.status(200).send("sorry this user has been banned")
-		} else {
-			//check if the user exists before sending
-			db.doesUserExists(req.params.user)
-			.then(function(exists){
-				if(exists){
-					return db.getRecentRepos(req.params.user, 6);
-				}else{
-					next();//go to 404 page
-				}
-			})
-			.then(function(repoList){
-				res.render('userPage.dust', {
-						req: req,
-						repos: repoList
-					});
-			})
-			.fail(function(err){
-				console.log("error serving user page :" + err);
-				next();//go to 404 page
-			});
+		
+		//check if the user exists before sending
+		db.doesUserExists(req.params.user)
+		.then(function(exists){
+			if(exists){
+				return db.getRecentRepos(req.params.user, 6);
+			}else{
+				throw new Error("user " + req.params.user + " doesn't exist");
+			}
+		})
+		.then(function(repoList){
+			res.render('userPage.dust', {
+					req: req,
+					repos: repoList
+				});
+		})
+		.fail(function(err){
+			console.log("error serving user page :" + err);
+			next();//go to 404 page
+		});
 			
-		}
 	}
 });
 

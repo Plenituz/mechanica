@@ -27,6 +27,4 @@ window.onload = function(){
 				webGLStart();
 			}
 		});
-	
-	
 }
