@@ -1,5 +1,6 @@
 const express = require('express');
 const loginRouter = new express.Router();
+const db = require('./db.js');
 
 loginRouter.get('/register', function(req, res){
 	if(req.isAuthenticated()){

@@ -36,7 +36,8 @@ module.exports = {
 				creation_date DATE NOT NULL,
 				
 				PRIMARY KEY(repo_id),
-				INDEX ind_admin_id (admin_id)
+				INDEX ind_admin_id (admin_id),
+				INDEX ind_repo_name (name)
 			) CHARSET=utf8 ENGINE=INNODB;`, 
 			
 			`CREATE TABLE IF NOT EXISTS discussions(
@@ -139,10 +140,13 @@ module.exports = {
 		})
 		.then(function(user_id){
 			userId = user_id;
-			location = path.join(userReposPath, adminName, repoName);
+			//create all the folders to current version
+			location = path.join(userReposPath, adminName, repoName, "current");
 			return Q.nfcall(mkdirp, location);
 		}).then(function(){
-			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW(), NULL)";
+			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW())";
+			//only save the root location (not the current version folder)
+			location = path.join(userReposPath, adminName, repoName);
 			return query(sql, [userId, repoName, location]);
 		});
 	},
@@ -198,8 +202,22 @@ module.exports = {
 		});
 	},
 	
-	getRecentRepos : function(username){
+	getRecentRepos : function(userName, limit){
+		let q = 
+		`SELECT repos.name, repos.creation_date FROM repos
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+		WHERE users.name = ?  
+		ORDER BY repos.creation_date DESC LIMIT ?`;
 		
+		return query(q, [userName, limit])
+		.then(function(results){
+			var list = [];
+			results.forEach( row => {
+				list.push(row.name.toString());
+			});
+			return list;
+		});
 	},
 	
 	doesRepoExists : function(adminName, repoName){
@@ -216,6 +234,23 @@ module.exports = {
 				throw new Error("MEGA PROBLEME YA DEUX REPO AVEC LE MEME NOM ET LE MEME ADMIN");
 			}
 			return results.length === 1;
+		});
+	},
+	
+	getRepoLocation : function(adminName, repoName){
+		let q = 
+		`SELECT repos.repo_id, repos.location FROM repos
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+		WHERE users.name = ? AND repos.name = ?`;
+		
+		return query(q, [adminName, repoName])
+		.then(function(results){
+			if(results.length === 0 || results.lenght > 1){
+				throw new Error("repo " + adminName + "/" + repoName + " not found");
+			}else{
+				return [results[0].repo_id, results[0].location];
+			}
 		});
 	},
 	

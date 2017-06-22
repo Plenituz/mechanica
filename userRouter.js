@@ -25,18 +25,16 @@ userRouter.get("/:user", function (req, res, next) {
 			db.doesUserExists(req.params.user)
 			.then(function(exists){
 				if(exists){
-					res.render('userPage.dust', {
-						req: req,
-						repos: [
-							{ name: "pour l'instant ya pas de db donc on a pas la list" },
-							{ name: "pour l'instant ya pas de db donc on a pas la list" },
-							{ name: "pour l'instant ya pas de db donc on a pas la list" },
-							{ name: "pour l'instant ya pas de db donc on a pas la list" }
-						]
-					});
+					return db.getRecentRepos(req.params.user, 6);
 				}else{
 					next();//go to 404 page
 				}
+			})
+			.then(function(repoList){
+				res.render('userPage.dust', {
+						req: req,
+						repos: repoList
+					});
 			})
 			.fail(function(err){
 				console.log("error serving user page :" + err);

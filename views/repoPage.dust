@@ -1,9 +1,9 @@
 {> "views/header.dust"/}
 
-<p>bienvenue sur le repo "{reponame}" de {username}</p>
+<p>bienvenue sur le repo "{req.params.repo}" de {req.params.user}</p>
 <p>voici le contenu du repo:</p>
 {#files}
-  <a href="/{username}/{reponame}/{name}">{name}</a>
+  <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
   <br/>
 {/files}
 

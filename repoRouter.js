@@ -1,17 +1,27 @@
 ﻿const express = require('express');
+const db = require('./db.js');
+const fs = require('fs');
+const Q = require('q');
+const path = require('path');
 const repoRouter = new express.Router();
 
-repoRouter.get('/:user/:repo', function (req, res) {
-    res.render('repoPage.dust', {
-        reponame: req.params.repo,
-        username: req.params.user,
-        files: [    // Une fonction doit nous fournir une liste des x (6 est bien) derniers repos.
-            { id_1: "tjrs rien ici" },
-            { id_2: "tjrs rien ici" },
-            { id_3: "tjrs rien ici" },
-            { id_4: "tjrs rien ici" }
-        ]
-    });
+repoRouter.get('/:user/:repo', function (req, res, next) {
+	db.getRepoLocation(req.params.user, req.params.repo)
+	.spread(function(repo_id, location){
+		let currentVersion = path.join(location, "current");
+		
+		return Q.nfcall(fs.readdir, currentVersion);
+	})
+	.then(function(files){
+		res.render('repoPage.dust', {
+			req : req,
+			files: files
+		});
+	})
+	.fail(function(err){
+		console.log("error on repo page :" +err);
+		next();
+	});
 });
 
 module.exports = repoRouter;

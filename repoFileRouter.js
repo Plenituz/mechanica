@@ -3,9 +3,7 @@ const repoFileRouter = new express.Router();
 
 repoFileRouter.get('/:user/:repo/:file', function (req, res) {
     res.render('fileDisplay.dust', {
-        filename: req.params.file,
-        reponame: req.params.repo,
-        username: req.params.user
+        req : req
     });
 });
 

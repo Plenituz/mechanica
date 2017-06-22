@@ -96,6 +96,15 @@ passport.deserializeUser(function(userSession, done){
 
 //===INIT DB IF NECESSARY===//
 //db.initDB();
+ /*db.createRepo("user", "testrepo")
+.fail(function(err){
+	console.log("error creating repo:" + err);
+});
+db.createRepo("user", "testrepo2")
+.fail(function(err){
+	console.log("error creating repo:" + err);
+});
+*/
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
