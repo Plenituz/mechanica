@@ -66,7 +66,6 @@ const repoFileRouter = require('./repoFileRouter.js');
 userRouter.staticPages = {
 	['decouvrir'] : "",
 	['compte'] : "",
-	['dashboard'] : "userPage",
 	['guide'] : "",
 };
 //list below the hardcoded url that are not in staticPages above
@@ -102,9 +101,9 @@ passport.deserializeUser(function(userSession, done){
 });
 db.createRepo("user", "testrepo2")
 .fail(function(err){
-	console.log("error creating repo:" + err);
-});
-*/
+	cosole.log("error creating repo:" + err);
+});*/
+
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
@@ -113,6 +112,13 @@ app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
 	res.render('accueil.dust', {req : req});
 });
+app.get('/dashboard', function(req, res){
+	if(req.isAuthenticated()){
+		res.redirect('/' + req.user.name);
+	}else{
+		res.redirect('/');
+	}
+})
 //this is for /login /register /logout
 app.use(loginRouter);
 //this has to be after the static, all non hard coded url end up here

@@ -309,10 +309,13 @@ module.exports = {
 			if(DEBUG_QUERIES)
 				console.log("query: " + q.sql);
 			
-			connection.on('error', function(err){
+			function onError(err){
 				//res.status(100).send("error in connection to data base after");
 				deferred.reject(err);
-			});
+				connection.removeListener('error', onError);
+			}
+			
+			connection.on('error', onError);
 		});
 		
 		return deferred.promise;
