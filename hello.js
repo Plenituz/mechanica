@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const favicon = require('serve-favicon');
 const hoffman = require('hoffman');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
@@ -35,6 +36,7 @@ app.set('view cache', doCache);
 
 //the order of the middle wares is important
 //public files this must be first
+app.use(favicon(path.join(__dirname, "public", "imgs", "favicon.ico")));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(session({
