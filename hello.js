@@ -11,6 +11,14 @@ const expressValidator = require('express-validator');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
+const MySQLStore = require('express-mysql-session')(session);
+
+//perso
+const userRouter = require('./userRouter.js');
+const repoRouter = require('./repoRouter.js');
+const loginRouter = require('./loginRouter.js');
+const db = require('./db.js');
+const repoFileRouter = require('./repoFileRouter.js');
 
 const duster = require('duster');	// ???????????????????????????
 var doCache = false;//TODO quand on passe en prod faut changer ca
@@ -18,9 +26,6 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO quand tu fait npm install faut le faire sur la vm direct 
 //(bcrypt aime pas etre compilé sur une autre platforme que celle ou il est utilisé)
 //j'ai du faire npm install dans un dossier normal de la vm, copier le node_module créé dans sf_mechanica
-//TODO install serve-favicon and user it, because right now everytime you request a page 
-//the system thinks "favicon.ico" is an user and query the db to check if it exists
-//https://stackoverflow.com/questions/15463199/how-to-set-custom-favicon-in-express
 //TODO faire le login client side en javascript pour pas avoir de rafraichissement de page
 //TODO faire un vrai certificat de https, et mettre en place renouvellement automatique 
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
@@ -33,6 +38,7 @@ app.set('view engine', 'dust');
 //indicate to express where the views directory is
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
+app.enable('trust proxy');
 
 //the order of the middle wares is important
 //public files this must be first
@@ -41,9 +47,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(session({
 	secret : 'efg75zr8g8zregt738z3rz7r4gz35fgs.FSgs$$sfg$sfg$',
+	proxy : true,
 	resave : false,
 	saveUninitialized : false,
-	//cookie: { secure : true } TODO put true here if we use HTTPS
+	store : new MySQLStore({
+		host : 'localhost',
+		user : 'root',
+		password : '',
+		database : 'mechanica_db'
+	}),
+	cookie: { secure : true } // put true here if we use HTTPS
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -51,14 +64,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : false }));
 //la ligne suivante est obligatoirement apres le bodyParser middleware
 app.use(expressValidator());
-
-
-
-const userRouter = require('./userRouter.js');
-const repoRouter = require('./repoRouter.js');
-const loginRouter = require('./loginRouter.js');
-const db = require('./db.js');
-const repoFileRouter = require('./repoFileRouter.js');
 
 // CSS files rendering
 // We get one big one out of many small
@@ -83,6 +88,7 @@ loginRouter.forbidenNames = Object.assign({}, userRouter.staticPages, {
 });
 
 passport.serializeUser(function(user_id, done){
+	console.log("serializeUser");
 	db.getUserInfo(user_id)
 	.spread(function(name, email){
 		var userSession = { 
@@ -95,6 +101,7 @@ passport.serializeUser(function(user_id, done){
 });
 
 passport.deserializeUser(function(userSession, done){
+	console.log("deserializeUser");
 	done(null, userSession);
 });
 
@@ -113,6 +120,8 @@ db.createRepo("user", "testrepo2")
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
+	if(req.isAuthenticated())
+		console.log(req.user, req.user.name);
 	res.render('accueil.dust', {req : req});
 });
 app.get('/dashboard', function(req, res){

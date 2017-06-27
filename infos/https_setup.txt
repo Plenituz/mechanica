@@ -4,6 +4,8 @@ https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-
 https://smalldata.tech/blog/2015/12/29/nginx-nodejs-and-https-via-letsencrypt
 -> super cool niveau sécu
 
+https://gist.github.com/nikmartin/5902176
+
 sudo yum install epel-release
 sudo yum install certbot
 

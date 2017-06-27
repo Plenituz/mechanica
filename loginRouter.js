@@ -1,8 +1,8 @@
 const express = require('express');
 const loginRouter = new express.Router();
 const db = require('./db.js');
-const registerPage = "register.dust";
-const loginPage = "login.dust";
+const registerPage = "testlogin/testLogin_register.dust";//"register.dust";
+const loginPage = "testlogin/testLogin_login.dust";
 
 loginRouter.get('/register', function(req, res){
 	if(req.isAuthenticated()){
@@ -99,6 +99,7 @@ loginRouter.post('/login', function(req, res){
 			if(err){
 				handleError(err);
 			}else{
+				console.log("logged in");
 				res.redirect('/');
 			}
 		});
