@@ -1,0 +1,32 @@
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
+https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-centos-7
+
+https://smalldata.tech/blog/2015/12/29/nginx-nodejs-and-https-via-letsencrypt
+-> super cool niveau sécu
+
+sudo yum install epel-release
+sudo yum install certbot
+
+ajout de 
+location ~ /.well-known {
+        allow all;
+}
+dans le SERVER block du /etc/nginx/nginx.conf
+sudo nginx -t //pour verifier que la syntax du fichier conf est valide
+
+sudo certbot certonly --standalone --agree-tos -m admin@smalldata.tech -d 192.168.1.19.xpi.io
+
+//pour le self created : 
+
+https://www.sitepoint.com/configuring-nginx-ssl-node-js/
+https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04
+
+sudo mkdir /etc/nginx/ssl
+cd /etc/nginx/ssl
+sudo openssl genrsa -des3 -out server.key 2048 //mdp : mIllOs97531
+sudo openssl req -new -key server.key -out server.csr //dans Common Name mettre l'ip
+//remove passphrase :
+sudo cp server.key server.key.org
+sudo openssl rsa -in server.key.org -out server.key
+//signe la clef
+sudo openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt

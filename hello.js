@@ -21,6 +21,8 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //the system thinks "favicon.ico" is an user and query the db to check if it exists
 //https://stackoverflow.com/questions/15463199/how-to-set-custom-favicon-in-express
 //TODO faire le login client side en javascript pour pas avoir de rafraichissement de page
+//TODO faire un vrai certificat de https, et mettre en place renouvellement automatique 
+//TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -107,8 +109,6 @@ db.createRepo("user", "testrepo2")
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
-	console.log("user:" + req.user +";" + req.isAuthenticated());
-	
 	//render "accueil.dust"(html) using the set render engine (dust)
 	res.render('accueil.dust', {req : req});
 });

@@ -1,0 +1,51 @@
+pour mettre en place le https :
+D'abord faut savoir que le https, seul nginx s'en charge, ensuite il proxy
+la requette en http a nodejs. Donc aucun changement dans le nodejs
+
+dans la machine virtuelle :
+
+1) copier le dossier "ssl" dans /etc/nginx/ssl
+sudo cp -r /media/mechanica/infos/ssl /etc/nginx/ssl
+
+2) remplacer l'ancien nginx.conf par le nouveau qui se trouve dans le dossier que tu viens de copier 
+sudo cp /etc/nginx/ssl/nginx.conf /etc/nginx/nginx.conf
+sudo rm /etc/nginx/ssl/nginx.conf
+
+3) dans le fichier de conf tu vas devoir changer l'ip par l'ip de ta VM :
+en dessous de :
+"""
+upstream node_app_dev{
+	server 127.0.0.1:3000;
+	#keepalive 8;
+}
+"""
+tu trouve le premier block "server{}" :
+"""
+server {
+    listen 80 default_server;
+	listen [::]:80 default_server;
+	server_name 192.168.1.19;
+"""
+tu remplace l'ip a coté de server_name par celle de ta VM
+ensuite tu descend encore il y a un autre block server{}
+"""
+server {
+	listen 443 ssl;
+	server_name  192.168.1.19;
+	#access_log /var/log/nginx/dev.log;
+	#error_log /var/log/nginx/dev.error.log debug;
+"""
+meme chose, remplace l'ip a coté de server_name par l'ip de ta VM
+
+redémarre la machine virtuelle en faisant poweroff et en la ralumant ensuite
+a noter : quand tu ouvre le site pour la premiere fois, firefox va te dire "le site est mal configuré"
+c'est parceque le certificat (qui permet le cryptage ssl/https) qu'on utilise n'a pas été créé 
+par une des authorité reconnu pour créer des certificat. (j'ai créé le certificat moi meme)
+Dans firefox sur la page d'erreur qu'il te donne tu click sur :
+Avancé>ajouter une exception>(une fenetre s'ouvre)>confirmer l'exception
+
+On peut pas avoir de vrai certificat tant qu'on a pas de nom de domaine, on recréera un certificat a ce moment la
+
+a noter 2:
+il se peut que firefox ait garder en cache la redirection de l'ancien site et te fasse croire que le site marche pas en https
+pour vider le cache : options>onglet avancé>onglet réseau>contenu web en cache>vider maintenant
