@@ -12,7 +12,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const MySQLStore = require('express-mysql-session')(session);
-
 //perso
 const userRouter = require('./userRouter.js');
 const repoRouter = require('./repoRouter.js');
@@ -20,8 +19,9 @@ const loginRouter = require('./loginRouter.js');
 const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 
-const duster = require('duster');	// ???????????????????????????
+const duster = require('duster');
 var doCache = false;//TODO quand on passe en prod faut changer ca
+
 //TODO faire un package.json pour les nodes modules
 //TODO quand tu fait npm install faut le faire sur la vm direct 
 //(bcrypt aime pas etre compilé sur une autre platforme que celle ou il est utilisé)
@@ -88,7 +88,6 @@ loginRouter.forbidenNames = Object.assign({}, userRouter.staticPages, {
 });
 
 passport.serializeUser(function(user_id, done){
-	console.log("serializeUser");
 	db.getUserInfo(user_id)
 	.spread(function(name, email){
 		var userSession = { 
@@ -101,20 +100,11 @@ passport.serializeUser(function(user_id, done){
 });
 
 passport.deserializeUser(function(userSession, done){
-	console.log("deserializeUser");
 	done(null, userSession);
 });
 
 //===INIT DB IF NECESSARY===//
-//db.initDB();
- /*db.createRepo("user", "testrepo")
-.fail(function(err){
-	console.log("error creating repo:" + err);
-});
-db.createRepo("user", "testrepo2")
-.fail(function(err){
-	cosole.log("error creating repo:" + err);
-});*/
+db.initDB();
 
 
 //	l'ordre est important ici // Accueil
