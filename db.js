@@ -48,6 +48,8 @@ module.exports = {
 				hosting_repo INT UNSIGNED NOT NULL,
 				
 				PRIMARY KEY(discussion_id),
+				INDEX ind_created_at (created_at),
+				INDEX ind_creator_id (creator_id),
 				INDEX ind_hosting_repo (hosting_repo)
 			) CHARSET=utf8 ENGINE=INNODB;`,
 			
@@ -59,6 +61,7 @@ module.exports = {
 				hosting_discussion INT UNSIGNED NOT NULL,
 				
 				PRIMARY KEY(discussion_message_id),
+				INDEX ind_creator_id (creator_id),
 				INDEX ind_hosting_discussion (hosting_discussion)
 			) ENGINE=INNODB CHARSET=utf8;`,
 			
@@ -97,7 +100,7 @@ module.exports = {
 		return doesEmailExists(email)
 		.then(function(exists){
 			if(exists){
-				throw new SyntaxError("Email address already exists");
+				throw new SyntaxError("Email address " + email + " already exists");
 			}else{
 				return doesUserExists(name);
 			}
@@ -151,6 +154,48 @@ module.exports = {
 		});
 	},
 	
+	createMessageInDiscussion : function(content, creatorName, repoAdminName, repoName, discussion_id){
+		//check que la discussion_id donné est bien dans ce repo
+		let q = 
+		`SELECT discussion_id FROM discussions
+		WHERE discussion_id = ? AND hosting_repo =  
+		(
+		SELECT repos.repo_id FROM repos 
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+		WHERE users.name = ? AND repos.name = ?
+		)`;
+		return query(q, [discussion_id, repoAdminName, repoName])
+		.then(function(results){
+			if(results.length === 0){
+				throw new Error("Error creating message in " + repoAdminName + "/" + repoName + ": discussion_id "+ discussion_id + " not found");
+			}
+			if(results[0].discussion_id !== discussion_id){
+				throw new Error("discussion id miss match");
+			}
+			return getUserId(creatorName);
+		})
+		.then(function(creator_id){
+			let q2 = "INSERT INTO discussion_messages VALUES(NULL, ?, ?, NOW(), ?)";
+			return query(q2, [content, creator_id, discussion_id]);
+		});
+	},
+	
+	createDiscussion : function(userName, repo, title, creatorName){
+		var repoId, creatorId;
+		
+		return getRepoId(userName, repo)
+		.then(function(repo_id){
+			repoId = repo_id;
+			return getUserId(creatorName);
+		})
+		.then(function(user_id){
+			creatorId = user_id;
+			let q = "INSERT INTO discussions VALUES(NULL, ?, ?, NOW(), ?)";
+			return query(q, [title, creatorId, repoId]);
+		});
+	},
+	
 	canAuthenticateUser : function(usernameOrEmail, password){
 		let q = "SELECT user_id, password FROM users WHERE name=? OR email=?";
 		var user_id;
@@ -183,7 +228,7 @@ module.exports = {
 		return query(sql, userName)
 		.then(function(results){
 			if(results.length === 0){
-				throw new Error("can't get user id, user " + userName + "doesn't exists");
+				throw new Error("can't get user id, user " + userName + " doesn't exists");
 			}else{
 				return results[0].user_id;
 			}
@@ -195,7 +240,7 @@ module.exports = {
 		return query(q, user_id)
 		.then(function(results){
 			if(results.length === 0){
-				throw new Error("user not found");
+				throw new Error("user " + user_id + " not found");
 			}else{
 				return [results[0].name.toString(), results[0].email.toString()];
 			}
@@ -217,6 +262,49 @@ module.exports = {
 				list.push(row.name.toString());
 			});
 			return list;
+		});
+	},
+	
+	getRecentDiscussions : function(userName, repoName, limit){
+		let q = 
+		`SELECT discussion_id, title, created_at FROM discussions
+		WHERE hosting_repo = 
+		(
+			SELECT repos.repo_id FROM repos 
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+			WHERE users.name = ? AND repos.name = ?
+		)
+		ORDER BY created_at DESC LIMIT ?`;
+		return query(q, [userName, repoName, limit])
+		.then(function(results){
+			if(results.length === 0){
+				throw new Error("can't get recent discussions: repo " + userName + "/" + repoName + " not found");
+			}
+			return results;
+		});
+	},
+	
+	getRecentMessagesInDiscussion : function(userName, repoName, discussion_id, limit){
+		let q = 
+		`SELECT discussion_messages.content, discussion_messages.creator_id, discussion_messages.created_at FROM discussion_messages
+			INNER JOIN discussions
+				ON discussion_messages.hosting_discussion = discussions.discussion_id
+		WHERE discussion_messages.hosting_discussion = ? AND discussions.hosting_repo = 
+		(
+			SELECT repos.repo_id FROM repos 
+				INNER JOIN users
+					ON repos.admin_id = users.user_id
+			WHERE users.name = ? AND repos.name = ?
+		)
+		ORDER BY created_at DESC LIMIT ?`;
+		return query(q, [discussion_id, userName, repoName, limit])
+		.then(function(results){
+			if(results.length === 0){
+				throw new Error("error getting recent messages in " + userName 
+					+ "/" + repoName + ", discussion_id=" + discussion_id + ", no messages found");
+			}
+			return results;
 		});
 	},
 	
@@ -246,10 +334,26 @@ module.exports = {
 		
 		return query(q, [adminName, repoName])
 		.then(function(results){
-			if(results.length === 0 || results.lenght > 1){
+			if(results.length === 0 || results.length > 1){
 				throw new Error("repo " + adminName + "/" + repoName + " not found");
 			}else{
 				return [results[0].repo_id, results[0].location];
+			}
+		});
+	},
+	
+	getRepoId : function(adminName, repoName){
+		let sql = 
+		`SELECT repos.repo_id FROM repos 
+			INNER JOIN users
+				ON repos.admin_id = users.user_id
+		WHERE users.name = ? AND repos.name = ?`;
+		return query(sql, [adminName, repoName])
+		.then(function(results){
+			if(results.length === 1){
+				return results[0].repo_id;
+			}else{
+				throw new Error("repo " + adminName + "/" + repoName + " not found");
 			}
 		});
 	},
@@ -356,3 +460,4 @@ const doesUserExists = module.exports.doesUserExists;
 const doesRepoExists = module.exports.doesRepoExists;
 const getUserId = module.exports.getUserId;
 const doesEmailExists = module.exports.doesEmailExists;
+const getRepoId = module.exports.getRepoId;

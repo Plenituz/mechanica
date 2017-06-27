@@ -104,7 +104,39 @@ passport.deserializeUser(function(userSession, done){
 });
 
 //===INIT DB IF NECESSARY===//
-db.initDB();
+//db.initDB();
+/*db.createRepo("user", "testrepo")
+.fail(function(err){
+	console.log("error creating repo :" + err);
+});*/
+/*db.createDiscussion("user", "testrepo", "deuxieme discussion", "user")
+.fail(function(err){
+	console.log("error creating discussion :" + err);
+});*/
+/*db.createMessageInDiscussion("contenu du premier ", "user", "user", "testrepo", 3)
+.fail(function(err){
+	console.log("error creating message: " + err);
+});*/
+/*db.getRecentDiscussions("user", "testrepo", 10)
+.then(function(discussionList){
+	console.log("recent discussions:");
+	for(let i = 0; i < discussionList.length; i++){
+		console.log("[" + i + "]:" + discussionList[i].title + ", id=" + discussionList[i].discussion_id);
+	}
+})
+.fail(function(err){
+	console.log("error getting recent discussions: " + err);
+});*/
+/*db.getRecentMessagesInDiscussion("user", "testrepo", 3, 10)
+.then(function(msgList){
+	console.log("msgs:");
+	for(let i = 0; i < msgList.length; i++){
+		console.log("[" + i + "]:" + msgList[i].content);
+	}
+})
+.fail(function(err){
+	console.log("error getting recent messages:" + err);
+});*/
 
 
 //	l'ordre est important ici // Accueil
