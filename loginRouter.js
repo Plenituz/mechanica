@@ -1,12 +1,14 @@
 const express = require('express');
 const loginRouter = new express.Router();
 const db = require('./db.js');
+const registerPage = "register.dust";
+const loginPage = "login.dust";
 
 loginRouter.get('/register', function(req, res){
 	if(req.isAuthenticated()){
 		res.redirect('/');
 	}else{
-		res.render('testlogin/testLogin_register.dust');
+		res.render(registerPage);
 	}
 });
 
@@ -27,7 +29,7 @@ loginRouter.post('/register', function(req, res){
 	req.checkBody('password_conf', 'passwords do no match').equals(req.body.password);
 	
 	let handleError = function(err){
-		res.render('testlogin/testLogin_register.dust', {
+		res.render(registerPage, {
 				error : err, 
 				username:req.body.username,
 				email:req.body.email
@@ -70,7 +72,7 @@ loginRouter.get('/login', function(req, res){
 	if(req.isAuthenticated()){
 		res.redirect('/');
 	}else{
-		res.render('testlogin/testLogin_login.dust');
+		res.render(loginPage);
 	}
 });
 
@@ -82,7 +84,7 @@ loginRouter.post('/login', function(req, res){
 	}
 	
 	let handleError = function(err){
-		res.render('testlogin/testLogin_login.dust', {
+		res.render(loginPage, {
 						error : {msg : err.message},
 						username : usernameOrEmail
 					});

@@ -23,6 +23,7 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO faire le login client side en javascript pour pas avoir de rafraichissement de page
 //TODO faire un vrai certificat de https, et mettre en place renouvellement automatique 
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
+//TODO mot de passe oublié
 
 const app = express();
 app.engine('dust', hoffman.__express());
