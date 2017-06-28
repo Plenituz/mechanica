@@ -2,7 +2,7 @@ const express = require('express');
 const loginRouter = new express.Router();
 const db = require('./db.js');
 const registerPage = "testlogin/testLogin_register.dust";//"register.dust";
-const loginPage = "testlogin/testLogin_login.dust";
+const loginPage = "testlogin/testLogin_login.dust";//"login.dust";
 
 loginRouter.get('/register', function(req, res){
 	if(req.isAuthenticated()){
