@@ -1,8 +1,7 @@
 {#error}
 <p>Error: {.msg}</p>
 {/error}
-
-<form method="POST" action="register">
+<form method="POST" action="register{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
 	<input type="text" placeholder="Username" name="username" value="{username}"/>
 	<input type="email" placeholder="Enter email" name="email" value="{email}"/>
 	<input type="password" placeholder="Password" name="password"/>

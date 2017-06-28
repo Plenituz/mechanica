@@ -2,8 +2,8 @@
 <p>Error: {.msg}</p>
 {/error}
 
-<form method="POST" action="login">
+<form method="POST" action="login{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
 	<input type="text" placeholder="Username or email" name="username"/>
 	<input type="password" placeholder="Password" name="password"/>
-	<button type="submit">Submit<button/>
+	<button type="submit">Submit</button>
 </form>

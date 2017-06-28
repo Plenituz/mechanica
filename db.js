@@ -167,10 +167,14 @@ module.exports = {
 		)`;
 		return query(q, [discussion_id, repoAdminName, repoName])
 		.then(function(results){
+			if(!content){
+				throw new Error("content of the message can't be empty");
+			}
 			if(results.length === 0){
 				throw new Error("Error creating message in " + repoAdminName + "/" + repoName + ": discussion_id "+ discussion_id + " not found");
 			}
-			if(results[0].discussion_id !== discussion_id){
+			if(results[0].discussion_id != discussion_id){
+
 				throw new Error("discussion id miss match");
 			}
 			return getUserId(creatorName);
@@ -186,6 +190,9 @@ module.exports = {
 		
 		return getRepoId(userName, repo)
 		.then(function(repo_id){
+			if(!title){
+				throw new Error("title can't be empty");
+			}
 			repoId = repo_id;
 			return getUserId(creatorName);
 		})
@@ -193,6 +200,20 @@ module.exports = {
 			creatorId = user_id;
 			let q = "INSERT INTO discussions VALUES(NULL, ?, ?, NOW(), ?)";
 			return query(q, [title, creatorId, repoId]);
+		})
+		.then(function(emptySet){
+			//SELECT MAX(ID) from bugs WHERE user=Me
+			let q1 = "SELECT MAX(discussion_id) as message_id FROM discussions WHERE title=? AND creator_id=? AND hosting_repo=?";
+			return query(q1, [title, creatorId, repoId]);
+			//TODO j'ai peur que le fait de faire cette query dans une autre connection que l'original permettent 
+			//a une autre query de ninjater entre deux et de fausser le resultat de MAX()
+		})
+		.then(function(results){
+			console.log(results[0]);
+			if(results.length === 0 || results[0] == null){
+				throw new Error("error inserting new message");
+			}
+			return results[0].message_id;
 		});
 	},
 	
@@ -267,7 +288,9 @@ module.exports = {
 	
 	getRecentDiscussions : function(userName, repoName, limit){
 		let q = 
-		`SELECT discussion_id, title, created_at FROM discussions
+		`SELECT discussion_id, title, created_at, creator_id, users.name as creator_name FROM discussions
+		INNER JOIN users 
+			ON discussions.creator_id = users.user_id
 		WHERE hosting_repo = 
 		(
 			SELECT repos.repo_id FROM repos 
@@ -287,9 +310,13 @@ module.exports = {
 	
 	getRecentMessagesInDiscussion : function(userName, repoName, discussion_id, limit){
 		let q = 
-		`SELECT discussion_messages.content, discussion_messages.creator_id, discussion_messages.created_at FROM discussion_messages
+		`SELECT discussion_messages.content, discussion_messages.creator_id, 
+		discussion_messages.created_at, discussions.title as discussion_title, users.name as creator_name
+		FROM discussion_messages
 			INNER JOIN discussions
 				ON discussion_messages.hosting_discussion = discussions.discussion_id
+			INNER JOIN users
+				ON discussion_messages.creator_id = users.user_id
 		WHERE discussion_messages.hosting_discussion = ? AND discussions.hosting_repo = 
 		(
 			SELECT repos.repo_id FROM repos 
@@ -304,7 +331,7 @@ module.exports = {
 				throw new Error("error getting recent messages in " + userName 
 					+ "/" + repoName + ", discussion_id=" + discussion_id + ", no messages found");
 			}
-			return results;
+			return results.reverse();
 		});
 	},
 	

@@ -8,14 +8,16 @@ loginRouter.get('/register', function(req, res){
 	if(req.isAuthenticated()){
 		res.redirect('/');
 	}else{
-		res.render(registerPage);
+		res.render(registerPage, {req : req});
 	}
 });
 
 loginRouter.post('/register', function(req, res){
+	var redirectUrl = req.query.redirect || "/";
+
 	if(req.isAuthenticated()){
 		console.log("can't signin user, already authenticated");
-		res.redirect('/');
+		res.redirect(redirectUrl);
 		return;
 	}
 	
@@ -30,6 +32,7 @@ loginRouter.post('/register', function(req, res){
 	
 	let handleError = function(err){
 		res.render(registerPage, {
+				req : req,
 				error : err, 
 				username:req.body.username,
 				email:req.body.email
@@ -56,7 +59,7 @@ loginRouter.post('/register', function(req, res){
 				console.log("error login in: " + err);
 				handleError({msg : "Error while loggin in"});
 			}else{
-				res.redirect('/');
+				res.redirect(redirectUrl);
 			}
 		});
 		
@@ -72,19 +75,22 @@ loginRouter.get('/login', function(req, res){
 	if(req.isAuthenticated()){
 		res.redirect('/');
 	}else{
-		res.render(loginPage);
+		res.render(loginPage, {req : req});
 	}
 });
 
 loginRouter.post('/login', function(req, res){
+	var redirectUrl = req.query.redirect || "/";
+
 	if(req.isAuthenticated()){
 		console.log("user already authenticated");
-		res.redirect('/');
+		res.redirect(redirectUrl);
 		return;
 	}
 	
 	let handleError = function(err){
 		res.render(loginPage, {
+						req : req,
 						error : {msg : err.message},
 						username : usernameOrEmail
 					});
@@ -99,8 +105,8 @@ loginRouter.post('/login', function(req, res){
 			if(err){
 				handleError(err);
 			}else{
-				console.log("logged in");
-				res.redirect('/');
+				console.log("logged in: " + redirectUrl + "," + req.query.redirect);
+				res.redirect(redirectUrl);
 			}
 		});
 	})

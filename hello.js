@@ -30,6 +30,7 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO faire un vrai certificat de https, et mettre en place renouvellement automatique 
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
 //TODO mot de passe oublié
+//TODO redirect on login
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -105,39 +106,6 @@ passport.deserializeUser(function(userSession, done){
 
 //===INIT DB IF NECESSARY===//
 //db.initDB();
-/*db.createRepo("user", "testrepo")
-.fail(function(err){
-	console.log("error creating repo :" + err);
-});*/
-/*db.createDiscussion("user", "testrepo", "deuxieme discussion", "user")
-.fail(function(err){
-	console.log("error creating discussion :" + err);
-});*/
-/*db.createMessageInDiscussion("contenu du premier ", "user", "user", "testrepo", 3)
-.fail(function(err){
-	console.log("error creating message: " + err);
-});*/
-/*db.getRecentDiscussions("user", "testrepo", 10)
-.then(function(discussionList){
-	console.log("recent discussions:");
-	for(let i = 0; i < discussionList.length; i++){
-		console.log("[" + i + "]:" + discussionList[i].title + ", id=" + discussionList[i].discussion_id);
-	}
-})
-.fail(function(err){
-	console.log("error getting recent discussions: " + err);
-});*/
-/*db.getRecentMessagesInDiscussion("user", "testrepo", 3, 10)
-.then(function(msgList){
-	console.log("msgs:");
-	for(let i = 0; i < msgList.length; i++){
-		console.log("[" + i + "]:" + msgList[i].content);
-	}
-})
-.fail(function(err){
-	console.log("error getting recent messages:" + err);
-});*/
-
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
@@ -165,6 +133,7 @@ app.use(userRouter);
 
 app.use(function(req, res, next){
 	//in case the user asked for an unset page
+	//console.log(req.method + ":" + req.url);
 	res.writeHead(200, {"Content-Type": "text/html"});
     res.end('<p>404 not found, bitch</p>');
 });

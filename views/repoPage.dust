@@ -7,5 +7,7 @@
   <br/>
 {/files}
 
+<a href="/{req.params.user}/{req.params.repo}?discussionList">click here to see discussions on this repo</a>
+
 
 {> "views/footer.dust"/}

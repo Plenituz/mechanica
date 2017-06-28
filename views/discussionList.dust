@@ -1,0 +1,20 @@
+<p>Discussions for repo {req.params.user}/{req.params.repo}</p>
+{#discussionList}
+<a href="/{req.params.user}/{req.params.repo}?discussion_id={.discussion_id}">{.title} by {.creator_name}</a>
+<br/>
+{/discussionList}
+
+{#error}
+<p>{error}</p>
+{/error}
+
+{#req.user}
+<form method="POST" action="?repoAdminName={req.params.user}&repoName={req.params.repo}">
+	<input type="text" placeholder="discussion title" name="title"/>
+	<input type="text" placeholder="discussion message" name="firstMessage"/>
+	<button type="submit">Submit</button>
+</form>
+{:else}
+<br/><br/>
+<a href="/login?redirect={req.params.user}/{req.params.repo}?discussionList">Login to create a discussion</a>
+{/req.user}

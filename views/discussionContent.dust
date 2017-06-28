@@ -1,0 +1,20 @@
+<p>Contenu de la discussion {req.query.discussion_id} in {req.params.user}/{req.params.repo}</p>
+<p>title : {msgList[0].discussion_title}</p>
+{#msgList}
+	<a>{.creator_name}:{.content}</a>
+	<br/>
+{/msgList}
+
+{#error}
+<p>{error}</p>
+{/error}
+{#req.user}
+<form method="POST" action="?discussion_id={req.query.discussion_id}&repoAdminName={req.params.user}&repoName={req.params.repo}">
+	<input type="text" placeholder="Answer" name="content"/>
+	<button type="submit">Submit</button>
+</form>
+{:else}
+<br/><br/>
+<!-- pas de params dans la query url car le forum sera dans un iframe-->
+<a href="/login?redirect={req.params.user}/{req.params.repo}?discussion_id={req.query.discussion_id}">Login to answer</a>
+{/req.user}
