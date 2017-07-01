@@ -7,11 +7,25 @@
 
 <div id="getin_box">
 
+  {#error}
+  <p>Error: {.msg}</p>
+  {/error}
+
+  <form method="POST" action="login{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
+
     <a>Nom d'utilisateur ou adresse mail</a>
-    <div id="getin_sub_box"></div><br>
+
+    <input type="login_email" placeholder="Nom d'utilisateur" name="username"/>
+    </br></br>
+
     <a>Mot de passe</a><b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
-    <div id="getin_sub_box"></div></br>
-    <a href="../userPage"><div id="getin_sub_box" class="clickme"><p>Connection</p></div></a>
+
+    <input type="password" placeholder="Mot de passe" name="password"/>
+    </br></br>
+
+    <button type="login_submit"><p>Connection</p></button>
+
+  </form>
 
 </div>
 

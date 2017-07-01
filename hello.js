@@ -23,11 +23,11 @@ const duster = require('duster');
 var doCache = false;//TODO quand on passe en prod faut changer ca
 
 //TODO faire un package.json pour les nodes modules
-//TODO quand tu fait npm install faut le faire sur la vm direct 
+//TODO quand tu fait npm install faut le faire sur la vm direct
 //(bcrypt aime pas etre compilé sur une autre platforme que celle ou il est utilisé)
 //j'ai du faire npm install dans un dossier normal de la vm, copier le node_module créé dans sf_mechanica
 //TODO faire le login client side en javascript pour pas avoir de rafraichissement de page
-//TODO faire un vrai certificat de https, et mettre en place renouvellement automatique 
+//TODO faire un vrai certificat de https, et mettre en place renouvellement automatique
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
 //TODO mot de passe oublié
 
@@ -90,8 +90,8 @@ loginRouter.forbidenNames = Object.assign({}, userRouter.staticPages, {
 passport.serializeUser(function(user_id, done){
 	db.getUserInfo(user_id)
 	.spread(function(name, email){
-		var userSession = { 
-			user_id : user_id, 
+		var userSession = {
+			user_id : user_id,
 			name : name,
 			email : email
 		};
@@ -145,6 +145,6 @@ var server = app.listen(3000, "127.0.0.1",
 // Simple route middleware to ensure user is authenticated.
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated())
-	  return next(); 
+	  return next();
   res.redirect('/login');
 }

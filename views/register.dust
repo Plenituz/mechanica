@@ -7,16 +7,33 @@
 
 <div id="getin_box">
 
-    <a>Nom d'utilisateur</a>
-    <div id="getin_sub_box"></div></br>
-    <a>Email</a>
-    <div id="getin_sub_box"></div></br>
-    <a>Mot de passe</a>
-    <div id="getin_sub_box"></div>
-    <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
-    <a href="../userPage"><div id="getin_sub_box" class="clickme"><p>Inscription</p></div></a>
-    <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
-      politique</br>de confidentialité.</a>
+    {#error}
+    <p>Error: {.msg}</p>
+    {/error}
+
+    <form method="POST" action="register{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
+
+      <a>Nom d'utilisateur</a>
+
+      <input type="login_username" placeholder="Username" name="username" value="{username}"/>
+      </br></br>
+
+      <a>Adresse mail</a>
+
+      <input type="login_email" placeholder="Adresse mail" name="email" value="{email}"/>
+      </br></br>
+
+      <a>Mot de passe</a><b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
+
+      <input type="password" placeholder="Mot de passe" name="password"/>
+      <input type="password" placeholder="Confirmer le mot de passe" name="password_conf"/>
+      <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
+
+      <button type="register_submit"><p>Inscription</p></button>
+      <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
+        politique</br>de confidentialité.</a>
+
+    </form>
 
 </div>
 

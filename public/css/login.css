@@ -1,0 +1,83 @@
+#gettin_slog {
+  position: relative;
+  width: 500px;
+  top: 120px;
+  left: 180px;
+  font-size: 25px;
+  text-align: center;
+}
+
+#getin_box {
+  position: relative;
+  padding: 25px;
+  padding-bottom: 20px;
+  width: 275px;
+  left: 250px;
+  top: -100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 80px;
+  border: solid black 1px;
+  border-radius: 5px;
+  background-color: #DAE7FF;
+}
+/*
+#getin_sub_box > p {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  top: 8px;
+  color: #FFFFFF;
+  font-size: 25px;
+}
+
+#getin_sub_box{
+  position: relative;
+  width: 275px;
+  height: 40px;
+  border: solid #18469E 1px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px;
+}
+
+#getin_sub_box.clickme {
+  background-color: #18469E;
+  border: solid #FFFFFF 3px;
+  margin-bottom: 3px;
+}*/
+
+input[type=login_email], input[type=password], input[type=login_username]  {
+  position: relative;
+  width: 260px;
+  height: 40px;
+  border: solid #18469E 1px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  padding-left: 10px;
+  font:small-caption;
+}
+
+button[type=login_submit], button[type=register_submit] {
+  position: relative;
+  width: 275px;
+  height: 50px;
+  border: solid #FFFFFF 3px;
+  border-radius: 5px;
+  background-color: #18469E;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  padding-left: 10px;
+}
+
+button[type=login_submit] > p, button[type=register_submit] > p {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  top: 0px;
+  color: #FFFFFF;
+  font-size: 20px;
+}
