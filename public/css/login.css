@@ -7,7 +7,7 @@
   text-align: center;
 }
 
-#getin_box {
+#login_box {
   position: relative;
   padding: 25px;
   padding-bottom: 20px;
@@ -21,7 +21,22 @@
   border-radius: 5px;
   background-color: #DAE7FF;
 }
-/*
+
+#register_box {
+  position: relative;
+  padding: 25px;
+  padding-bottom: 20px;
+  width: 275px;
+  left: 250px;
+  top: -150px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 80px;
+  border: solid black 1px;
+  border-radius: 5px;
+  background-color: #DAE7FF;
+}
+
 #getin_sub_box > p {
   position: relative;
   text-align: center;
@@ -46,7 +61,7 @@
   background-color: #18469E;
   border: solid #FFFFFF 3px;
   margin-bottom: 3px;
-}*/
+}
 
 input[type=login_email], input[type=password], input[type=login_username]  {
   position: relative;

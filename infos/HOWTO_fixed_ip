@@ -1,5 +1,5 @@
 Normalement la connexion avec la vm est réalisé via un accés par pont entre
-l'interface réseau de la vm et celle du host connecté au réserializeUser
+l'interface réseau de la vm et celle du host connecté au réseau
 
 On garde la connexion par pont (l'ip associé sera toujours variable et dépendante
 du réseau auquel tu es connecté) et on créé une deuxième carte réseau dans les

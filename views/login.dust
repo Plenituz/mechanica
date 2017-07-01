@@ -5,7 +5,7 @@
   <a>Créer, innovez, partagez et reprenez le contrôle sur le monde matériel !</a>
 </div>
 
-<div id="getin_box">
+<div id="login_box">
 
   {#error}
   <p>Error: {.msg}</p>

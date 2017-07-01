@@ -76,6 +76,7 @@ li {
   left: 0px;
   top: -10px;
   line-height: 100%;
+  margin-top: 60px;
 }
 
 h1 {
@@ -119,6 +120,7 @@ h3 {
 }
 
 .label_link {
+  margin-top: -400px;
   margin-left: 150px;
 }
 

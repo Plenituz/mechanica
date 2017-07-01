@@ -5,7 +5,7 @@
   <a>Rejoignez notre communauté et participez</br>au dévellopement du hardware libre !</a>
 </div>
 
-<div id="getin_box">
+<div id="register_box">
 
     {#error}
     <p>Error: {.msg}</p>
@@ -31,7 +31,7 @@
 
       <button type="register_submit"><p>Inscription</p></button>
       <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
-        politique</br>de confidentialité.</a>
+        &nbsp;politique</br>de confidentialité.</a>
 
     </form>
 
