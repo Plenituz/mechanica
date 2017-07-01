@@ -15,7 +15,7 @@ loginRouter.get('/register', function(req, res){
 });
 
 loginRouter.post('/register', function(req, res){
-	var redirectUrl = req.query.redirect || "/" + req.body.username;
+	var redirectUrl = req.query.redirect || "/dashboard";
 
 	if(req.isAuthenticated()){
 		console.log("can't signin user, already authenticated");
@@ -84,7 +84,7 @@ loginRouter.get('/login', function(req, res){
 });
 
 loginRouter.post('/login', function(req, res){
-	var redirectUrl = req.query.redirect || "/";
+	var redirectUrl = req.query.redirect || "/dashboard";
 
 	if(req.isAuthenticated()){
 		console.log("user already authenticated");
