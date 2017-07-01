@@ -23,7 +23,7 @@
       <input type="login_email" placeholder="Adresse mail" name="email" value="{email}"/>
       </br></br>
 
-      <a>Mot de passe</a><b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
+      <a>Mot de passe</a><b></b>
 
       <input type="password" placeholder="Mot de passe" name="password"/>
       <input type="password" placeholder="Confirmer le mot de passe" name="password_conf"/>
