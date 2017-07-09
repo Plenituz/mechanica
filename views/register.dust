@@ -30,6 +30,7 @@
       <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
 
       <button type="register_submit"><p>Inscription</p></button>
+      <a class=foot_note>&nbsp;&nbsp;Ou <a href="../login"><b>Connectez vous</b></a></a></br></br>
       <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
         &nbsp;politique</br>de confidentialité.</a>
 

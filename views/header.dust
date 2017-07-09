@@ -5,6 +5,7 @@
 	<meta name="description" content="OpenSourceHardware"/>
 	<link rel="stylesheet" type="text/css" href="/css/main.css" />
 	<link rel="stylesheet" type="text/css" href="/css/userPage.css" />
+	<link rel="stylesheet" type="text/css" href="/css/repoPage.css" />
 	<link rel="stylesheet" type="text/css" href="/css/login.css" />
 	<link rel="icon" type="image/png" href="imgs/favicon." />
 	<title>OpenSourceHardware</title>
@@ -45,7 +46,7 @@
 
 					{#req.user}
 						<li>
-							<div id="logout"><a href="../logout">Déconnection</a></div>	//to add disconnect action
+							<div id="logout"><a href="../logout">Déconnection</a></div>
 						</li>
 					{:else}
 						<li>

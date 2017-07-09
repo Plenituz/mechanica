@@ -114,11 +114,12 @@ app.get('/', function(req, res) {
 		console.log(req.user, req.user.name);
 	res.render('accueil.dust', {req : req});
 });
+
 app.get('/dashboard', function(req, res){
 	if(req.isAuthenticated()){
 		res.redirect('/' + req.user.name);
 	}else{
-		res.redirect('/');
+		res.redirect('/login');
 	}
 })
 //this is for /login /register /logout
