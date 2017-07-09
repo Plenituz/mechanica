@@ -153,7 +153,18 @@ module.exports = {
 			location = path.join(userReposPath, adminName, repoName);
 			return query(sql, [userId, repoName, location]);
 		});
-	},
+    },
+
+    deleteRepo : function (adminName, repoName) {
+        let q =
+            `DELETE FROM repos 
+            WHERE name = ? AND admin_id = 
+            (
+                SELECT user_id FROM users 
+                WHERE name = ?
+            )`;
+        return query(q, [repoName, adminName]);
+    },
 	
 	createMessageInDiscussion : function(content, creatorName, repoAdminName, repoName, discussion_id){
 		//check que la discussion_id donné est bien dans ce repo

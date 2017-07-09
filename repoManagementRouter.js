@@ -32,6 +32,26 @@ repoManagementRouter.post('/createRepo', function (req, res) {
         });
 });
 
+repoManagementRouter.post('/deleteRepo', function (req, res) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+
+    if (!req.body.reponame) {
+        console.log("error deleting repo: can't delete empty name repo")
+        return;
+    }
+
+    db.deleteRepo(req.user.name, req.body.reponame)
+        .then(function () {
+            res.redirect('/' + req.user.name);
+        })
+        .fail(function (err) {
+            console.log("error deleting repo:" + err);
+        })
+});
+
 ///
 ///this is probably the dirtiest piece of code I have ever written
 ///

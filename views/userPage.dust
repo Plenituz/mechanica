@@ -17,8 +17,12 @@
 		<p>Error: {.}</p>
 	{/req.query.createRepoError}
 	<form method="POST" action="/createRepo">
-		<input placeholder="Repo name" name="reponame"/>
+		<input placeholder="Repo to create" name="reponame"/>
 		<button type="submit">create repo</button>
+	</form>
+	<form method="POST" action="/deleteRepo">
+		<input placeholder="Repo to delete" name="reponame"/>
+		<button type="submit">delete repo</button>
 	</form>
 {/eq}
 
