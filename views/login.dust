@@ -25,8 +25,6 @@
     </br></br>
 
     <button type="login_submit"><p>Connection</p></button>
-    <a class=foot_note>&nbsp;&nbsp;Ou <a href="../register"><b>Inscrivez vous</b></a></a>
-
 
   </form>
 

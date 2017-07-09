@@ -1,6 +1,5 @@
 {> "views/header.dust"/}
-
-<!--
+<p>name of the logged in user :{req.user.name}</p>
 <p>email of the logged in user :{req.user.email}</p>
 <p>db id of the logged in user :{req.user.user_id}</p>
 <p>name of the asked user :{req.params.user}</p>
@@ -10,7 +9,6 @@
 {:else}
 	<p>if you see this, this page is not the user's page</p>
 {/eq}
--->
 
 {@eq key=req.params.user value=req.user.name}
 	{#req.query.createRepoError}
@@ -27,8 +25,7 @@
     <div id="profile">
       <div id="profile_pic"><img src="/imgs/gaulle.jpg" width='160' height='160' /></div>
       <div id="profile_status">
-        <a>{req.user.name} </a>
-				<a> ({req.params.user})</a></br></br>
+        <a>{username}</a></br></br>
         <a>Là où j'opère, nombreuse seront les victimes,</br>que des numéros 10 dans ma team.</a></br></br>
         <a>Originaire de Gaulle</a></br></br>
         <a href="http://pedagogie.charles-de-gaulle.org/" class="link" target="_blank">www.francofrancais.org</a>

@@ -1,47 +1,30 @@
 {> "views/header.dust"/}
 
-<!-- <p>bienvenue sur le repo "{req.params.repo}" de {req.params.user}</p> -->
+<p>bienvenue sur le repo "{req.params.repo}" de {req.params.user}</p>
+<p>voici le contenu du repo:</p>
+{#files}
+  <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
+  <br/>
+{/files}
+<br/>
+<a href="/{req.params.user}/{req.params.repo}?discussionList">click here to see discussions on this repo</a>
 
-<div id="content">
+{@eq key=req.params.user value=req.user.name}
+	{#req.query.newVersionError}
+		<p>Error: {.}</p>
+	{/req.query.newVersionError}
 
-  <div id="repo_view">
-  </div>
+	<a id="user" style="display:none">{req.user.name}</a>
+	<a id="repo" style="display:none">{req.params.repo}</a>
 
-  <div id="repo_list">
-    {#files}
-      <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
-      <br/>
-    {/files}
-  </div>
-
-  <div id="repo_desc">
-    <div id="repo_desc_menu">
-
-      <div id="repo_desc_cat"><a>Amélioration</a></div>
-      <div id="separation_V"></div>
-
-      <div id="repo_desc_cat"><a>Matériel</a></div>
-      <div id="separation_V"></div>
-
-      <div id="repo_desc_cat">
-        <a href="/{req.params.user}/{req.params.repo}?discussionList">Discussion</a>
-      </div>
-      <div id="separation_V"></div>
-
-      <div id="repo_desc_cat"><a>Forum</a></div>
-      <div id="separation_V"></div>
-
-      <div id="repo_desc_cat"><a>Manuel</a></div>
-
-      <div id="separation_H"></div>
-
-    </div>
-
-  <div id=""></div>
-
-
-  </div>
-
-</div>
-
+	<script src="/js/clientSide_upload.js"></script>
+	<script src="/js/jquery-2.2.0.min.js"></script>
+	<br/>
+	<br/>
+	<p>Upload new version : </p>
+	<a id="progress"></a>
+	<br/>
+	<button id="upload-button" type="button">Choose files</button>
+	<input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
+{/eq}
 {> "views/footer.dust"/}

@@ -1,5 +1,0 @@
-Yo. Alors voici une petite liste de fonctions node.js dont j'aurais bien besoin :
-
-- Une fonction ajout/suppression de repos sur le dashboard de l'utilisateur que je puisse ajouter à un bouton
-- Une fonction qui renvoit les X derniers repos d'un utilisateur sous la forme d'un array dust à intégrer
-- Une fontion qui renvoit les X derniers repos favoris d'un utilisateur sous la forme d'un array dust à intégrer
