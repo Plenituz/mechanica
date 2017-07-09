@@ -18,6 +18,7 @@ const repoRouter = require('./repoRouter.js');
 const loginRouter = require('./loginRouter.js');
 const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
+const repoManagementRouter = require('./repoManagementRouter.js');
 
 const duster = require('duster');
 var doCache = false;//TODO quand on passe en prod faut changer ca
@@ -40,6 +41,11 @@ app.set('view engine', 'dust');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
 app.enable('trust proxy');
+
+/*app.use(function (req, res, next) {
+    console.log(req.method + ":" + req.url);
+    return next();
+});*/
 
 //the order of the middle wares is important
 //public files this must be first
@@ -85,7 +91,8 @@ loginRouter.forbidenNames = Object.assign({}, userRouter.staticPages, {
 	['login'] : "",
 	['logout'] : "",
 	['register'] : "",
-	['dashboard'] : ""
+	['dashboard'] : "",
+    ['createRepo'] : ""
 });
 
 passport.serializeUser(function(user_id, done){
@@ -107,6 +114,7 @@ passport.deserializeUser(function(userSession, done){
 //===INIT DB IF NECESSARY===//
 //db.initDB();
 
+
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)
@@ -121,6 +129,7 @@ app.get('/dashboard', function(req, res){
 		res.redirect('/');
 	}
 })
+app.use(repoManagementRouter)
 //this is for /login /register /logout
 app.use(loginRouter);
 //this has to be after the static, all non hard coded url end up here
@@ -132,9 +141,9 @@ app.use(repoRouter);
 app.use(userRouter);
 
 app.use(function(req, res, next){
-	//in case the user asked for an unset page
-	//console.log(req.method + ":" + req.url);
-	res.writeHead(200, {"Content-Type": "text/html"});
+    //in case the user asked for an unset page
+    console.log("end of chain");
+	res.writeHead(400, {"Content-Type": "text/html"});
     res.end('<p>404 not found, bitch</p>');
 });
 

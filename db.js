@@ -34,6 +34,7 @@ module.exports = {
 				name VARCHAR(40) NOT NULL,
 				location TINYTEXT NOT NULL,
 				creation_date DATE NOT NULL,
+                current_version INT UNSIGNED NOT NULL DEFAULT 0,
 				
 				PRIMARY KEY(repo_id),
 				INDEX ind_admin_id (admin_id),
@@ -147,7 +148,7 @@ module.exports = {
 			location = path.join(userReposPath, adminName, repoName, "current");
 			return Q.nfcall(mkdirp, location);
 		}).then(function(){
-			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW())";
+			let sql = "INSERT INTO repos VALUES(NULL, ?, ?, ?, NOW(), 0)";
 			//only save the root location (not the current version folder)
 			location = path.join(userReposPath, adminName, repoName);
 			return query(sql, [userId, repoName, location]);
@@ -301,9 +302,9 @@ module.exports = {
 		ORDER BY created_at DESC LIMIT ?`;
 		return query(q, [userName, repoName, limit])
 		.then(function(results){
-			if(results.length === 0){
+			/*if(results.length === 0){
 				throw new Error("can't get recent discussions: repo " + userName + "/" + repoName + " not found");
-			}
+			}*/
 			return results;
 		});
 	},
@@ -354,7 +355,7 @@ module.exports = {
 	
 	getRepoLocation : function(adminName, repoName){
 		let q = 
-		`SELECT repos.repo_id, repos.location FROM repos
+		`SELECT repos.repo_id, repos.location, repos.current_version FROM repos
 			INNER JOIN users
 				ON repos.admin_id = users.user_id
 		WHERE users.name = ? AND repos.name = ?`;
@@ -364,10 +365,18 @@ module.exports = {
 			if(results.length === 0 || results.length > 1){
 				throw new Error("repo " + adminName + "/" + repoName + " not found");
 			}else{
-				return [results[0].repo_id, results[0].location];
+				return [results[0].repo_id, results[0].location, results[0].current_version];
 			}
 		});
-	},
+    },
+
+    incrementVersion : function(repoId) {
+        let q =
+            `UPDATE repos 
+                SET current_version = current_version + 1
+                WHERE repo_id = ?`;
+        return query(q, repoId);
+    },
 	
 	getRepoId : function(adminName, repoName){
 		let sql = 

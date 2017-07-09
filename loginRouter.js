@@ -34,10 +34,8 @@ loginRouter.post('/register', function(req, res){
 
 	let handleError = function(err){
 		res.render(registerPage, {
-				req : req,
-				error : err,
-				username:req.body.username,
-				email:req.body.email
+				req: req,
+				error: err
 			});
 	};
 

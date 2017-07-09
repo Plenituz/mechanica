@@ -15,12 +15,12 @@
 
       <a>Nom d'utilisateur</a>
 
-      <input type="login_username" placeholder="Username" name="username" value="{username}"/>
+      <input type="login_username" placeholder="Username" name="username" value="{req.body.username}"/>
       </br></br>
 
       <a>Adresse mail</a>
 
-      <input type="login_email" placeholder="Adresse mail" name="email" value="{email}"/>
+      <input type="login_email" placeholder="Adresse mail" name="email" value="{req.body.email}"/>
       </br></br>
 
       <a>Mot de passe</a><b></b>

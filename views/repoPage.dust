@@ -6,8 +6,25 @@
   <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
   <br/>
 {/files}
-
+<br/>
 <a href="/{req.params.user}/{req.params.repo}?discussionList">click here to see discussions on this repo</a>
 
+{@eq key=req.params.user value=req.user.name}
+	{#req.query.newVersionError}
+		<p>Error: {.}</p>
+	{/req.query.newVersionError}
 
+	<a id="user" style="display:none">{req.user.name}</a>
+	<a id="repo" style="display:none">{req.params.repo}</a>
+
+	<script src="/js/clientSide_upload.js"></script>
+	<script src="/js/jquery-2.2.0.min.js"></script>
+	<br/>
+	<br/>
+	<p>Upload new version : </p>
+	<a id="progress"></a>
+	<br/>
+	<button id="upload-button" type="button">Choose files</button>
+	<input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
+{/eq}
 {> "views/footer.dust"/}
