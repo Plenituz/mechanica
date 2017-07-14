@@ -12,16 +12,6 @@
 {/eq}
 -->
 
-{@eq key=req.params.user value=req.user.name}
-	{#req.query.createRepoError}
-		<p>Error: {.}</p>
-	{/req.query.createRepoError}
-	<form method="POST" action="/createRepo">
-		<input placeholder="Repo name" name="reponame"/>
-		<button type="submit">create repo</button>
-	</form>
-{/eq}
-
 <div id="dashboard">
 
     <div id="profile">
@@ -36,41 +26,22 @@
     </div>
 
     <div id="repo_recent">
-      <p class="cat_header">Projets récents :</p>
+      <p class="cat_header">Projets récents</p>
 
-      <div id="repo_recent_bloc">
-        {#repos}
-          <a href="/{req.params.user}/{.}">{.}</a>
-          <br/>
-        {/repos}
-      </div>
-
-      <div id="repo_recent_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
-
-      <div id="repo_recent_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
-
-      <div id="repo_recent_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
+			{#repos}
+			<div id="repo_recent_bloc">
+				<a href="/{req.params.user}/{.}">{.}</a>
+				<div id="separation_H" style="width: 285px;"></div>
+				<br/>
+			</div>
+			{/repos}
 
     </div></br>
 
 
     <div id="msg">
-      <p class="cat_header">Messages :</p>
+      <a>Messages</a>
+			<div id="separation_H" style="width: 180px;"></div>
       <div id="msg_bloc">
         {#message_recent}
           <a href="/{username}/{message_recent}">{name}</a>
@@ -83,8 +54,14 @@
       </div>
     </div>
 
+		<div id="miscelanious">
+			<a>Statistiques</a>
+			<div id="separation_H" style="width: 180px;"></div>
+
+		</div>
+
     <div id="repo_favoris">
-      <p class="cat_header">Favoris :</p>
+      <p class="cat_header">Favoris</p>
       <div id="repo_favoris_bloc">
         {#repos}
           <a href="/{username}/{name}">{name}</a>
@@ -113,6 +90,16 @@
         {/repos}
       </div>
     </div>
+
+		{@eq key=req.params.user value=req.user.name}
+			{#req.query.createRepoError}
+				<p>Error: {.}</p>
+			{/req.query.createRepoError}
+			<form method="POST" action="/createRepo">
+				<input placeholder="Repo name" name="reponame"/>
+				<button type="submit">create repo</button>
+			</form>
+		{/eq}
 
 </div>
 

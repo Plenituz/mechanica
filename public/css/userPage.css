@@ -14,6 +14,7 @@
   display: inline-block;
   float: left;
   width: 200px;
+  height: auto;
   margin-right: 20px;
   background-color: #E0E0E0;
 }
@@ -46,7 +47,7 @@
 #repo_recent_bloc {
   display: inline-block;
   width: 288px;
-  height: 180px;
+  height: 182px;
   margin-left: 20px;
   margin-bottom: 20px;
   background-color: #E0E0E0;
@@ -56,22 +57,37 @@
 
 
 #msg {
-  display: inline-block;
-  float: left;
-  width: 200px;
+  position: absolute;
+  top: 472px;
+  width: 180px;
+  height: 170px;
+  padding: 10px;
   margin-right: 20px;
   padding-top: 10px;
   background-color: #E0E0E0;
 }
 
+#miscelanious {
+  display: inline-block;
+  float: left;
+  top: 725px;
+  width: 180px;
+  height: 170px;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #E0E0E0;
+}
+
 #msg_bloc {
-  margin:20px;
+  margin:10px;
 }
 
 #repo_favoris {
   display: inline-block;
+  float: left;
   width: 680px;
   height: 320px;
+  margin-bottom: 50px;
 }
 
 #repo_favoris_bloc {

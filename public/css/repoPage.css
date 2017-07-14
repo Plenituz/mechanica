@@ -1,17 +1,19 @@
 #repo_view{
-  width: 445px;
-  height: 300px;
+  width: 425px;
+  height: 280px;
+  padding: 10px;
   background-color: #E0E0E0;
   margin-right: 20px;
   display: inline-block;
-
 }
 
 #repo_list{
-  width: 445px;
-  height: 300px;
+  width: 425px;
+  height: 280px;
+  padding: 10px;
   background-color: #E0E0E0;
   display: inline-block;
+  float: right;
 }
 
 #repo_desc{
@@ -52,6 +54,4 @@
   height: 2px;
   margin-right: 10px;
   background-color: #555555;
-  display: inline-block;
-  float: right;
 }

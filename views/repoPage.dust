@@ -4,31 +4,40 @@
 
 <div id="content">
 
-{@eq key=req.params.user value=req.user.name}
-	{#req.query.newVersionError}
-		<p>Error: {.}</p>
-	{/req.query.newVersionError}
   <div id="repo_view">
+    <a>Aperçu</a>
+    <div id="separation_H" style="width: 420px;"></div>
   </div>
 
-	<a id="user" style="display:none">{req.user.name}</a>
-	<a id="repo" style="display:none">{req.params.repo}</a>
-
-	<script src="/js/clientSide_upload.js"></script>
-	<script src="/js/jquery-2.2.0.min.js"></script>
-	<br/>
-	<br/>
-	<p>Upload new version : </p>
-	<a id="progress"></a>
-	<br/>
-	<button id="upload-button" type="button">Choose files</button>
-	<input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
-{/eq}
   <div id="repo_list">
+
+    <a>Source</a>
+    <div id="separation_H" style="width: 420px;"></div>
+
     {#files}
       <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
       <br/>
     {/files}
+
+    {@eq key=req.params.user value=req.user.name}
+      {#req.query.newVersionError}
+        <p>Error: {.}</p>
+      {/req.query.newVersionError}
+
+      <a id="user" style="display:none">{req.user.name}</a>
+      <a id="repo" style="display:none">{req.params.repo}</a>
+
+      <script src="/js/clientSide_upload.js"></script>
+      <script src="/js/jquery-2.2.0.min.js"></script>
+      <br/>
+      <br/>
+      <p>Upload new version : </p>
+      <a id="progress"></a>
+      <br/>
+      <button id="upload-button" type="button">Choose files</button>
+      <input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
+    {/eq}
+
   </div>
 
   <div id="repo_desc">
@@ -50,7 +59,7 @@
 
       <div id="repo_desc_cat"><a>Manuel</a></div>
 
-      <div id="separation_H"></div>
+      <div id="separation_H" style="top: 0px; float: right;"></div>
 
     </div>
 
