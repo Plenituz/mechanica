@@ -35,13 +35,14 @@ repoManagementRouter.post('/createRepo', function (req, res) {
 ///
 ///this is probably the dirtiest piece of code I have ever written
 ///
+
 repoManagementRouter.post('/:user/:repo/newVersion', function (req, res) {
     return;
     if (!req.isAuthenticated()) {
         return next();
     }
     console.warn("post newversion");
-    
+
     var repoId, rootLocation, newlocation, currentVersion;
 
     let handleError = function (err) {
@@ -67,7 +68,7 @@ repoManagementRouter.post('/:user/:repo/newVersion', function (req, res) {
 
             fs.stat(newlocation, function (err, stats) {
                 if (err) {
-                    defer.resolve(true);                    
+                    defer.resolve(true);
                 } else {
                     defer.resolve(false);
                 }
@@ -106,7 +107,7 @@ repoManagementRouter.post('/:user/:repo/newVersion', function (req, res) {
             //increment the current version
             //rename current to the old version
             //and rename new to current
-            //dans cet ordre spécifique pour le error handling
+            //dans cet ordre spï¿½cifique pour le error handling
             console.warn("incrementing");
             return db.incrementVersion(repoId);
         })

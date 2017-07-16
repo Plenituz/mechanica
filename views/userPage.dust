@@ -15,10 +15,12 @@
 <div id="dashboard">
 
     <div id="profile">
-      <div id="profile_pic"><img src="/imgs/gaulle.jpg" width='160' height='160' /></div>
+      <div id="profile_pic"><img src="/imgs/8_bit_dodge.png" width='160' height='160' /></div>
       <div id="profile_status">
         <a>{req.user.name} </a>
 				<a> ({req.params.user})</a></br></br>
+        <div id="separation_H" style="width: 160px; height: 1px;"></div>
+        </br>
         <a>Là où j'opère, nombreuse seront les victimes,</br>que des numéros 10 dans ma team.</a></br></br>
         <a>Originaire de Gaulle</a></br></br>
         <a href="http://pedagogie.charles-de-gaulle.org/" class="link" target="_blank">www.francofrancais.org</a>
@@ -47,6 +49,7 @@
           <a href="/{username}/{message_recent}">{name}</a>
           <br/>
         {/message_recent}
+      </br>
         <a>1er msg recent</a></br></br>
         <a>2ème msg recent</a></br></br>
         <a>3ème msg recent</a></br></br>

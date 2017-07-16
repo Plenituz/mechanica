@@ -16,6 +16,37 @@
       <a class=foot_note>&nbsp;&nbsp;Ou <a href="../login"><b>connectez vous</b></a></a>
     </div>
 
+    <div id="whitepaper">
+      <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mechanica vous permet de partager des plans d'objets ainsi que leurs manuels de&nbsp;
+        conception avec le monde. Que vous soyez ingénieur, bricoleur du dimanche&nbsp;
+        ou véritable défenseur du libre et du DIY, Mechanica vous permet de reprendre&nbsp;
+        la main sur le monde matériel.</a>
+      </br></br></br></br>
+
+      <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;La philosophie de Mechanica est de rendre accessible à tous le génie&nbsp;
+        technique de l'humanité, qui est dans sa grande majorité concentré et exploité dans une optique commerciale.&nbsp;
+        Inspiré d'autres communautés en ligne de partage de connaissance, nous mettons un accent particulier sur la mise&nbsp;
+        en forme des manuels et des fichiers partagés, et ce afin de faciliter la compréhension et la diffusion du contenu:&nbsp;
+        Dans cette optique la forme devient aussi importante que le fond.</a>
+      </br></br></br></br>
+
+      <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous, les utilisateurs, êtes les garants de cette qualité de contenu que nous souhaitons. Un système de point&nbsp;
+      et de vote permet à chacun d'entre vous d'y participer. Plus vos actions contribuent à la communauté, plus vous gagnez&nbsp;
+      en réputation.
+      </br>
+    </br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous venez d'arriver ? Suivez le *guide*.</a>
+    </br></br></br></br>
+
+      <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Vous souhaitez construire votre maison et votre mobilier de vos propres mains, accéder à l'indépendance énergétique et&nbsp;
+      subvenir à vos besoins alimentaires ? Nous en rêvons. Tout est possible et avec un accès aux projets nécessaires et l'aide de la&nbsp;
+      communauté, vous pouvez y arriver. Vous ne pensez pas avoir assez de connaissances dans le domaine concerné ?&nbsp;
+      Pas de problèmes, des guides sur l'électricité, l'électronique, et les mesures de sécurité à prendre&nbsp;
+      vis à vis des machines outils sont disponibles, et plus encore.<a>
+
+
+
+    </div>
+
   </div>
 
 {> "views/footer.dust"/}

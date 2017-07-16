@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/userPage.css" />
 	<link rel="stylesheet" type="text/css" href="/css/repoPage.css" />
 	<link rel="stylesheet" type="text/css" href="/css/login.css" />
+	<link rel="stylesheet" type="text/css" href="/css/compte.css" />
 	<link rel="icon" type="/image/png" href="imgs/favicon." />
 	<title>OpenSourceHardware</title>
 </head>
@@ -16,7 +17,7 @@
 	<header>
 
 		<div id="logo">
-			<a href="/"><img src="/imgs/logo_70.png" /></a>
+			<a href="/"><img src="/imgs/logo_70.png" width="50px"/></a>
 		</div>
 
 		<div id="menu">

@@ -16,7 +16,9 @@
   width: 200px;
   height: auto;
   margin-right: 20px;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 
 #profile_pic {
@@ -24,6 +26,8 @@
   height: 160px;
   margin: 20px;
   margin-bottom: 40px;
+  border: 1px solid #A0A0A0;
+  border-radius: 3px;
 }
 
 #profile_status {
@@ -50,11 +54,11 @@
   height: 182px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
+  border: 1px solid black;
   padding: 10px;
+  border-radius: 3px;
 }
-
-
 
 #msg {
   position: absolute;
@@ -64,7 +68,9 @@
   padding: 10px;
   margin-right: 20px;
   padding-top: 10px;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 
 #miscelanious {
@@ -75,7 +81,9 @@
   height: 170px;
   margin-right: 20px;
   padding: 10px;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
 }
 
 #msg_bloc {
@@ -96,6 +104,8 @@
   height: 180px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #E0E0E0;
+  background-color: #F0F0F0;
+  border: 1px solid black;
   padding: 10px;
+  border-radius: 3px;
 }

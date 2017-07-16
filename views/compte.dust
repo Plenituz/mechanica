@@ -1,11 +1,47 @@
 {> "views/header.dust"/}
 
-  <div id="compte">
+  <div id="content">
 
-    <div id="slog">
-      <h1>Compte</h1>
-      <h2>Paramétres du compte, options d'affichages, sécurité, etc</h2>
+      <div id="compte_nav">
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+      </br>
+      </br>
+      </br>
+      </br>
+        <div id="separation_H" style="width: 200px; height: 1px;"></div>
+
     </div>
+
+    <div id="compte_content">
 
     </div>
 

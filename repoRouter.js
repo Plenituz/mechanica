@@ -27,7 +27,7 @@ repoRouter.get('/:user/:repo', function (req, res, next) {
 		db.getRepoLocation(req.params.user, req.params.repo)
 		.spread(function(repo_id, location){
 			let currentVersion = path.join(location, "current");
-			
+
 			return Q.nfcall(fs.readdir, currentVersion);
 		})
 		.then(function(files){
@@ -44,11 +44,11 @@ repoRouter.get('/:user/:repo', function (req, res, next) {
 });
 repoRouter.post('/:user/:repo', function(req, res, next){
 
-	if(req.isAuthenticated() && ("discussion_id" in req.query) 
+	if(req.isAuthenticated() && ("discussion_id" in req.query)
 		&& ("repoAdminName" in req.query) && ("repoName" in req.query) && ("content" in req.body)){
 		//this asks for a specific discussion
 
-		db.createMessageInDiscussion(req.body.content, req.user.name, 
+		db.createMessageInDiscussion(req.body.content, req.user.name,
 			req.query.repoAdminName, req.query.repoName, req.query.discussion_id)
 		.then(function(){
 			req.method = "GET";

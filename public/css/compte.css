@@ -1,0 +1,20 @@
+#compte_nav{
+  width: 200px;
+  height: 1000px;
+  display: inline-block;
+  float: left;
+  margin-bottom: 20px;
+  background-color: #F0F0F0;
+  border-right: 1px solid black;
+  padding: 10px;
+}
+
+#compte_content{
+  width: 610px;
+  height: 980px;
+  display: inline-block;
+  float: left;
+  background-color: #F0F0F0;
+  border-right: 1px solid black;
+  padding: 20px;
+}
