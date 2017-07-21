@@ -4,71 +4,64 @@
 
 <div id="content">
 
-{@eq key=req.params.user value=req.user.name}
-<!-- only visible if the user is on it's own page -->
-	{#req.query.newVersionError}
-		<p>Error: {.}</p>
-	{/req.query.newVersionError}
-  <div id="repo_view">
+  <div id="repo_header">
+    <a>Projet &nbsp;&nbsp;--- {req.params.repo} ---</a></br>
   </div>
 
-	<a id="user" style="display:none">{req.user.name}</a>
-	<a id="repo" style="display:none">{req.params.repo}</a>
-
-	<script src="/js/clientSide_upload.js"></script>
-	<script src="/js/jquery-2.2.0.min.js"></script>
-	<br/>
-	<br/>
-	<p>Upload new version : </p>
-	<a id="progress"></a>
-	<br/>
-	<button id="upload-button" type="button">Choose files</button>
-	<input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
-{/eq}
-
-{?req.user.name}
-<!-- only visible if the user is logged in -->
-<form method="POST" action="/{?isFav}removefav{:else}addfav{/isFav}">
-  <input style="display: none" name="user" value="{req.params.user}"/>
-  <input style="display: none" name="repo" value="{req.params.repo}"/>
-  <button type="submit">
-    {?isFav}
-      remove from fav
-    {:else}
-      add to fav
-    {/isFav}
-  </button>
-</form>
-{/req.user.name}
-
+  <div id="repo_view">
+    <a>Aperçu</a>
+    <div id="separation_H" style="width: 420px;"></div>
+  </div>
 
   <div id="repo_list">
-    {#files}
-      <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
-      <br/>
-    {/files}
+
+    <a>Source</a>
+    {@eq key=req.params.user value=req.user.name}
+      {#req.query.newVersionError}
+        <p>Error: {.}</p>
+      {/req.query.newVersionError}
+
+      <a id="user" style="display:none">{req.user.name}</a>
+      <a id="repo" style="display:none">{req.params.repo}</a>
+
+      <script src="/js/clientSide_upload.js"></script>
+      <script src="/js/jquery-2.2.0.min.js"></script>
+      <button id="upload_button" type="upload_button"><a>Nouveau fichier</a></button>
+      <input id="upload_input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
+    {/eq}
+    <div id="separation_H" style="width: 420px;"></div>
+    </br>
+
+    <div id="file_box">
+      {#files}
+        <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
+        <br/>
+        <div id="separation_H" style="width: 390px; height: 1px; margin: 2px; background-color: #C0C0C0;"></div>
+      {/files}
+    </div>
+
   </div>
 
   <div id="repo_desc">
     <div id="repo_desc_menu">
 
       <div id="repo_desc_cat"><a>Amélioration</a></div>
-      <div id="separation_V"></div>
+      <div id="separation_V" style="width: 1px;"></div>
 
       <div id="repo_desc_cat"><a>Matériel</a></div>
-      <div id="separation_V"></div>
+      <div id="separation_V" style="width: 1px;"></div>
 
       <div id="repo_desc_cat">
         <a href="/{req.params.user}/{req.params.repo}?discussionList">Discussion</a>
       </div>
-      <div id="separation_V"></div>
+      <div id="separation_V" style="width: 1px;"></div>
 
       <div id="repo_desc_cat"><a>Forum</a></div>
-      <div id="separation_V"></div>
+      <div id="separation_V" style="width: 1px;"></div>
 
       <div id="repo_desc_cat"><a>Manuel</a></div>
 
-      <div id="separation_H"></div>
+      <div id="separation_H" style="float: right; height: 1px;"></div>
 
     </div>
 

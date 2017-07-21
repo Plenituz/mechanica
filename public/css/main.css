@@ -25,9 +25,10 @@ a {
 
 header {
   position: relative;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
   border-bottom: solid #000000 1px;
-  height: 70px;
+  height: 30px;
   width: 100%;
   text-align: center;
 }
@@ -40,10 +41,14 @@ header {
 li {
   position: relative;
   margin-left: 50px;
-  left: 0px;
   font-size: 16px;
   list-style: none;
   display: inline-block;
+}
+
+ul{
+  margin: 8px;
+
 }
 
 #menu{
@@ -138,12 +143,20 @@ h3 {
   width: 100%;
 }
 
-#legal {  position:relative; left: 60px;}
+#legal{position:relative; left: 60px;}
 
-#misc { position: relative; left: 60px;}
+#misc{position: relative; left: 60px;}
 
 #centered_footer {
   width: 1000px;
   margin-left: auto;
   margin-right: auto;
+ }
+
+#whitepaper{
+  margin-top: 100px;
+  font-size: 20px;
+
+
+
  }

@@ -64,11 +64,11 @@ repoRouter.get('/:user/:repo', function (req, res, next) {
 //post handles the discussion creation
 repoRouter.post('/:user/:repo', function(req, res, next){
 
-	if(req.isAuthenticated() && ("discussion_id" in req.query) 
+	if(req.isAuthenticated() && ("discussion_id" in req.query)
 		&& ("repoAdminName" in req.query) && ("repoName" in req.query) && ("content" in req.body)){
 		//this asks for a specific discussion
 
-		db.createMessageInDiscussion(req.body.content, req.user.name, 
+		db.createMessageInDiscussion(req.body.content, req.user.name,
 			req.query.repoAdminName, req.query.repoName, req.query.discussion_id)
 		    .then(function(){
 			    req.method = "GET";
