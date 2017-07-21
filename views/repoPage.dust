@@ -5,6 +5,7 @@
 <div id="content">
 
 {@eq key=req.params.user value=req.user.name}
+<!-- only visible if the user is on it's own page -->
 	{#req.query.newVersionError}
 		<p>Error: {.}</p>
 	{/req.query.newVersionError}
@@ -24,6 +25,23 @@
 	<button id="upload-button" type="button">Choose files</button>
 	<input id="upload-input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
 {/eq}
+
+{?req.user.name}
+<!-- only visible if the user is logged in -->
+<form method="POST" action="/{?isFav}removefav{:else}addfav{/isFav}">
+  <input style="display: none" name="user" value="{req.params.user}"/>
+  <input style="display: none" name="repo" value="{req.params.repo}"/>
+  <button type="submit">
+    {?isFav}
+      remove from fav
+    {:else}
+      add to fav
+    {/isFav}
+  </button>
+</form>
+{/req.user.name}
+
+
   <div id="repo_list">
     {#files}
       <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>

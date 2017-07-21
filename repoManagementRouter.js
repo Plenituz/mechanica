@@ -6,7 +6,6 @@ const fs = require('fs');
 const fs_extra = require('fs-extra');
 const formidable = require('formidable');
 
-
 const repoManagementRouter = new express.Router();
 
 repoManagementRouter.post('/createRepo', function (req, res) {
@@ -50,6 +49,36 @@ repoManagementRouter.post('/deleteRepo', function (req, res) {
         .fail(function (err) {
             console.log("error deleting repo:" + err);
         })
+});
+
+repoManagementRouter.post('/addfav', function (req, res) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+    db.addToFav(req.user.name, req.body.user, req.body.repo)
+        .then(function () {
+            res.redirect('/' + req.body.user + '/' + req.body.repo);
+        })
+        .fail(function (err) {
+            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            console.log("error adding to fav :" + err);
+        });
+});
+
+repoManagementRouter.post('/removefav', function (req, res) {
+    if (!req.isAuthenticated()) {
+        res.redirect('/login');
+        return;
+    }
+    db.removeFromFav(req.user.name, req.body.user, req.body.repo)
+        .then(function () {
+            res.redirect('/' + req.body.user + '/' + req.body.repo);
+        })
+        .fail(function (err) {
+            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            console.log("error removing to fav :" + err);
+        });
 });
 
 ///

@@ -32,6 +32,7 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
 //TODO mot de passe oublié
 //la fonction createRepo est pas opti
+//changer le add to fav pour que ca refresh pas la page
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -42,10 +43,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', doCache);
 app.enable('trust proxy');
 
-/*app.use(function (req, res, next) {
-    console.log(req.method + ":" + req.url);
-    return next();
-});*/
+//app.use(function (req, res, next) {
+//    console.log(req.method + ":" + req.url);
+//    return next();
+//});
 
 //the order of the middle wares is important
 //public files this must be first
@@ -113,6 +114,8 @@ passport.deserializeUser(function(userSession, done){
 
 //===INIT DB IF NECESSARY===//
 //db.initDB();
+
+
 
 
 //	l'ordre est important ici // Accueil

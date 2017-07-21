@@ -18,26 +18,31 @@ userRouter.get("/:user", function (req, res, next) {
 		}
 		
 	} else {
-		
+        var repoList;
 		//check if the user exists before sending
 		db.doesUserExists(req.params.user)
-		.then(function(exists){
-			if(exists){
-				return db.getRecentRepos(req.params.user, 6);
-			}else{
-				throw new Error("user " + req.params.user + " doesn't exist");
-			}
-		})
-		.then(function(repoList){
-			res.render('userPage.dust', {
-					req: req,
-					repos: repoList
-				});
-		})
-		.fail(function(err){
-			console.log("error serving user page :" + err);
-			next();//go to 404 page
-		});
+	        .then(function(exists){
+		        if(exists){
+			        return db.getRecentRepos(req.params.user, 6);
+		        }else{
+			        throw new Error("user " + req.params.user + " doesn't exist");
+		        }
+	        })
+            .then(function (repo_list) {
+                repoList = repo_list;
+                return db.getFavoriteRepos(req.params.user, 4);
+            })
+            .then(function (favRepoList) {
+                res.render('userPage.dust', {
+                    req: req,
+                    repos: repoList,
+                    favRepos: favRepoList
+                });
+            })
+	        .fail(function(err){
+		        console.log("error serving user page :" + err);
+		        next();//go to 404 page
+	        });
 			
 	}
 });

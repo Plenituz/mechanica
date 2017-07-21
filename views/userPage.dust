@@ -50,10 +50,10 @@
       </div>
 
       <div id="repo_recent_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
+        {#favRepos}
+          <a href="/{req.params.user}/{.}">{.}</a>
           <br/>
-        {/repos}
+        {/favRepos}
       </div>
 
       <div id="repo_recent_bloc">

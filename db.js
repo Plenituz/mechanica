@@ -10,6 +10,18 @@ const saltRounds = 10;
 const DEBUG_QUERIES = true;//TODO change that when you go in prod
 const userReposPath = path.join(__dirname, "data", "userRepos");
 
+if (!String.prototype.format) {
+    String.prototype.format = function () {
+        var args = arguments;
+        return this.replace(/{(\d+)}/g, function (match, number) {
+            return typeof args[number] != 'undefined'
+                ? args[number]
+                : match
+                ;
+        });
+    };
+}
+
 module.exports = {
 	initDB : function(){
 		let instructions = [
@@ -38,7 +50,8 @@ module.exports = {
 				
 				PRIMARY KEY(repo_id),
 				INDEX ind_admin_id (admin_id),
-				INDEX ind_repo_name (name)
+				INDEX ind_repo_name (name),
+				UNIQUE KEY unik_admin_id_name (admin_id, name)
 			) CHARSET=utf8 ENGINE=INNODB;`, 
 			
 			`CREATE TABLE IF NOT EXISTS discussions(
@@ -65,22 +78,68 @@ module.exports = {
 				INDEX ind_creator_id (creator_id),
 				INDEX ind_hosting_discussion (hosting_discussion)
 			) ENGINE=INNODB CHARSET=utf8;`,
+
+            `CREATE TABLE IF NOT EXISTS favorite_repos(
+                favorite_repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                favoriteur_id INT UNSIGNED,
+                repo_id INT UNSIGNED,
+                fav_datetime DATETIME NOT NULL,
+
+                PRIMARY KEY(favorite_repo_id),
+                INDEX ind_favoriteur_id (favoriteur_id),
+                INDEX ind_repo_id (repo_id),
+                UNIQUE KEY unik_repo_id_favoriteur_id (repo_id, favoriteur_id)
+             ) CHARSET=utf8 ENGINE=INNODB;`,
 			
 			//WARNING the following "IF NOT EXISTS" part in foreign keys only works with mariadb 10.0.2 or later
-			"ALTER TABLE repos ADD CONSTRAINT fk_repos_admin_id FOREIGN KEY IF NOT EXISTS (admin_id)"
-				+ " REFERENCES users (user_id) ON DELETE CASCADE ON UPDATE CASCADE;",
+            `ALTER TABLE repos 
+            ADD CONSTRAINT fk_repos_admin_id
+                FOREIGN KEY IF NOT EXISTS (admin_id)
+                REFERENCES users (user_id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE;`,
 			
-			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_creator_id FOREIGN KEY IF NOT EXISTS (creator_id)"
-				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;",
+            `ALTER TABLE discussions 
+            ADD CONSTRAINT fk_discussion_creator_id
+                FOREIGN KEY IF NOT EXISTS (creator_id)
+                REFERENCES users (user_id)
+                ON DELETE SET NULL
+                ON UPDATE CASCADE;`,
 				
-			"ALTER TABLE discussions ADD CONSTRAINT fk_discussion_hosting_repo FOREIGN KEY IF NOT EXISTS (hosting_repo)" 
-				+ " REFERENCES repos (repo_id) ON DELETE CASCADE ON UPDATE CASCADE;",
+            `ALTER TABLE discussions 
+             ADD CONSTRAINT fk_discussion_hosting_repo
+                FOREIGN KEY IF NOT EXISTS (hosting_repo)
+                REFERENCES repos (repo_id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE;`,
 				
-			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_creator_id FOREIGN KEY IF NOT EXISTS (creator_id)"
-				+ " REFERENCES users (user_id) ON DELETE SET NULL ON UPDATE CASCADE;",
+            `ALTER TABLE discussion_messages 
+            ADD CONSTRAINT fk_discussion_messages_creator_id
+                FOREIGN KEY IF NOT EXISTS (creator_id)
+                REFERENCES users (user_id)
+                ON DELETE SET NULL
+                ON UPDATE CASCADE;`,
 				
-			"ALTER TABLE discussion_messages ADD CONSTRAINT fk_discussion_messages_hosting_discussion FOREIGN KEY IF NOT EXISTS (hosting_discussion)" 
-				+ "REFERENCES discussions (discussion_id) ON DELETE CASCADE ON UPDATE CASCADE;"	
+            `ALTER TABLE discussion_messages
+            ADD CONSTRAINT fk_discussion_messages_hosting_discussion
+                FOREIGN KEY IF NOT EXISTS (hosting_discussion) 
+                REFERENCES discussions (discussion_id) 
+                ON DELETE CASCADE
+                ON UPDATE CASCADE;`,
+
+            `ALTER TABLE favorite_repos
+             ADD CONSTRAINT fk_favorite_repos_favoriteur_id
+                FOREIGN KEY IF NOT EXISTS (favoriteur_id)
+                REFERENCES users (user_id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE`,
+
+            `ALTER TABLE favorite_repos
+            ADD CONSTRAINT fk_favorite_repos_repo_id
+                FOREIGN KEY IF NOT EXISTS (repo_id)
+                REFERENCES repos (repo_id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE`
 		];	
 		
 		console.log("start table creation");
@@ -195,9 +254,60 @@ module.exports = {
 			let q2 = "INSERT INTO discussion_messages VALUES(NULL, ?, ?, NOW(), ?)";
 			return query(q2, [content, creator_id, discussion_id]);
 		});
-	},
+    },
+
+    isRepoFav: function (connectedUserName, repoAdminName, repoName) {
+        let q =
+            `SELECT favorite_repo_id FROM favorite_repos
+             WHERE favoriteur_id = (SELECT user_id FROM users WHERE name = ?)
+                AND repo_id = 
+                (SELECT repo_id FROM repos 
+                    WHERE admin_id = (SELECT user_id FROM users WHERE name = ?)
+                        AND name = ?)`;
+        return query(q, [connectedUserName, repoAdminName, repoName])
+            .then(function (results) {
+                return results.length != 0;
+            });
+    },
+
+    getFavoriteRepos: function (userName, limit) {
+        let q =
+            `SELECT repos.name, favorite_repos.fav_datetime FROM repos 
+                INNER JOIN favorite_repos
+                    ON repos.repo_id = favorite_repos.repo_id
+            WHERE favorite_repos.favoriteur_id = (SELECT user_id FROM users WHERE name = ?)
+            ORDER BY favorite_repos.fav_datetime DESC LIMIT ?`;
+        return query(q, [userName, limit])
+            .then(function (results) {
+                var list = [];
+                results.forEach(row => {
+                    list.push(row.name.toString());
+                });
+                return list;
+            });
+    },
+
+    addToFav: function (favoriteurName, repoAdminName, repoName) {
+        let q =
+            `INSERT INTO favorite_repos VALUES(NULL, 
+                (SELECT user_id FROM users WHERE name = ?), 
+                (SELECT repo_id FROM repos 
+                    WHERE admin_id = (SELECT user_id FROM users WHERE name = ?)
+                        AND name = ?),
+                NOW())`;
+        return query(q, [favoriteurName, repoAdminName, repoName]);
+    },
+
+    removeFromFav: function (favoriteurName, repoAdminName, repoName) {
+        let q =
+            `DELETE FROM favorite_repos
+            WHERE favoriteur_id = (SELECT user_id FROM users WHERE name = ?)
+            AND repo_id = (SELECT repo_id FROM repos WHERE admin_id = (SELECT user_id FROM users WHERE name = ?)
+                                AND name = ?)`;
+        return query(q, [favoriteurName, repoAdminName, repoName]);
+    },
 	
-	createDiscussion : function(userName, repo, title, creatorName){
+    createDiscussion: function (userName, repo, title, creatorName) {
 		var repoId, creatorId;
 		
 		return getRepoId(userName, repo)
@@ -499,7 +609,7 @@ module.exports = {
 		}
 		
 		return promise;
-	}
+    }
 }
 //proxy for the overly used functions
 const query = module.exports.query;
