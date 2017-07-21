@@ -53,30 +53,30 @@ repoManagementRouter.post('/deleteRepo', function (req, res) {
 
 repoManagementRouter.post('/addfav', function (req, res) {
     if (!req.isAuthenticated()) {
-        res.redirect('/login');
+        res.status(400).send("not authenticated");
         return;
     }
     db.addToFav(req.user.name, req.body.user, req.body.repo)
         .then(function () {
-            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            res.status(200).send("favorite added");
         })
         .fail(function (err) {
-            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            res.status(400).send("error adding fav: " + err);
             console.log("error adding to fav :" + err);
         });
 });
 
 repoManagementRouter.post('/removefav', function (req, res) {
     if (!req.isAuthenticated()) {
-        res.redirect('/login');
+        res.status(400).send("not authenticated");
         return;
     }
     db.removeFromFav(req.user.name, req.body.user, req.body.repo)
         .then(function () {
-            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            res.status(200).send("favorite removed");
         })
         .fail(function (err) {
-            res.redirect('/' + req.body.user + '/' + req.body.repo);
+            res.status(400).send("error removing fav:" + err);
             console.log("error removing to fav :" + err);
         });
 });

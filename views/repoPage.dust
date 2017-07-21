@@ -32,17 +32,10 @@
 
     {?req.user.name}
     <!-- only visible if the user is logged in -->
-    <form method="POST" action="/{?isFav}removefav{:else}addfav{/isFav}">
-      <input style="display: none" name="user" value="{req.params.user}"/>
-      <input style="display: none" name="repo" value="{req.params.repo}"/>
-      <button type="submit">
-        {?isFav}
-          remove from fav
-        {:else}
-          add to fav
-        {/isFav}
-      </button>
-    </form>
+    <!-- fav button -->
+    <button id="addfavbut">{?isFav}remove from fav{:else}add to fav{/isFav}</button>
+    <div id="customData" data-isFaved="{?isFav}true{:else}false{/isFav}" data-user="{req.params.user}" data-repo="{req.params.repo}"/>
+    <script type="text/javascript" src="/js/repoPage_favBut.js"></script>
     {/req.user.name}
 
 
