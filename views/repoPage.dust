@@ -29,6 +29,23 @@
       <button id="upload_button" type="upload_button"><a>Nouveau fichier</a></button>
       <input id="upload_input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
     {/eq}
+
+    {?req.user.name}
+    <!-- only visible if the user is logged in -->
+    <form method="POST" action="/{?isFav}removefav{:else}addfav{/isFav}">
+      <input style="display: none" name="user" value="{req.params.user}"/>
+      <input style="display: none" name="repo" value="{req.params.repo}"/>
+      <button type="submit">
+        {?isFav}
+          remove from fav
+        {:else}
+          add to fav
+        {/isFav}
+      </button>
+    </form>
+    {/req.user.name}
+
+
     <div id="separation_H" style="width: 420px;"></div>
     </br>
 
