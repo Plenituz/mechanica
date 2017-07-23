@@ -32,7 +32,7 @@ var doCache = false;//TODO quand on passe en prod faut changer ca
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
 //TODO mot de passe oublié
 //la fonction createRepo est pas opti
-//changer le add to fav pour que ca refresh pas la page
+//prevent names and reponame with spaces
 
 const app = express();
 app.engine('dust', hoffman.__express());

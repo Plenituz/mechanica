@@ -2,7 +2,9 @@ var isfaved;
 var data = {};
 
 var addfavbut;
-window.onload = function(){
+
+window.addEventListener('load', onload, false);
+function onload(){
   addfavbut = document.getElementById("addfavbut");
   addfavbut.addEventListener('click', clickAddFav, false);
 
@@ -22,7 +24,7 @@ function clickAddFav(){
   xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
   xhr.onreadystatechange = function (oEvent) {
-    console.log("readyStatechanged");
+    //console.log("readyStatechanged");
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           isfaved = !isfaved;
@@ -39,5 +41,5 @@ function clickAddFav(){
 
   // send the collected data as JSON
   xhr.send(JSON.stringify(data));
-  console.log("sent");
+  //console.log("sent");
 }

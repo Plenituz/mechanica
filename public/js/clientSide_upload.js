@@ -2,19 +2,18 @@ var uploadInput;
 var uploadButton;
 var progress;
 
-window.onload = function () {
-    uploadInput = document.getElementById('upload-input');
-    uploadButton = document.getElementById('upload-button');
+window.addEventListener('load', onload, false);
+function onload() {
+    uploadInput = document.getElementById('upload_input');
+    uploadButton = document.getElementById('upload_button');
     progress = document.getElementById('progress');
 
     uploadButton.addEventListener('click', clickUpload, false);
     uploadInput.addEventListener('change', uploadInputChanged, false);
-};
-
-
+    
+}
 
 function clickUpload() {
-   // console.log("click");
     uploadInput.click();
     progress.textContent = "";
 }
@@ -57,6 +56,7 @@ function uploadInputChanged() {
             error: uploadError,
             success: function (data) {
                 progress.textContent = "success!";
+                location.reload();
             },
             xhr: function () {
                 let xhr = new XMLHttpRequest();

@@ -81,115 +81,138 @@ repoManagementRouter.post('/removefav', function (req, res) {
         });
 });
 
-///
-///this is probably the dirtiest piece of code I have ever written
-///
-
 repoManagementRouter.post('/:user/:repo/newVersion', function (req, res) {
-    return;
     if (!req.isAuthenticated()) {
-        return next();
+        res.status(400).send("can't create new version you are not authenticated");
+        return;
     }
-    console.warn("post newversion");
 
-    var repoId, rootLocation, newlocation, currentVersion;
-
-    let handleError = function (err) {
-        console.warn("error:" + err);
-
-        fs_extra.remove(newlocation, function (err) {
-            if (err) {
-                console.warn("error while clening up error, couldn't delete " + newlocation);
-            }
-            console.warn("sending 400");
-            res.status(400).send("");
-        });
-    }
-    return;
+    var repoId, repoRootLocation, repoNewLocation, repoCurrentVersion;
     db.getRepoLocation(req.user.name, req.params.repo)
         .spread(function (repo_id, repoLocation, current_version) {
+            console.log("got repo root location :" + repoLocation);
             repoId = repo_id;
-            currentVersion = current_version;
-            rootLocation = repoLocation;
-            newlocation = path.join(repoLocation, "new");
+            repoRootLocation = repoLocation;
+            repoCurrentVersion = current_version;
+            repoNewLocation = path.join(repoRootLocation, "new");
 
-            let defer = Q.defer();
-
-            fs.stat(newlocation, function (err, stats) {
-                if (err) {
-                    defer.resolve(true);
-                } else {
-                    defer.resolve(false);
-                }
-            });
-
-            return defer.promise;
+            console.log("checking if " + repoNewLocation + " exists");
+            return folderExists(repoNewLocation);
         })
-        .then(function (shouldCreate) {
-            if (shouldCreate) {
-                console.warn("creating new dir");
-                return Q.nfcall(fs.mkdir, newlocation);
+        .then(function (newFolderExists) {
+            //create the "new" folder if it's not already their, if it is remove it and recreate it
+            if (!newFolderExists) {
+                console.log(repoNewLocation + " didn't exist, creating it");
+                return Q.nfcall(fs.mkdir, repoNewLocation);
+            } else {
+                console.log(repoNewLocation + " did exist, deleting and recreating");
+                return Q.nfcall(fs_extra.remove, repoNewLocation)
+                    .then(function () {
+                        console.log(repoNewLocation + " deleted, recreating");
+                        return Q.nfcall(fs.mkdir, repoNewLocation);
+                    });
             }
         })
         .then(function () {
-            let defer = Q.defer();
-
-            let form = new formidable.IncomingForm();
-            form.multiples = true;
-            form.uploadDir = newlocation;
-
-            form.on('file', function (field, file) {
-                fs.rename(file.path, path.join(form.uploadDir, file.name));
-            });
-            form.on('error', function (err) {
-                defer.reject(err);
-            });
-            form.on('end', function () {
-                defer.resolve();
-            });
-            form.parse(req);
-
-            return defer.promise;
+            //here you are sure to have a "new" folder that is empty
+            console.log("new folder should be good");
+            return receiveFile(req, repoNewLocation);
         })
         .then(function () {
-            //succefully uploaded files
-            //increment the current version
-            //rename current to the old version
-            //and rename new to current
-            //dans cet ordre sp�cifique pour le error handling
-            console.warn("incrementing");
+            console.log("files should be received, renaming current to v" + repoCurrentVersion);
+            return renameFile(path.join(repoRootLocation, "current"), path.join(repoRootLocation, "v" + repoCurrentVersion));
+            //if this fails then just remove new 
+        })
+        .catch(function (err) {
+            //if this fails you should just remove the new folder
+            console.log("error receiving file or renaming current:" + err);
+
+            fs_extra.remove(repoNewLocation, function (err) {
+                console.error("error removing new in " + repoRootLocation + ", no big deal");
+            });
+
+            return Promise.reject("error receiving file");
+        })
+        .then(function () {
+            console.log("current renamed, renaming new to current");
+            return renameFile(repoNewLocation, path.join(repoRootLocation, "current"));
+        })
+        .catch(function (err) {
+            console.log("error renaming new to current, removing new and renaming v" + repoCurrentVersion + " to current");
+            return renameFile(path.join(repoRootLocation, "v" + repoCurrentVersion),
+                path.join(repoRootLocation, "current"))
+                .done(function () {
+                    console.log("renamed v to current, removing new");
+                    return Q.nfcall(fs_extra.remove, repoNewLocation);
+                })
+                .fin(function () {
+                    //console.log("rejecting");
+                    //the log doesn't work but the reject does
+                    return Promise.reject(err);
+                });
+        })
+        .then(function () {
+            console.log("everything should be good, incrementing version in db");
             return db.incrementVersion(repoId);
         })
         .then(function () {
-            //rename current to vX X being the currentVersion-1 (since we just incremented it)
-            console.warn("renaming current to v");
-            return Q.nfcall(fs.rename, path.join(rootLocation, "current"), path.join(rootLocation, "v" + currentVersion));
+            res.status(200).send("version updated");
         })
-        .then(function () {
-            console.warn("to the end");
-            fs.rename(newlocation, path.join(rootLocation, "current"), function (err) {
-                console.warn("rename callback");
-                if (err) {
-                    console.warn("something went wrong while renaming new to current, reversing the last version to current in " + rootLocation + ":");
-                    console.warn(err);
-
-                    //try to rename the vX folder back to current
-                    fs.rename(path.join(rootLocation, "v" + currentVersion), path.join(rootLocation, "current"), function (err) {
-                        if (err) {
-                            console.warn("something went HORRIBLY WRONG, could'nt recover from not being able to rename new to current in " + rootLocation + ":");
-                            console.warn(err);
-                            throw new Error("something horrible happened");
-                        } else {
-                            throw new Error("their was an error on our server, sorry !");
-                        }
-                    });
-                } else {
-                    res.status(200).send("");
-                }
-            });
-        })
-        .fail(handleError)
-        .fin(() => { console.log("end of callalala");})
+        .fail(function (err) {
+            console.log("error updating version on " + req.user.name + "/" + req.params.repo + ": " + err);
+            res.status(400).send(err);
+        });
 });
+
+function renameFile(from, to) {
+    let defer = Q.defer();
+
+    fs.rename(from, to, function (err) {
+        if (err) {
+            defer.reject(err);
+        } else {
+            defer.resolve();
+        }
+    });
+
+    return defer.promise;
+}
+
+function receiveFile(req, uploadLocation) {
+    let defer = Q.defer();
+
+    let form = new formidable.IncomingForm();
+    form.multiples = true;
+    form.uploadDir = uploadLocation;
+
+    form.on('file', function (field, file) {
+        //when the file is received, rename it 
+        fs.rename(file.path, path.join(form.uploadDir, file.name));
+    });
+    form.on('error', function (err) {
+        defer.reject(err);
+    });
+    form.on('end', function () {
+        defer.resolve();
+    });
+    form.parse(req);
+
+    return defer.promise;
+}
+
+//check if a folder exists, not tested for files but should work too
+function folderExists(fullPath) {
+    let defer = Q.defer();
+
+    fs.access(fullPath, function (err) {
+        if (err) {
+            defer.resolve(false);
+        } else {
+            defer.resolve(true);
+        }
+    });
+
+    return defer.promise;
+}
 
 module.exports = repoManagementRouter;
