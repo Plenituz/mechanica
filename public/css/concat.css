@@ -1,0 +1,490 @@
+#compte_nav{
+  width: 200px;
+  height: 1000px;
+  display: inline-block;
+  float: left;
+  margin-bottom: 20px;
+  background-color: #F0F0F0;
+  border-right: 1px solid black;
+  padding: 10px;
+}
+
+#compte_content{
+  width: 610px;
+  height: 980px;
+  display: inline-block;
+  float: left;
+  background-color: #F0F0F0;
+  border-right: 1px solid black;
+  padding: 20px;
+}
+#gettin_slog {
+  position: relative;
+  width: 500px;
+  top: 120px;
+  left: 180px;
+  font-size: 25px;
+  text-align: center;
+}
+
+#login_box {
+  position: relative;
+  padding: 25px;
+  padding-bottom: 20px;
+  width: 275px;
+  left: 250px;
+  top: -100px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 80px;
+  border: solid black 1px;
+  border-radius: 5px;
+  background-color: #DAE7FF;
+}
+
+#register_box {
+  position: relative;
+  padding: 25px;
+  padding-bottom: 20px;
+  width: 275px;
+  left: 250px;
+  top: -150px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 80px;
+  border: solid black 1px;
+  border-radius: 5px;
+  background-color: #DAE7FF;
+}
+
+#getin_sub_box > p {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  top: 8px;
+  color: #FFFFFF;
+  font-size: 25px;
+}
+
+#getin_sub_box{
+  position: relative;
+  width: 275px;
+  height: 40px;
+  border: solid #18469E 1px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px;
+}
+
+#getin_sub_box.clickme {
+  background-color: #18469E;
+  border: solid #FFFFFF 3px;
+  margin-bottom: 3px;
+}
+
+input[type=login_email], input[type=password], input[type=login_username]  {
+  position: relative;
+  width: 260px;
+  height: 40px;
+  border: solid #18469E 1px;
+  border-radius: 5px;
+  background-color: #FFFFFF;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  padding-left: 10px;
+  font:small-caption;
+}
+
+button[type=login_submit], button[type=register_submit] {
+  position: relative;
+  width: 275px;
+  height: 50px;
+  border: solid #FFFFFF 3px;
+  border-radius: 5px;
+  background-color: #18469E;
+  margin-bottom: 3px;
+  margin-top: 3px;
+  padding-left: 10px;
+}
+
+button[type=login_submit] > p, button[type=register_submit] > p {
+  position: relative;
+  text-align: center;
+  margin: auto;
+  top: 0px;
+  color: #FFFFFF;
+  font-size: 20px;
+}
+@font-face {
+    src: url('./font/raleway/Raleway-Light.ttf') format('truetype');
+    font-family: 'Raleway-Light';
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  position: relative;
+  margin-top: 0px;
+  background-color: #EFEFEF;
+  font-family: "Light", Arial;
+}
+
+b {
+  font-size: 12px;
+  color: #18469E;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+
+}
+
+header {
+  position: relative;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: solid #000000 1px;
+  height: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+#header a {
+  text-decoration: none;
+  font-size: 15px;
+}
+
+li {
+  position: relative;
+  margin-left: 50px;
+  font-size: 16px;
+  list-style: none;
+  display: inline-block;
+}
+
+ul{
+  margin: 8px;
+
+}
+
+#menu{
+  display: inline-block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  top: 10px;
+  width: 1000px;
+  height: 70px;
+}
+
+#logo {
+  position: absolute;
+  z-index: 1;
+  left: 175px;
+}
+
+
+#content{
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  width: 910px;
+}
+
+#slog {
+  position: relative;
+  left: 0px;
+  top: -10px;
+  line-height: 100%;
+  margin-top: 60px;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 50px;
+  text-align: center;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 30px;
+  text-align: center;
+  color: #333333;
+}
+
+h3 {
+  font-weight: normal;
+  font-size: 25px;
+}
+
+#video_prez {
+  margin: auto;
+  width: 490px;
+  height: 270px;
+  margin-bottom: 30px;
+}
+
+#iwannagetin {
+  position: relative;
+  width: 282px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.foot_note {
+  position: relative;
+  font-size: 11px;
+  width: 80px;
+  text-align: center;
+  color: Black;
+}
+
+.label_link {
+  margin-top: -400px;
+  margin-left: 150px;
+}
+
+.link {
+  color: #0055FF;
+}
+
+#footer{
+  position: relative;
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 140px;
+  border-top: solid #000000 1px;
+  width: 100%;
+}
+
+#legal{position:relative; left: 60px;}
+
+#misc{position: relative; left: 60px;}
+
+#centered_footer {
+  width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+ }
+
+#whitepaper{
+  margin-top: 100px;
+  font-size: 20px;
+
+
+
+ }
+#repo_header{
+  width: auto;
+  height: auto;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 3px;
+}
+
+#repo_view{
+  width: 423px;
+  height: 278px;
+  padding: 10px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  margin-right: 20px;
+  border-radius: 3px;
+  display: inline-block;
+}
+
+#repo_list{
+  width: 423px;
+  height: 278px;
+  padding: 10px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  display: inline-block;
+  float: right;
+  border-radius: 3px;
+}
+
+#repo_desc{
+  width: 908px;
+  height: 300px;
+  margin-top: 15px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+#repo_desc_menu {
+  width: 900px;
+  height: 30px;
+}
+
+#repo_desc_cat {
+  position: relative;
+  height: 20px;
+  margin: 20px;
+  margin-top: 17px;
+  margin-bottom: 5px;
+  display: inline-block;
+  float: right;
+}
+
+#separation_V {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  top: 13px;
+  background-color: #555555;
+  display: inline-block;
+  float: right;
+}
+
+#separation_H {
+  position: relative;
+  width: 520px;
+  height: 2px;
+  margin-right: 10px;
+  background-color: #555555;
+}
+
+#file_box{
+  width: 398px;
+  height: 220px;
+  padding: 10px;
+  background-color: #EFEFEF;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+button[type=upload_button]{
+  position: relative;
+  width: 100px;
+  height: 20px;
+  display: inline-block;
+  float: right;
+  background-color: #555555;
+  border: 1px solid #EFEFEF;
+  border-radius: 3px;
+  padding-bottom: 4px;
+}
+
+button[type=upload_button]>a{
+  font-size: 12px;
+  color: #EFEFEF;
+}
+#dashboard {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10px;
+  width: 910px;jhg
+}
+
+#dashboard a {
+  font-size: 15px;
+}
+
+#profile {
+  display: inline-block;
+  float: left;
+  width: 200px;
+  height: auto;
+  margin-right: 20px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+#profile_pic {
+  width: 160px;
+  height: 160px;
+  margin: 20px;
+  margin-bottom: 40px;
+  border: 1px solid #A0A0A0;
+  border-radius: 3px;
+}
+
+#profile_status {
+  width: 160px;
+  height: 212px;
+  margin: 20px;
+}
+
+.cat_header {
+  margin: 0px;
+  margin-bottom: 5px;
+  margin-left: 20px;
+  font-size: 20px;
+}
+
+#repo_recent {
+  display: inline-block;
+  width: 680px;
+}
+
+#repo_recent_bloc {
+  display: inline-block;
+  width: 288px;
+  height: 182px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+#msg {
+  position: absolute;
+  top: 472px;
+  width: 180px;
+  height: 170px;
+  padding: 10px;
+  margin-right: 20px;
+  padding-top: 10px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+#miscelanious {
+  display: inline-block;
+  float: left;
+  top: 725px;
+  width: 180px;
+  height: 170px;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+#msg_bloc {
+  margin:10px;
+}
+
+#repo_favoris {
+  display: inline-block;
+  float: left;
+  width: 680px;
+  height: 320px;
+  margin-bottom: 50px;
+}
+
+#repo_favoris_bloc {
+  display: inline-block;
+  width: 288px;
+  height: 180px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  background-color: #F0F0F0;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 3px;
+}

@@ -7,6 +7,10 @@ const favicon = require('serve-favicon');
 const hoffman = require('hoffman');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
+const uglify = require("uglify-js");
+const chokidar = require('chokidar');
+const concat = require('concat-files');
+const async = require('async');
 //auth
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -20,8 +24,42 @@ const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 const repoManagementRouter = require('./repoManagementRouter.js');
 
-const duster = require('duster');
 var doCache = false;//TODO quand on passe en prod faut changer ca
+
+//File & Dir watcher // For css concat on the fly
+//Watcher parameter
+var paths = 'public/css/';
+var log = console.log.bind(console);
+var watcher = chokidar.watch(paths, {
+  ignored: /(^|[\/\\])\../[paths + 'concat.css'],
+	ignoreInitial: true,
+  persistent: true,
+	awaitWriteFinish: true,
+	usePolling: true,
+  interval: 100,
+  binaryInterval: 100
+});
+
+function goconcat() {
+  log('Css files have been modified. New concat ...');
+  fs.unlink(paths + 'concat.css', function (err) {
+    if (err) throw err;
+    fs.readdir(paths, function (err, files) {
+        if (err) throw err;
+        var list = files.map(function (files) {
+            return path.join(paths, files);
+        });
+        setTimeout(function() {
+          concat(list, paths + 'concat.css',  function(err) {
+            if (err) throw err
+        })}, 1000);
+    });
+  });
+}
+
+watcher //Watcher events
+  .on('ready',() => log('Initial scan complete. Chokidar ready for changes'))
+  .on('change', goconcat)
 
 //TODO faire un package.json pour les nodes modules
 //TODO quand tu fait npm install faut le faire sur la vm direct
@@ -151,9 +189,11 @@ app.use(function(req, res, next){
     res.end('<p>404 not found, bitch</p>');
 });
 
+var ip = require('ip');
+var ipadress = ip.address();
 var server = app.listen(3000, "127.0.0.1",
     function () {
-        console.log("server running at " + server.address().address + " on port " + server.address().port);
+        console.log("Server running from " + ipadress + " on port " + server.address().port);
 });
 
 // Simple route middleware to ensure user is authenticated.

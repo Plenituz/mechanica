@@ -3,11 +3,11 @@
 
 <head>
 	<meta name="description" content="OpenSourceHardware"/>
-	<link rel="stylesheet" type="text/css" href="/css/main.css" />
-	<link rel="stylesheet" type="text/css" href="/css/userPage.css" />
+	<link rel="stylesheet" type="text/css" href="/css/concat.css" />
+	<!--<link rel="stylesheet" type="text/css" href="/css/userPage.css" />
 	<link rel="stylesheet" type="text/css" href="/css/repoPage.css" />
 	<link rel="stylesheet" type="text/css" href="/css/login.css" />
-	<link rel="stylesheet" type="text/css" href="/css/compte.css" />
+	<link rel="stylesheet" type="text/css" href="/css/compte.css" /> -->
 	<link rel="icon" type="/image/png" href="imgs/favicon." />
 	<title>OpenSourceHardware</title>
 </head>

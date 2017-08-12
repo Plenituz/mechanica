@@ -67,7 +67,7 @@
       <p class="cat_header">Favoris</p>
       <div id="repo_favoris_bloc">
         {#favRepos}
-          <a href="/{req.params.user}/{.}">{.}</a> 
+          <a href="/{req.params.user}/{.}">{.}</a>
           <br/>
         {/favRepos}
       </div>
