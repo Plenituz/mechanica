@@ -1,34 +1,38 @@
 {> "views/header.dust"/}
 
-<div id=gettin_slog>
-  <h1>Mechanica</h1>
-  <a>Créer, innovez, partagez et reprenez le contrôle sur le monde matériel !</a>
-</div>
+<div id="content">
 
-<div id="login_box">
+  <div id=gettin_slog>
+    <h1>Mechanica</h1>
+    <a>Créer, innovez, partagez et reprenez le contrôle sur le monde matériel !</a>
+  </div>
 
-  {#error}
-  <p>Error: {.msg}</p>
-  {/error}
+  <div id="login_box">
 
-  <form method="POST" action="login{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
+    {#error}
+    <p>Error: {.msg}</p>
+    {/error}
 
-    <a>Nom d'utilisateur ou adresse mail</a>
+    <form method="POST" action="login{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
 
-    <input type="login_email" placeholder="Nom d'utilisateur" name="username"/>
-    </br></br>
+      <a>Nom d'utilisateur ou adresse mail</a>
 
-    <a>Mot de passe</a>
+      <input type="login_email" placeholder="Nom d'utilisateur" name="username"/>
+      </br></br>
 
-    <input type="password" placeholder="Mot de passe" name="password"/>
-    <b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
-    </br></br>
+      <a>Mot de passe</a>
 
-    <button type="login_submit"><p>Connection</p></button>
-    <a class=foot_note>&nbsp;&nbsp;Ou <a href="../register"><b>Inscrivez vous</b></a></a>
+      <input type="password" placeholder="Mot de passe" name="password"/>
+      <b><a class="label_link" href="../forgoten">Mot de passe oublié ?</a></b>
+      </br></br>
+
+      <button type="login_submit"><p>Connection</p></button>
+      <a class=foot_note>&nbsp;&nbsp;Ou <a href="../register"><b>Inscrivez vous</b></a></a>
 
 
-  </form>
+    </form>
+
+  </div>
 
 </div>
 

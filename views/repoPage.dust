@@ -4,16 +4,27 @@
 
 <div id="content">
 
-  <div id="repo_header">
+  <div id="repo_header" class="background_color">
     <a>Projet &nbsp;&nbsp;--- {req.params.repo} ---</a></br>
+
+    <!--<div id="fav_button">-->
+        {?req.user.name}
+        <!-- only visible if the user is logged in -->
+        <!-- fav button -->
+        <button id="addfavbut" type="fav_button">{?isFav}Supprimer des favoris{:else}Ajouter aux favoris{/isFav}</button>
+        <div id="customData" data-isFaved="{?isFav}true{:else}false{/isFav}" data-user="{req.params.user}" data-repo="{req.params.repo}"/></div>
+        <script type="text/javascript" src="/js/repoPage_favBut.js"></script>
+        {/req.user.name}
+    <!--</div>-->
+
   </div>
 
-  <div id="repo_view">
+  <div id="repo_view" class="background_color">
     <a>Aperçu</a>
     <div id="separation_H" style="width: 420px;"></div>
   </div>
 
-  <div id="repo_list">
+  <div id="repo_list" class="background_color">
 
     <a>Source</a>
     {@eq key=req.params.user value=req.user.name}
@@ -33,19 +44,10 @@
       <a id="progress"/>
     {/eq}
 
-    {?req.user.name}
-    <!-- only visible if the user is logged in -->
-    <!-- fav button -->
-    <button id="addfavbut">{?isFav}remove from fav{:else}add to fav{/isFav}</button>
-    <div id="customData" data-isFaved="{?isFav}true{:else}false{/isFav}" data-user="{req.params.user}" data-repo="{req.params.repo}"/>
-    <script type="text/javascript" src="/js/repoPage_favBut.js"></script>
-    {/req.user.name}
-
-
     <div id="separation_H" style="width: 420px;"></div>
     </br>
 
-    <div id="file_box">
+    <div id="file_box" class="background_color">
       {#files}
         <a href="/{req.params.user}/{req.params.repo}/{.}">{.}</a>
         <br/>
@@ -55,32 +57,27 @@
 
   </div>
 
-  <div id="repo_desc">
-    <div id="repo_desc_menu">
+  <div id="repo_desc" class="background_color">
+      <div id="repo_desc_menu">
 
-      <div id="repo_desc_cat"><a>Amélioration</a></div>
-      <div id="separation_V" style="width: 1px;"></div>
+        <div id="repo_desc_cat"><a>Amélioration</a></div>
+        <div id="separation_V" style="width: 1px;"></div>
 
-      <div id="repo_desc_cat"><a>Matériel</a></div>
-      <div id="separation_V" style="width: 1px;"></div>
+        <div id="repo_desc_cat"><a>Matériel</a></div>
+        <div id="separation_V" style="width: 1px;"></div>
 
-      <div id="repo_desc_cat">
-        <a href="/{req.params.user}/{req.params.repo}?discussionList">Discussion</a>
+        <div id="repo_desc_cat">
+          <a href="/{req.params.user}/{req.params.repo}?discussionList">Discussion</a>
+        </div>
+        <div id="separation_V" style="width: 1px;"></div>
+
+        <div id="repo_desc_cat"><a>Forum</a></div>
+        <div id="separation_V" style="width: 1px;"></div>
+
+        <div id="repo_desc_cat"><a>Manuel</a></div>
+
+        <div id="separation_H" style="float: right; height: 1px;"></div>
       </div>
-      <div id="separation_V" style="width: 1px;"></div>
-
-      <div id="repo_desc_cat"><a>Forum</a></div>
-      <div id="separation_V" style="width: 1px;"></div>
-
-      <div id="repo_desc_cat"><a>Manuel</a></div>
-
-      <div id="separation_H" style="float: right; height: 1px;"></div>
-
-    </div>
-
-  <div id=""></div>
-
-
   </div>
 
 </div>

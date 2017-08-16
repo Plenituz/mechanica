@@ -1,40 +1,44 @@
 {> "views/header.dust"/}
 
-<div id=gettin_slog>
-  <h1>Mechanica</h1>
-  <a>Rejoignez notre communauté et participez</br>au dévellopement du hardware libre !</a>
-</div>
+<div id="content">
 
-<div id="register_box">
+  <div id=gettin_slog>
+    <h1>Mechanica</h1>
+    <a>Rejoignez notre communauté et participez</br>au dévellopement du hardware libre !</a>
+  </div>
 
-    {#error}
-    <p>Error: {.msg}</p>
-    {/error}
+  <div id="register_box">
 
-    <form method="POST" action="register{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
+      {#error}
+      <p>Error: {.msg}</p>
+      {/error}
 
-      <a>Nom d'utilisateur</a>
+      <form method="POST" action="register{#req.query.redirect}?redirect={req.query.redirect}{/req.query.redirect}">
 
-      <input type="login_username" placeholder="Username" name="username" value="{req.body.username}"/>
-      </br></br>
+        <a>Nom d'utilisateur</a>
 
-      <a>Adresse mail</a>
+        <input type="login_username" placeholder="Username" name="username" value="{req.body.username}"/>
+        </br></br>
 
-      <input type="login_email" placeholder="Adresse mail" name="email" value="{req.body.email}"/>
-      </br></br>
+        <a>Adresse mail</a>
 
-      <a>Mot de passe</a><b></b>
+        <input type="login_email" placeholder="Adresse mail" name="email" value="{req.body.email}"/>
+        </br></br>
 
-      <input type="password" placeholder="Mot de passe" name="password"/>
-      <input type="password" placeholder="Confirmer le mot de passe" name="password_conf"/>
-      <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
+        <a>Mot de passe</a><b></b>
 
-      <button type="register_submit"><p>Inscription</p></button>
-      <a class=foot_note>&nbsp;&nbsp;Ou <a href="../login"><b>Connectez vous</b></a></a></br></br>
-      <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
-        &nbsp;politique</br>de confidentialité.</a>
+        <input type="password" placeholder="Mot de passe" name="password"/>
+        <input type="password" placeholder="Confirmer le mot de passe" name="password_conf"/>
+        <a class=foot_note>Utilisez au moins une lettre, un nombre,</br>et 8 caractères.</br></br></a>
 
-    </form>
+        <button type="register_submit"><p>Inscription</p></button>
+        <a class=foot_note>&nbsp;&nbsp;Ou <a href="../login"><b>Connectez vous</b></a></a></br></br>
+        <a class=foot_note>En cliquant sur "Inscription", vous acceptez les conditions d'utilisations ainsi que notre
+          &nbsp;politique</br>de confidentialité.</a>
+
+      </form>
+
+  </div>
 
 </div>
 

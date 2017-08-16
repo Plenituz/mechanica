@@ -14,13 +14,13 @@
 
 <body>
 
-	<header>
-
-		<div id="logo">
-			<a href="/"><img src="/imgs/logo_70.png" width="50px"/></a>
-		</div>
+	<header class="background_color">
 
 		<div id="menu">
+
+			<div id="logo">
+				<a href="/"><img src="/imgs/logo_70.png" width="50px"/></a>
+			</div>
 
 			<ul>
 

@@ -8,7 +8,7 @@
 body {
   position: relative;
   margin-top: 0px;
-  background-color: #EFEFEF;
+  background-color: #FEFEFE;
   font-family: "Light", Arial;
 }
 
@@ -64,7 +64,8 @@ ul{
 #logo {
   position: absolute;
   z-index: 1;
-  left: 175px;
+  left: 80px;
+  top: -10px;
 }
 
 
@@ -156,7 +157,9 @@ h3 {
 #whitepaper{
   margin-top: 100px;
   font-size: 20px;
+ }
 
-
-
+ .background_color{
+  /background-color: #DAE7FF;
+  background-color: #AAAAAA;
  }

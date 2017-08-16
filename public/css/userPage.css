@@ -3,7 +3,7 @@
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
-  width: 910px;jhg
+  width: 910px;
 }
 
 #dashboard a {
@@ -16,7 +16,6 @@
   width: 200px;
   height: auto;
   margin-right: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -54,7 +53,6 @@
   height: 182px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   border-radius: 3px;
@@ -68,7 +66,6 @@
   padding: 10px;
   margin-right: 20px;
   padding-top: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -81,7 +78,6 @@
   height: 170px;
   margin-right: 20px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -94,17 +90,16 @@
   display: inline-block;
   float: left;
   width: 680px;
-  height: 320px;
   margin-bottom: 50px;
 }
 
 #repo_favoris_bloc {
   display: inline-block;
+  float: left;
   width: 288px;
   height: 180px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   border-radius: 3px;

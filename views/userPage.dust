@@ -1,7 +1,7 @@
 {> "views/header.dust"/}
 
-<!--
-<p>email of the logged in user :{req.user.email}</p>
+
+<!--<p>email of the logged in user :{req.user.email}</p>
 <p>db id of the logged in user :{req.user.user_id}</p>
 <p>name of the asked user :{req.params.user}</p>
 {@eq key=req.params.user value=req.user.name}
@@ -9,12 +9,12 @@
 	<p>this means you can put editing stuff here, like allow to change the favorites, change description etc</p>
 {:else}
 	<p>if you see this, this page is not the user's page</p>
-{/eq}
--->
+{/eq}-->
+
 
 <div id="dashboard">
 
-    <div id="profile">
+    <div id="profile" class="background_color">
       <div id="profile_pic"><img src="/imgs/8_bit_dodge.png" width='160' height='160' /></div>
       <div id="profile_status">
         <a>{req.user.name} </a>
@@ -27,11 +27,11 @@
       </div>
     </div>
 
-    <div id="repo_recent">
+    <div id="repo_recent" >
       <p class="cat_header">Projets récents</p>
 
 			{#repos}
-			<div id="repo_recent_bloc">
+			<div id="repo_recent_bloc" class="background_color">
 				<a href="/{req.params.user}/{.}">{.}</a>
 				<div id="separation_H" style="width: 285px;"></div>
 				<br/>
@@ -41,7 +41,7 @@
     </div></br>
 
 
-    <div id="msg">
+    <div id="msg" class="background_color">
       <a>Messages</a>
 			<div id="separation_H" style="width: 180px;"></div>
       <div id="msg_bloc">
@@ -57,7 +57,7 @@
       </div>
     </div>
 
-		<div id="miscelanious">
+		<div id="miscelanious" class="background_color">
 			<a>Statistiques</a>
 			<div id="separation_H" style="width: 180px;"></div>
 
@@ -65,33 +65,12 @@
 
     <div id="repo_favoris">
       <p class="cat_header">Favoris</p>
-      <div id="repo_favoris_bloc">
-        {#favRepos}
-          <a href="/{req.params.user}/{.}">{.}</a>
-          <br/>
-        {/favRepos}
-      </div>
-
-      <div id="repo_favoris_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
-
-      <div id="repo_favoris_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
-
-      <div id="repo_favoris_bloc">
-        {#repos}
-          <a href="/{username}/{name}">{name}</a>
-          <br/>
-        {/repos}
-      </div>
+      {#favRepos}
+        <div id="repo_favoris_bloc" class="background_color">
+            <a href="/{req.params.user}/{.}">{.}</a>
+            <br/>
+        </div>
+      {/favRepos}
     </div>
 
 		{@eq key=req.params.user value=req.user.name}
@@ -105,6 +84,9 @@
 		{/eq}
 
 </div>
+
+
+
 
 
 {> "views/footer.dust"/}

@@ -52,7 +52,7 @@ function goconcat() {
         setTimeout(function() {
           concat(list, paths + 'concat.css',  function(err) {
             if (err) throw err
-        })}, 1000);
+        })}, 100);
     });
   });
 }

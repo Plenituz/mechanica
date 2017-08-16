@@ -22,7 +22,6 @@
   position: relative;
   width: 500px;
   top: 120px;
-  left: 180px;
   font-size: 25px;
   text-align: center;
 }
@@ -126,7 +125,7 @@ button[type=login_submit] > p, button[type=register_submit] > p {
 body {
   position: relative;
   margin-top: 0px;
-  background-color: #EFEFEF;
+  background-color: #FEFEFE;
   font-family: "Light", Arial;
 }
 
@@ -182,7 +181,8 @@ ul{
 #logo {
   position: absolute;
   z-index: 1;
-  left: 175px;
+  left: 80px;
+  top: -10px;
 }
 
 
@@ -274,14 +274,15 @@ h3 {
 #whitepaper{
   margin-top: 100px;
   font-size: 20px;
+ }
 
-
-
+ .background_color{
+  /background-color: #DAE7FF;
+  background-color: #AAAAAA;
  }
 #repo_header{
   width: auto;
   height: auto;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   margin-bottom: 15px;
@@ -292,7 +293,6 @@ h3 {
   width: 423px;
   height: 278px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   margin-right: 20px;
   border-radius: 3px;
@@ -303,7 +303,6 @@ h3 {
   width: 423px;
   height: 278px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   display: inline-block;
   float: right;
@@ -314,7 +313,6 @@ h3 {
   width: 908px;
   height: 300px;
   margin-top: 15px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -354,14 +352,15 @@ h3 {
 
 #file_box{
   width: 398px;
-  height: 220px;
+  height: auto;
   padding: 10px;
-  background-color: #EFEFEF;
   border: 1px solid black;
   border-radius: 3px;
 }
 
 button[type=upload_button]{
+  font-size: 12px;
+  color: #EFEFEF;
   position: relative;
   width: 100px;
   height: 20px;
@@ -373,16 +372,24 @@ button[type=upload_button]{
   padding-bottom: 4px;
 }
 
-button[type=upload_button]>a{
+button[type=fav_button]{
+  position: relative;
+  display: inline-block;
   font-size: 12px;
   color: #EFEFEF;
+  height: 20px;
+  float: right;
+  background-color: #555555;
+  border: 1px solid #EFEFEF;
+  border-radius: 3px;
+  top: -18px;
 }
 #dashboard {
   position: relative;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
-  width: 910px;jhg
+  width: 910px;
 }
 
 #dashboard a {
@@ -395,7 +402,6 @@ button[type=upload_button]>a{
   width: 200px;
   height: auto;
   margin-right: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -433,7 +439,6 @@ button[type=upload_button]>a{
   height: 182px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   border-radius: 3px;
@@ -447,7 +452,6 @@ button[type=upload_button]>a{
   padding: 10px;
   margin-right: 20px;
   padding-top: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -460,7 +464,6 @@ button[type=upload_button]>a{
   height: 170px;
   margin-right: 20px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -473,17 +476,16 @@ button[type=upload_button]>a{
   display: inline-block;
   float: left;
   width: 680px;
-  height: 320px;
   margin-bottom: 50px;
 }
 
 #repo_favoris_bloc {
   display: inline-block;
+  float: left;
   width: 288px;
   height: 180px;
   margin-left: 20px;
   margin-bottom: 20px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   border-radius: 3px;

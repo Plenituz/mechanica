@@ -1,7 +1,6 @@
 #repo_header{
   width: auto;
   height: auto;
-  background-color: #F0F0F0;
   border: 1px solid black;
   padding: 10px;
   margin-bottom: 15px;
@@ -12,7 +11,6 @@
   width: 423px;
   height: 278px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   margin-right: 20px;
   border-radius: 3px;
@@ -23,7 +21,6 @@
   width: 423px;
   height: 278px;
   padding: 10px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   display: inline-block;
   float: right;
@@ -34,7 +31,6 @@
   width: 908px;
   height: 300px;
   margin-top: 15px;
-  background-color: #F0F0F0;
   border: 1px solid black;
   border-radius: 3px;
 }
@@ -74,14 +70,15 @@
 
 #file_box{
   width: 398px;
-  height: 220px;
+  height: auto;
   padding: 10px;
-  background-color: #EFEFEF;
   border: 1px solid black;
   border-radius: 3px;
 }
 
 button[type=upload_button]{
+  font-size: 12px;
+  color: #EFEFEF;
   position: relative;
   width: 100px;
   height: 20px;
@@ -93,7 +90,15 @@ button[type=upload_button]{
   padding-bottom: 4px;
 }
 
-button[type=upload_button]>a{
+button[type=fav_button]{
+  position: relative;
+  display: inline-block;
   font-size: 12px;
   color: #EFEFEF;
+  height: 20px;
+  float: right;
+  background-color: #555555;
+  border: 1px solid #EFEFEF;
+  border-radius: 3px;
+  top: -18px;
 }
