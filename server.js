@@ -2,14 +2,10 @@
 const http = require('http');
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
 const favicon = require('serve-favicon');
 const hoffman = require('hoffman');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
-const uglify = require("uglify-js");
-const chokidar = require('chokidar');
-const concat = require('concat-files');
 const async = require('async');
 //auth
 const session = require('express-session');
@@ -24,42 +20,8 @@ const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 const repoManagementRouter = require('./repoManagementRouter.js');
 
-var doCache = false;//TODO quand on passe en prod faut changer ca
-
-//File & Dir watcher // For css concat on the fly
-//Watcher parameter
-var paths = 'public/css/';
-var log = console.log.bind(console);
-var watcher = chokidar.watch(paths, {
-  ignored: /(^|[\/\\])\../[paths + 'concat.css'],
-	ignoreInitial: true,
-  persistent: true,
-	awaitWriteFinish: true,
-	usePolling: true,
-  interval: 100,
-  binaryInterval: 100
-});
-
-function goconcat() {
-  log('Css files have been modified. New concat ...');
-  fs.unlink(paths + 'concat.css', function (err) {
-    if (err) throw err;
-    fs.readdir(paths, function (err, files) {
-        if (err) throw err;
-        var list = files.map(function (files) {
-            return path.join(paths, files);
-        });
-        setTimeout(function() {
-          concat(list, paths + 'concat.css',  function(err) {
-            if (err) throw err
-        })}, 100);
-    });
-  });
-}
-
-watcher //Watcher events
-  .on('ready',() => log('Initial scan complete. Chokidar ready for changes'))
-  .on('change', goconcat)
+require('dotenv').config()
+var doCache = process.env.DEBUG == false;
 
 //TODO faire un package.json pour les nodes modules
 //TODO quand tu fait npm install faut le faire sur la vm direct

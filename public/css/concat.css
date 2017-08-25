@@ -22,13 +22,13 @@
   position: relative;
   width: 500px;
   top: 120px;
-  font-size: 25px;
-  text-align: center;
+  font-size: 25px; 
+  text-align: center;  
 }
 
 #login_box {
   position: relative;
-  padding: 25px;
+  padding: 25px; 
   padding-bottom: 20px;
   width: 275px;
   left: 250px;
