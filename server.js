@@ -116,8 +116,6 @@ passport.deserializeUser(function(userSession, done){
 //db.initDB();
 
 
-
-
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
 	//render "accueil.dust"(html) using the set render engine (dust)

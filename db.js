@@ -5,10 +5,11 @@ const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
-const DEBUG_QUERIES = true;//TODO change that when you go in prod
+//fields
+const saltRounds = 10;
 const userReposPath = path.join(__dirname, "data", "userRepos");
+const sqlFilesPath = path.join(__dirname, "sql");
 
 if (!String.prototype.format) {
     String.prototype.format = function () {
@@ -23,134 +24,165 @@ if (!String.prototype.format) {
 }
 
 module.exports = {
-	initDB : function(){
-		let instructions = [
-			`CREATE TABLE IF NOT EXISTS users(
-				user_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				name VARCHAR(20) NOT NULL,
-				password BINARY(60) NOT NULL,
-				email VARCHAR(254) NOT NULL,
-				creation_date DATE NOT NULL,
-				description TEXT DEFAULT NULL,
-				
-				PRIMARY KEY(user_id),
-				UNIQUE KEY ind_uni_name(name),
-				UNIQUE KEY ind_uni_email(email)
-			)
-			CHARSET=utf8 
-			ENGINE=INNODB;`,
-			
-			`CREATE TABLE IF NOT EXISTS repos(
-				repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				admin_id INT UNSIGNED NOT NULL,
-				name VARCHAR(40) NOT NULL,
-				location TINYTEXT NOT NULL,
-				creation_date DATE NOT NULL,
-                current_version INT UNSIGNED NOT NULL DEFAULT 0,
-				
-				PRIMARY KEY(repo_id),
-				INDEX ind_admin_id (admin_id),
-				INDEX ind_repo_name (name),
-				UNIQUE KEY unik_admin_id_name (admin_id, name)
-			) CHARSET=utf8 ENGINE=INNODB;`, 
-			
-			`CREATE TABLE IF NOT EXISTS discussions(
-				discussion_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				title TEXT NOT NULL,
-				creator_id INT UNSIGNED,
-				created_at DATETIME NOT NULL,
-				hosting_repo INT UNSIGNED NOT NULL,
-				
-				PRIMARY KEY(discussion_id),
-				INDEX ind_created_at (created_at),
-				INDEX ind_creator_id (creator_id),
-				INDEX ind_hosting_repo (hosting_repo)
-			) CHARSET=utf8 ENGINE=INNODB;`,
-			
-			`CREATE TABLE IF NOT EXISTS discussion_messages(
-				discussion_message_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-				content TEXT NOT NULL,
-				creator_id INT UNSIGNED,
-				created_at DATETIME NOT NULL,
-				hosting_discussion INT UNSIGNED NOT NULL,
-				
-				PRIMARY KEY(discussion_message_id),
-				INDEX ind_creator_id (creator_id),
-				INDEX ind_hosting_discussion (hosting_discussion)
-			) ENGINE=INNODB CHARSET=utf8;`,
 
-            `CREATE TABLE IF NOT EXISTS favorite_repos(
-                favorite_repo_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                favoriteur_id INT UNSIGNED,
-                repo_id INT UNSIGNED,
-                fav_datetime DATETIME NOT NULL,
+    /*
+    execute the given queryStr with the given params and return a promise
 
-                PRIMARY KEY(favorite_repo_id),
-                INDEX ind_favoriteur_id (favoriteur_id),
-                INDEX ind_repo_id (repo_id),
-                UNIQUE KEY unik_repo_id_favoriteur_id (repo_id, favoriteur_id)
-             ) CHARSET=utf8 ENGINE=INNODB;`,
-			
-			//WARNING the following "IF NOT EXISTS" part in foreign keys only works with mariadb 10.0.2 or later
-            `ALTER TABLE repos 
-            ADD CONSTRAINT fk_repos_admin_id
-                FOREIGN KEY IF NOT EXISTS (admin_id)
-                REFERENCES users (user_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE;`,
-			
-            `ALTER TABLE discussions 
-            ADD CONSTRAINT fk_discussion_creator_id
-                FOREIGN KEY IF NOT EXISTS (creator_id)
-                REFERENCES users (user_id)
-                ON DELETE SET NULL
-                ON UPDATE CASCADE;`,
-				
-            `ALTER TABLE discussions 
-             ADD CONSTRAINT fk_discussion_hosting_repo
-                FOREIGN KEY IF NOT EXISTS (hosting_repo)
-                REFERENCES repos (repo_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE;`,
-				
-            `ALTER TABLE discussion_messages 
-            ADD CONSTRAINT fk_discussion_messages_creator_id
-                FOREIGN KEY IF NOT EXISTS (creator_id)
-                REFERENCES users (user_id)
-                ON DELETE SET NULL
-                ON UPDATE CASCADE;`,
-				
-            `ALTER TABLE discussion_messages
-            ADD CONSTRAINT fk_discussion_messages_hosting_discussion
-                FOREIGN KEY IF NOT EXISTS (hosting_discussion) 
-                REFERENCES discussions (discussion_id) 
-                ON DELETE CASCADE
-                ON UPDATE CASCADE;`,
+    supports parameters with the '?' notation but not the '@' notation
+    ex:
+    "SELECT id WHERE name=?"
 
-            `ALTER TABLE favorite_repos
-             ADD CONSTRAINT fk_favorite_repos_favoriteur_id
-                FOREIGN KEY IF NOT EXISTS (favoriteur_id)
-                REFERENCES users (user_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE`,
+    the connection won't be closed
+    */
+    queryWithConnection: function (connection, queryStr, params) {
+        var deferred = Q.defer();
 
-            `ALTER TABLE favorite_repos
-            ADD CONSTRAINT fk_favorite_repos_repo_id
-                FOREIGN KEY IF NOT EXISTS (repo_id)
-                REFERENCES repos (repo_id)
-                ON DELETE CASCADE
-                ON UPDATE CASCADE`
-		];	
-		
-		console.log("start table creation");
-		
-		module.exports.multiQueryUnsafe(instructions)
-		.fail(function(err){
-			console.log("error while creating tables: "  + err);
-		})
-		.fin(function(){
-			console.log("end table creation");
-		});
+        if (process.env.DEBUG == true) console.log("next query: (params=" + params + ")\n" + queryStr);
+        connection.query(queryStr, params, function (err, results, fields) {
+            if (err)
+                deferred.reject(err);
+            else
+                deferred.resolve(results, fields);
+        });
+
+        return deferred.promise;
+    },
+
+    /*
+    Execute all the given queries in a row one after another and return the promise
+
+    queries is an array of string
+
+    returns a promise
+
+    the connection won't be closed
+    */
+    multiQueryUnsafeWithConnection: function (connection, queries) {
+        var promise = null;
+
+        //using let here so the ref to i is not the same every loop
+        for (let i = 0; i < queries.length; i++) {
+            if (!promise) {
+                promise = queryWithConnection(connection, queries[i]);
+            } else {
+                promise = promise.then(function (results, fields) {
+                    return queryWithConnection(connection, queries[i]);
+                });
+            }
+        }
+        return promise;
+    },
+
+    /*
+    executes multiple queries, only if no error occurs. if an error occurs the queries are rolled back
+    note that some query execute a commit therefore prevent the roll back see https://dev.mysql.com/doc/refman/5.5/en/implicit-commit.html
+
+    expects an array of string, no parameter management
+
+    returns a promise 
+    */
+    queryMulti: function (queries) {
+        var defer = Q.defer();
+
+        module.exports.pool.getConnection(function (err, connection) {
+            //fields for storing results and fields
+            var res, fie;
+            if (err) {
+                defer.reject(err);
+                return;
+            }
+
+            //handle all the errors : rollback and reject the promise
+            function onError(err) {
+                console.log("error occured: " + err);
+                connection.rollback(function () {
+                    connection.release();
+                    defer.reject(err);
+                })
+            }
+
+            connection.beginTransaction(function (err) {
+                if (err) {
+                    onError(err);
+                    return;
+                }
+
+                //execute all but the last query
+                module.exports.multiQueryUnsafeWithConnection(connection, queries.slice(0, queries.length - 1))
+                    .then(function () {
+                        //last query, we return the result
+                        let q = queries[queries.length - 1];
+                        return queryWithConnection(connection, q);
+                    })
+                    .then(function (results, fields) {
+                        res = results;
+                        fie = fields;
+                        // return Q.nfcall(connection.commit);
+                        return queryWithConnection(connection, "COMMIT");
+                    })
+                    .then(function () {
+                        defer.resolve(res, fie);
+                    })
+                    .fail(function (err) {
+                        onError(err);
+                    })
+            });
+        });
+
+        return defer.promise;
+    },
+
+    /*
+    use the mysql escape function to escape all parameters prepended by '@' ex: @animalName
+
+    text is the text of the sql request with the @<name>
+    params is an object, each property of this object will be used
+        to determine what to escape in the text
+
+    returns the text escaped
+
+    ex:
+    "SELECT id WHERE name=@name", {name: "bob"} => "SELECT id WHERE name='bob'"
+    */
+    escapeText: function (text, params) {
+        let res = text;
+        for (prop in params) {
+            res = res.replace('@' + prop, mysql.escape(params[prop]));
+        }
+        return res;
+    },
+
+    /*
+    read a file found in sqlFilePath and use it's content as a (potentially) multi query
+    the text can have variables marked by '@', all properties of the params object will be used
+    to replace the variables name by the property value
+    "SELECT id WHERE name=@name", {name: "bob"} => "SELECT id WHERE name='bob'"
+
+    all the queries should be separated by ';', unless their is only one of them
+    */
+    queryFile: function (fileName, params) {
+        //remove any extension if their is one and replace it with .sql
+        //that way you can do queryFile('poop.sql') and queryFile('poop')
+        fileName = path.parse(fileName).name + ".sql";
+        return Q.nfcall(fs.readFile, path.join(sqlFilesPath, fileName), 'utf8')
+            .then(function (data) {
+                data = module.exports.escapeText(data, params);
+                let queries = data.split(";");
+                //clean the array of empty entries
+                queries = queries.filter((q) => q != '');
+                //if there is only one query, we limit the overhead by calling query and not queryMulti
+                if (queries.length == 1)
+                    return query(queries[0]);
+                else
+                    return queryMulti(queries);
+            });
+    },
+
+    initDB: function () {
+        queryFile("InitDB")
+            .fail(function (err) {
+                console.log("error while creating tables: " + err);
+            });
 	},
 	
 	createUser : function(name, password, email){
@@ -577,8 +609,8 @@ module.exports = {
 				}else{
 					deferred.reject(err);
 				}
-			});
-			if(DEBUG_QUERIES)
+            });
+            if (process.env.DEBUG == true)
 				console.log("query: " + q.sql);
 
 			connection.on('error', onError);
@@ -618,3 +650,6 @@ const doesRepoExists = module.exports.doesRepoExists;
 const getUserId = module.exports.getUserId;
 const doesEmailExists = module.exports.doesEmailExists;
 const getRepoId = module.exports.getRepoId;
+const queryWithConnection = module.exports.queryWithConnection;
+const queryMulti = module.exports.queryMulti;
+const queryFile = module.exports.queryFile;
