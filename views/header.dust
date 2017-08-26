@@ -26,35 +26,35 @@
 
 				<li>
 					<div id="accueil">
-						<a href="../decouvrir">Découvrir</a></div>
+						<a href="/decouvrir">Découvrir</a></div>
 				</li>
 
 				<li>
 					<div id="plandetravail">
-						<a href="../dashboard">Plan de Travail</a></div>
+						<a href="/dashboard">Plan de Travail</a></div>
 				</li>
 
 				<li>
 					<div id="guide">
-						<a href="../guide">Guides</a></div>
+						<a href="/guide">Guides</a></div>
 				</li>
 
 				<li>
 					<div id="compte">
-						<a href="../compte">Mon Compte</a></div>
+						<a href="/compte">Mon Compte</a></div>
 				</li>
 
 
 					{#req.user}
 						<li>
-							<div id="logout"><a href="../logout">Déconnection</a></div>
+							<div id="logout"><a href="/logout">Déconnection</a></div>
 						</li>
 					{:else}
 						<li>
-							<div id="login"><a href="../login">Connection</a></div>
+							<div id="login"><a href="/login">Connection</a></div>
 						</li>
 						<li>
-							<div id="signin"><a href="../register">Inscription</a></div>
+							<div id="signin"><a href="/register">Inscription</a></div>
 						</li>
 					{/req.user}
 
