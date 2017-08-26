@@ -28,7 +28,7 @@ function clickAddFav(){
     if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           isfaved = !isfaved;
-          addfavbut.textContent = isfaved ? "remove from fav" : "add to fav";
+          addfavbut.textContent = isfaved ? "Supprimer des favoris" : "Ajouter aux favoris";
           addfavbut.disabled = false;
           
         } else {
