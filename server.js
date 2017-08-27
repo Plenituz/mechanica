@@ -33,6 +33,7 @@ var doCache = process.env.DEBUG == false;
 //TODO mot de passe oublié
 //la fonction createRepo est pas opti
 //prevent names and reponame with spaces
+//check quand on supprime un repo ca supprime bien tous les elements lié (eg: favorites, messages etc)
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -114,7 +115,6 @@ passport.deserializeUser(function(userSession, done){
 
 //===INIT DB IF NECESSARY===//
 //db.initDB();
-
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {
