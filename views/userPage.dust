@@ -15,13 +15,13 @@
 <div id="dashboard">
 
     <div id="profile" class="background_color">
-      <div id="profile_pic"><img src="/imgs/8_bit_dodge.png" width='160' height='160' /></div>
+      <div id="profile_pic"><img src="{userInfo.profile_pic_location}" width='160' height='160' /></div>
       <div id="profile_status">
         <a>{req.user.name} </a>
 				<a> ({req.params.user})</a></br></br>
         <div id="separation_H" style="width: 160px; height: 1px;"></div>
         </br>
-        <a>Là où j'opère, nombreuse seront les victimes,</br>que des numéros 10 dans ma team.</a></br></br>
+        <a>{userInfo.description}</a></br></br>
         <a>Originaire de Gaulle</a></br></br>
         <a href="http://pedagogie.charles-de-gaulle.org/" class="link" target="_blank">www.francofrancais.org</a>
       </div>
@@ -81,6 +81,14 @@
 				<input placeholder="Repo name" name="reponame"/>
 				<button type="submit">create repo</button>
 			</form>
+
+			<script src="/js/clientSide_userPage.js"></script>
+			<script src="/js/jquery-2.2.0.min.js"></script>
+			<!-- don't change the ids of the following button/input, js depends on it -->
+			<button id="upload_button" type="upload_button"><a>Change profile pic</a></button>
+			<input id="upload_input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
+			<!-- TODO this is temporary, it'll be replaced by a proper loading bar, but let's keep it for now -->
+			<a id="progress"/>
 		{/eq}
 
 </div>

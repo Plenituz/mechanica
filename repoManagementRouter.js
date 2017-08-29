@@ -5,6 +5,7 @@ const Q = require('q');
 const fs = require('fs');
 const fs_extra = require('fs-extra');
 const formidable = require('formidable');
+const utils = require('./utils.js');
 
 const repoManagementRouter = new express.Router();
 
@@ -116,7 +117,7 @@ repoManagementRouter.post('/:user/:repo/newVersion', function (req, res) {
         .then(function () {
             //here you are sure to have a "new" folder that is empty
             console.log("new folder should be good");
-            return receiveFile(req, repoNewLocation);
+            return utils.receiveFile(req, repoNewLocation);
         })
         .then(function () {
             console.log("files should be received, renaming current to v" + repoCurrentVersion);
@@ -174,28 +175,6 @@ function renameFile(from, to) {
             defer.resolve();
         }
     });
-
-    return defer.promise;
-}
-
-function receiveFile(req, uploadLocation) {
-    let defer = Q.defer();
-
-    let form = new formidable.IncomingForm();
-    form.multiples = true;
-    form.uploadDir = uploadLocation;
-
-    form.on('file', function (field, file) {
-        //when the file is received, rename it 
-        fs.rename(file.path, path.join(form.uploadDir, file.name));
-    });
-    form.on('error', function (err) {
-        defer.reject(err);
-    });
-    form.on('end', function () {
-        defer.resolve();
-    });
-    form.parse(req);
 
     return defer.promise;
 }

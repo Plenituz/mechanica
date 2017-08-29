@@ -1,5 +1,6 @@
-INSERT INTO discussions VALUES(
-NULL, 
+INSERT INTO discussions 
+(title, creator_id, created_at, hosting_repo)
+VALUES( 
 @title, 
 (SELECT user_id FROM users WHERE name = @creatorName), 
 NOW(), 

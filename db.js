@@ -61,7 +61,7 @@ function escapeAndSend(data, params) {
     data = escapeText(data, params);
     let queries = data.split(";");
     //clean the array of empty entries
-    queries = queries.filter((q) => q != '');
+    queries = queries.filter((q) => q.trim().length > 0);
     //if there is only one query, we limit the overhead by calling query and not queryMulti
     if (queries.length == 1)
         return query(queries[0]);
@@ -99,7 +99,7 @@ function query(queryStr, params) {
                 deferred.reject(err);
             }
         });
-        if (process.env.DEBUG == true)
+        if (process.env.DEBUG_SQL == true)
             console.log("query: " + q.sql);
 
         connection.on('error', onError);
@@ -120,7 +120,7 @@ function query(queryStr, params) {
 function queryWithConnection(connection, queryStr, params) {
     var deferred = Q.defer();
 
-    if (process.env.DEBUG == true) console.log("next query: (params=" + params + ")\n" + queryStr);
+    if (process.env.DEBUG_SQL == true) console.log("next query: (params=" + params + ")\n" + queryStr);
     connection.query(queryStr, params, function (err, results, fields) {
         if (err)
             deferred.reject(err);
@@ -434,6 +434,19 @@ module.exports = {
     },
 
     /*
+    change the path of the profile picture of the given user to the given path
+
+    returns a promise with no parameter
+    */
+    setProfilePicturePath: function (userName, path) {
+        //UPDATE repos 
+        //    SET current_version = current_version + 1
+        //    WHERE repo_id = @repoId
+        let q = "UPDATE users SET profile_pic_location = ? WHERE name = ?";
+        return query(q, [path, userName]);
+    },
+
+    /*
         create a discussion in the given repo, by the given creator
         userName: string name of the repo admin
         repo: string name of the repo
@@ -512,7 +525,20 @@ module.exports = {
 				return [results[0].name.toString(), results[0].email.toString()];
 			}
 		});
-	},
+    },
+
+    /*
+    return an object with all the info about the given user:
+        user_id, name, email, creation_date, description, profile_pic_location
+    */
+    getAllUserInfo: function (name) {
+        return queryFile("GetAllUserInfo", { name: name })
+            .then(function (results) {
+                if (results.length === 0)
+                    throw new Error("can't get user info for " + name + ": name doesn't exist");
+                return results[0];
+            });
+    },
 
     /*
         returns a promise with a list of the names of the recent repos as parameter

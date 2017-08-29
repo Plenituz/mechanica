@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users(
 	email VARCHAR(254) NOT NULL,
 	creation_date DATE NOT NULL,
 	description TEXT DEFAULT NULL,
+	profile_pic_location TINYTEXT DEFAULT '/imgs/default_profile_pic.png',
 				
 	PRIMARY KEY(user_id),
 	UNIQUE KEY ind_uni_name(name),

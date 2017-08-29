@@ -40,7 +40,7 @@
       <!-- don't change the ids of the following button/input, js depends on it -->
       <button id="upload_button" type="upload_button"><a>Nouveau fichier</a></button>
       <input id="upload_input" type="file" name="uploads[]" multiple="multiple" style="display:none"><br/>
-      <!-- this is temporary, it'll be replaced by a proper loading bar, but let's keep it for now -->
+      <!-- TODO this is temporary, it'll be replaced by a proper loading bar, but let's keep it for now -->
       <a id="progress"/>
     {/eq}
 

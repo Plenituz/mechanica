@@ -18,7 +18,7 @@ userRouter.get("/:user", function (req, res, next) {
 		}
 		
 	} else {
-        var repoList;
+        var repoList, favRepos;
 		//check if the user exists before sending
 		db.doesUserExists(req.params.user)
 	        .then(function(exists){
@@ -33,10 +33,15 @@ userRouter.get("/:user", function (req, res, next) {
                 return db.getFavoriteRepos(req.params.user, 4);
             })
             .then(function (favRepoList) {
+                favRepos = favRepoList;
+                return db.getAllUserInfo(req.params.user);
+            })
+            .then(function (userInfo) {
                 res.render('userPage.dust', {
                     req: req,
                     repos: repoList,
-                    favRepos: favRepoList
+                    favRepos: favRepos,
+                    userInfo: userInfo
                 });
             })
 	        .fail(function(err){

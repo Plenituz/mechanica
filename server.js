@@ -19,14 +19,16 @@ const loginRouter = require('./loginRouter.js');
 const db = require('./db.js');
 const repoFileRouter = require('./repoFileRouter.js');
 const repoManagementRouter = require('./repoManagementRouter.js');
+const userManagementRouter = require('./userManagementRouter.js');
 
 require('dotenv').config()
 var doCache = process.env.DEBUG == false;
 
 //TODO faire un package.json pour les nodes modules
-//TODO quand tu fait npm install faut le faire sur la vm direct
+//quand tu fait npm install faut le faire sur la vm direct
 //(bcrypt aime pas etre compilé sur une autre platforme que celle ou il est utilisé)
 //j'ai du faire npm install dans un dossier normal de la vm, copier le node_module créé dans sf_mechanica
+//le module mmmagic doit etre installer direct depuis la vm
 //TODO faire le login client side en javascript pour pas avoir de rafraichissement de page
 //TODO faire un vrai certificat de https, et mettre en place renouvellement automatique
 //TODO distribuer les fichiers public directement avec nginx : https://www.sitepoint.com/configuring-nginx-ssl-node-js/
@@ -34,6 +36,7 @@ var doCache = process.env.DEBUG == false;
 //la fonction createRepo est pas opti
 //prevent names and reponame with spaces
 //check quand on supprime un repo ca supprime bien tous les elements lié (eg: favorites, messages etc)
+//allow only certain type of images as profile pics
 
 const app = express();
 app.engine('dust', hoffman.__express());
@@ -47,7 +50,7 @@ app.enable('trust proxy');
 //app.use(function (req, res, next) {
 //    console.log(req.method + ":" + req.url);
 //    return next();
-//});
+//}); 
 
 //the order of the middle wares is important
 //public files this must be first
@@ -73,13 +76,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : false }));
 //la ligne suivante est obligatoirement apres le bodyParser middleware
 app.use(expressValidator());
-
-// CSS files rendering
-// We get one big one out of many small
-/*duster.watch(["views", "../views"], "js/templates.js", {}, function (err, results) {
-	    console.log("Templates updated at", new Date().toLocaleTimeString());
-});*/
-//var compiled_css = res.render('compiled.css','main.dust');
 
 // Static page rooter
 userRouter.staticPages = {
@@ -133,6 +129,7 @@ app.get('/dashboard', function(req, res){
 })
 app.use(repoManagementRouter)
 //this is for /login /register /logout
+app.use(userManagementRouter);
 app.use(loginRouter);
 //this has to be after the static, all non hard coded url end up here
 //this is for '/:user/:repo/:file'
