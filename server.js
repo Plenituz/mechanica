@@ -109,8 +109,21 @@ passport.deserializeUser(function(userSession, done){
 	done(null, userSession);
 });
 
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 //===INIT DB IF NECESSARY===//
 //db.initDB();
+//for (var i = 0; i < 50; i++)
+//    db.createUser(makeid(), "password", makeid() + "@gmail.com");
+db.do();
+    
 
 //	l'ordre est important ici // Accueil
 app.get('/', function(req, res) {

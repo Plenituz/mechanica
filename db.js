@@ -156,6 +156,81 @@ function multiQueryUnsafeWithConnection(connection, queries) {
     return promise;
 }
 
+
+function backupDb() {
+    var final = "";
+
+    query("SHOW TABLES")
+        .then(function (results) {
+            var promiseList = [];
+            var tableList = results.map(row => row.Tables_in_mechanica_db);
+
+            for (let table of tableList) {
+                let columnInfos;
+                let promise = query("SHOW FIELDS FROM " + table)
+                    .then(function (results) {
+                        columnInfos = results;
+                        //console.log(columnInfos);
+                        return query("SELECT * FROM " + table);
+                    })
+                    .then(function (results) {
+                        if (results.length === 0)
+                            return;
+                        let line = "INSERT INTO " + table + " (";
+                        line += Object.keys(results[0]).reduce((prev, next) => prev + "," + next);
+                        line += ") VALUES ";
+
+                        for (var item of results) {
+                            line += "(";
+                            let i = 0;
+                            for (var prop in item) {
+                                if (columnInfos[i].Type.indexOf("date") != -1) {
+                                    //var d = date.parse(item[prop].toString());
+                                    //console.log(d.toString("yyyy-MM-dd hh:mm:ss"));
+                                    line += "'" + item[prop].getFullYear() + "-" + item[prop].getDate() + "-"
+                                        + item[prop].getDay() + " " + item[prop].getHours() + ":" + item[prop].getMinutes() + ":" + item[prop].getSeconds() + "',";
+                                } else {
+                                    line += "'" + item[prop] + "',";
+                                }
+                                i++;
+                            }
+                            line = line.substring(0, line.length - 1);
+                            //line += Object.keys(item).reduce((prev, next) => prev + "," + mysql.escape(item[next]));
+                            line += "),"
+                        }
+                        line = line.substring(0, line.length - 1);
+                        line += ";";
+                        //console.log(line)
+                        final += line;
+                    })
+                    //.fail(function (err) {
+                    //    console.log("error reading table " + table + ":" + err);
+                    //});
+                promiseList.push(promise);
+            }
+
+            Q.all(promiseList)
+                .done(function () {
+                  //  console.log("done fdfd:" + final);
+
+                    fs.writeFile(path.join(__dirname, "db_dump"), final, function (err) {
+                        if (err) {
+                            return console.log("error writing dump file:" + err);
+                        }
+
+                        console.log("The file was saved!");
+                    });
+                });
+        })
+        .fail(function (err) {
+            console.log("error backing up:" + err);
+        });
+}
+
+//backupDb();
+
+
+
 /*
     executes multiple queries, only if no error occurs. if an error occurs the queries are rolled back
     note that some query execute a commit therefore prevent the roll back see https://dev.mysql.com/doc/refman/5.5/en/implicit-commit.html
@@ -222,7 +297,7 @@ function queryMulti(queries) {
     to replace the variables name by the property value
     "SELECT id WHERE name=@name", {name: "bob"} => "SELECT id WHERE name='bob'"
 
-    all the queries should be separated by ';', unless their is only one of them
+    all the queries should be separated by ';', unless there is only one of them
     WARNING don't put ';' in your comments it'll fuck shit up
 */
 function queryFile(fileName, params) {
@@ -244,6 +319,14 @@ function queryFile(fileName, params) {
 }
 
 module.exports = {
+
+    do: function () {
+        queryFile("db_dump.sql")
+            .fail(function (err) {
+                console.log(err);
+            })
+            .done(() => console.log("done"));
+    },
     /*
         Create the DB tables and columns ONLY IF THEY ARE NOT ALREADY CREATED
         This function does NOT drop the tables

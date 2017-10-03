@@ -1,0 +1,1 @@
+INSERT INTO users (user_id,name,password,email,creation_date,description,profile_pic_location) VALUES ('1','user','$2a$10$KWZ.BW4RT79Ts/j0NAgI7ejfRWktjg3ERobnNUTsX6XBlOuCJ1YKa','user@gmail.com','2017-2-6 0:0:0','null','/imgs/default_profile_pic.png');
